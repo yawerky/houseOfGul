@@ -5,6 +5,9 @@ import SectionWrapper from '@/components/ui/SectionWrapper'
 import Image from 'next/image'
 import { Product } from '@/lib/products'
 
+// Force dynamic rendering - don't prerender at build time
+export const dynamic = 'force-dynamic'
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
 
 export const metadata: Metadata = {

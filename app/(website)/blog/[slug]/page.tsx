@@ -7,6 +7,9 @@ import SectionWrapper from '@/components/ui/SectionWrapper'
 import BlogCard from '@/components/blog/BlogCard'
 import BlogPostSchema from '@/components/seo/BlogPostSchema'
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 interface BlogPostPageProps {
   params: Promise<{
     slug: string

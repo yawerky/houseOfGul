@@ -4,6 +4,9 @@ import BlogCard from '@/components/blog/BlogCard'
 import SectionWrapper from '@/components/ui/SectionWrapper'
 import Image from 'next/image'
 
+// Force dynamic rendering - don't prerender at build time
+export const dynamic = 'force-dynamic'
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
 
 export const metadata: Metadata = {

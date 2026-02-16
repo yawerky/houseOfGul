@@ -7,6 +7,9 @@ import ProductCard from '@/components/shop/ProductCard'
 import SectionWrapper from '@/components/ui/SectionWrapper'
 import ProductSchema from '@/components/seo/ProductSchema'
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 interface ProductPageProps {
   params: Promise<{
     id: string
