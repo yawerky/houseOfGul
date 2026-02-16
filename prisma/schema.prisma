@@ -1,0 +1,328 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Admin Users
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Products
+model Product {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  price        Float
+  comparePrice Float?
+  description  String
+  story        String?
+  category     String
+  occasion     String?
+  season       String?
+  flowers      String   // JSON string array
+  images       String   // JSON string array
+  featured     Boolean  @default(false)
+  inStock      Boolean  @default(true)
+  stockCount   Int      @default(100)
+  rating       Float    @default(5.0)
+  reviewCount  Int      @default(0)
+  deliveryInfo String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  orderItems   OrderItem[]
+  cartItems    CartItem[]
+}
+
+// Blog Posts
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String
+  content     String
+  image       String
+  author      String
+  category    String
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Delivery Pincodes
+model Pincode {
+  id              String   @id @default(cuid())
+  code            String   @unique
+  area            String
+  city            String
+  state           String
+  deliveryZone    String   // same-day, next-day, 2-3-days, not-serviceable
+  deliveryCharge  Float    @default(0)
+  minOrderFree    Float?   // Minimum order for free delivery
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// Customers
+model Customer {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  phone     String?
+  firstName String
+  lastName  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  addresses Address[]
+  orders    Order[]
+  cart      Cart?
+}
+
+// Customer Addresses
+model Address {
+  id         String   @id @default(cuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  type       String   @default("shipping") // shipping, billing
+  firstName  String
+  lastName   String
+  address    String
+  apartment  String?
+  city       String
+  state      String
+  pincode    String
+  phone      String
+  isDefault  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// Orders
+model Order {
+  id              String   @id @default(cuid())
+  orderNumber     String   @unique
+  customerId      String?
+  customer        Customer? @relation(fields: [customerId], references: [id])
+
+  // Customer Info (for guest checkout)
+  email           String
+  phone           String
+
+  // Shipping Address
+  shippingFirstName String
+  shippingLastName  String
+  shippingAddress   String
+  shippingApartment String?
+  shippingCity      String
+  shippingState     String
+  shippingPincode   String
+  shippingPhone     String
+
+  // Order Details
+  subtotal        Float
+  deliveryCharge  Float    @default(0)
+  giftWrapCharge  Float    @default(0)
+  discount        Float    @default(0)
+  total           Float
+
+  // Gift Options
+  isGift          Boolean  @default(false)
+  giftWrapType    String?
+  giftMessage     String?
+  senderName      String?
+  hidePrice       Boolean  @default(false)
+
+  // Delivery
+  deliveryDate    DateTime?
+  deliverySlot    String?
+  deliveryZone    String?
+
+  // Status
+  status          String   @default("pending") // pending, confirmed, processing, shipped, out-for-delivery, delivered, cancelled
+  paymentStatus   String   @default("pending") // pending, paid, failed, refunded
+  paymentMethod   String?
+
+  // Notes
+  customerNote    String?
+  adminNote       String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  items           OrderItem[]
+  timeline        OrderTimeline[]
+}
+
+// Order Items
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  name      String
+  price     Float
+  quantity  Int
+  image     String?
+  createdAt DateTime @default(now())
+}
+
+// Order Timeline
+model OrderTimeline {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+// Shopping Cart
+model Cart {
+  id         String   @id @default(cuid())
+  customerId String?  @unique
+  customer   Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  sessionId  String?  @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  items      CartItem[]
+}
+
+// Cart Items
+model CartItem {
+  id        String   @id @default(cuid())
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Categories
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  image     String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Settings
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Testimonials
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  title     String   // e.g., "Bride", "CEO", "Interior Designer"
+  content   String
+  rating    Int      @default(5)
+  image     String?
+  featured  Boolean  @default(false)
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Homepage Banners
+model Banner {
+  id          String   @id @default(cuid())
+  title       String
+  subtitle    String?
+  buttonText  String?
+  buttonLink  String?
+  image       String
+  position    String   @default("hero") // hero, secondary, popup
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Discount Coupons
+model Coupon {
+  id              String   @id @default(cuid())
+  code            String   @unique
+  description     String?
+  discountType    String   // percentage, fixed
+  discountValue   Float
+  minOrderAmount  Float?
+  maxDiscount     Float?
+  usageLimit      Int?
+  usedCount       Int      @default(0)
+  isActive        Boolean  @default(true)
+  startDate       DateTime?
+  endDate         DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// Newsletter Subscribers
+model Subscriber {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  isSubscribed Boolean  @default(true)
+  source       String?  // footer, popup, checkout
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Event/Contact Inquiries
+model Inquiry {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  type      String   // wedding, corporate, general, support
+  eventDate DateTime?
+  budget    String?
+  guests    String?
+  message   String
+  status    String   @default("new") // new, contacted, completed, archived
+  adminNote String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Occasions (Shop by Occasion)
+model Occasion {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  image       String?
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
