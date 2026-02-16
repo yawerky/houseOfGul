@@ -4,30 +4,6 @@ import { prisma } from '@/lib/prisma'
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
 
-  // Get all products
-  const products = await prisma.product.findMany({
-    where: { inStock: true },
-    select: { slug: true, updatedAt: true },
-  })
-
-  // Get all blog posts
-  const posts = await prisma.blogPost.findMany({
-    where: { published: true },
-    select: { slug: true, updatedAt: true },
-  })
-
-  // Get all categories
-  const categories = await prisma.category.findMany({
-    where: { isActive: true },
-    select: { slug: true },
-  })
-
-  // Get all occasions
-  const occasions = await prisma.occasion.findMany({
-    where: { isActive: true },
-    select: { slug: true },
-  })
-
   // Static pages - optimized for Jaipur local SEO
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -80,37 +56,66 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  // Category pages
-  const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({
-    url: `${baseUrl}/shop?category=${cat.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'daily' as const,
-    priority: 0.85,
-  }))
+  try {
+    // Get all products
+    const products = await prisma.product.findMany({
+      where: { inStock: true },
+      select: { slug: true, updatedAt: true },
+    })
 
-  // Occasion pages
-  const occasionPages: MetadataRoute.Sitemap = occasions.map((occ) => ({
-    url: `${baseUrl}/shop?occasion=${occ.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'daily' as const,
-    priority: 0.85,
-  }))
+    // Get all blog posts
+    const posts = await prisma.blogPost.findMany({
+      where: { published: true },
+      select: { slug: true, updatedAt: true },
+    })
 
-  // Product pages
-  const productPages: MetadataRoute.Sitemap = products.map((product) => ({
-    url: `${baseUrl}/product/${product.slug}`,
-    lastModified: product.updatedAt,
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }))
+    // Get all categories
+    const categories = await prisma.category.findMany({
+      where: { isActive: true },
+      select: { slug: true },
+    })
 
-  // Blog pages
-  const blogPages: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: post.updatedAt,
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }))
+    // Get all occasions
+    const occasions = await prisma.occasion.findMany({
+      where: { isActive: true },
+      select: { slug: true },
+    })
 
-  return [...staticPages, ...categoryPages, ...occasionPages, ...productPages, ...blogPages]
+    // Category pages
+    const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({
+      url: `${baseUrl}/shop?category=${cat.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.85,
+    }))
+
+    // Occasion pages
+    const occasionPages: MetadataRoute.Sitemap = occasions.map((occ) => ({
+      url: `${baseUrl}/shop?occasion=${occ.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.85,
+    }))
+
+    // Product pages
+    const productPages: MetadataRoute.Sitemap = products.map((product) => ({
+      url: `${baseUrl}/product/${product.slug}`,
+      lastModified: product.updatedAt,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }))
+
+    // Blog pages
+    const blogPages: MetadataRoute.Sitemap = posts.map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: post.updatedAt,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    }))
+
+    return [...staticPages, ...categoryPages, ...occasionPages, ...productPages, ...blogPages]
+  } catch (error) {
+    console.error('Error generating sitemap:', error)
+    return staticPages
+  }
 }

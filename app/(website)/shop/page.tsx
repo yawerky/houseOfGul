@@ -44,27 +44,32 @@ export const metadata: Metadata = {
 }
 
 async function getProducts(): Promise<Product[]> {
-  const dbProducts = await prisma.product.findMany({
-    where: { inStock: true },
-    orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }],
-  })
+  try {
+    const dbProducts = await prisma.product.findMany({
+      where: { inStock: true },
+      orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }],
+    })
 
-  return dbProducts.map((p) => ({
-    id: p.slug,
-    name: p.name,
-    price: p.price,
-    description: p.description || '',
-    story: p.story || '',
-    flowers: JSON.parse(p.flowers || '[]'),
-    images: JSON.parse(p.images || '[]'),
-    category: p.category || 'Uncategorized',
-    featured: p.featured,
-    deliveryInfo: p.deliveryInfo || 'Same-day delivery available in select areas.',
-    occasions: p.occasion ? [p.occasion] : [],
-    season: p.season || 'all',
-    rating: p.rating || 4.5,
-    reviewCount: p.reviewCount || 0,
-  }))
+    return dbProducts.map((p) => ({
+      id: p.slug,
+      name: p.name,
+      price: p.price,
+      description: p.description || '',
+      story: p.story || '',
+      flowers: JSON.parse(p.flowers || '[]'),
+      images: JSON.parse(p.images || '[]'),
+      category: p.category || 'Uncategorized',
+      featured: p.featured,
+      deliveryInfo: p.deliveryInfo || 'Same-day delivery available in select areas.',
+      occasions: p.occasion ? [p.occasion] : [],
+      season: p.season || 'all',
+      rating: p.rating || 4.5,
+      reviewCount: p.reviewCount || 0,
+    }))
+  } catch (error) {
+    console.error('Error fetching products:', error)
+    return []
+  }
 }
 
 export default async function ShopPage() {

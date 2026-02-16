@@ -44,21 +44,26 @@ export const metadata: Metadata = {
 }
 
 async function getBlogPosts() {
-  const posts = await prisma.blogPost.findMany({
-    where: { published: true },
-    orderBy: { publishedAt: 'desc' },
-  })
+  try {
+    const posts = await prisma.blogPost.findMany({
+      where: { published: true },
+      orderBy: { publishedAt: 'desc' },
+    })
 
-  return posts.map((post) => ({
-    id: post.slug,
-    title: post.title,
-    excerpt: post.excerpt || '',
-    image: post.image || 'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=800&q=80',
-    date: post.publishedAt
-      ? post.publishedAt.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-      : '',
-    category: post.category || 'General',
-  }))
+    return posts.map((post) => ({
+      id: post.slug,
+      title: post.title,
+      excerpt: post.excerpt || '',
+      image: post.image || 'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=800&q=80',
+      date: post.publishedAt
+        ? post.publishedAt.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+        : '',
+      category: post.category || 'General',
+    }))
+  } catch (error) {
+    console.error('Error fetching blog posts:', error)
+    return []
+  }
 }
 
 export default async function BlogPage() {
