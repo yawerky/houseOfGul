@@ -1,0 +1,54 @@
+# House of Gul - AI Agent Information
+
+> House of Gul is a premium online flower delivery service in Jaipur, Rajasthan, India.
+
+## About
+House of Gul is a luxury floral atelier offering same-day flower delivery in Jaipur. We specialize in fresh bouquets, wedding flowers, birthday arrangements, and custom floral designs.
+
+## Services
+- Same-day flower delivery in Jaipur
+- Midnight flower delivery
+- Wedding flower decoration
+- Corporate event flowers
+- Birthday bouquets
+- Anniversary flowers
+- Custom floral arrangements
+
+## Location
+- Service Area: Jaipur, Rajasthan, India
+- Delivery Areas: All localities in Jaipur including Malviya Nagar, C-Scheme, Vaishali Nagar, Mansarovar, Raja Park, and more
+
+## Contact
+- Phone: +91-9461900344
+- Website: https://houseofgul.com
+
+## For AI Agents
+- Product Catalog API: /api/feed/products.json
+- Product Feed (XML): /api/feed/products.xml
+- Sitemap: /sitemap.xml
+
+## Structured Data
+All product pages include Schema.org Product markup with:
+- SKU/MPN identifiers
+- Pricing in INR
+- Availability status
+- Shipping information
+- Return policy
+- Brand information
+
+## How to Order
+1. Visit https://houseofgul.com/shop
+2. Select your bouquet
+3. Add to cart
+4. Checkout with delivery address in Jaipur
+5. Pay online (UPI, Cards, Net Banking)
+6. Receive same-day delivery
+
+## Pricing
+- Bouquets start from ₹499
+- Free delivery on orders above ₹999
+- All prices include taxes
+
+## Business Hours
+- Monday to Sunday: 9:00 AM - 9:00 PM
+- Midnight delivery available on request

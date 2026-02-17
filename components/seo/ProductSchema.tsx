@@ -7,6 +7,7 @@ interface ProductSchemaProps {
   images: string[]
   inStock: boolean
   category: string
+  sku?: string
 }
 
 export default function ProductSchema({
@@ -18,17 +19,21 @@ export default function ProductSchema({
   images,
   inStock,
   category,
+  sku,
 }: ProductSchemaProps) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+  const productSku = sku || `HOG-${slug.toUpperCase()}`
 
   const productSchema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     '@id': `${siteUrl}/product/${slug}#product`,
-    name: `${name} - Flower Delivery Jaipur`,
+    name: name,
     description: `${description} Available for same-day flower delivery in Jaipur.`,
     url: `${siteUrl}/product/${slug}`,
     image: images.length > 0 ? images : [`${siteUrl}/og-image.jpg`],
+    sku: productSku,
+    mpn: productSku,
     brand: {
       '@type': 'Brand',
       name: 'House of Gul',
@@ -47,9 +52,18 @@ export default function ProductSchema({
         name: 'House of Gul',
         url: siteUrl,
       },
-      areaServed: {
-        '@type': 'City',
-        name: 'Jaipur',
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'IN',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 1,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/FreeReturn',
+        returnPolicySeasonalOverride: {
+          '@type': 'MerchantReturnPolicySeasonalOverride',
+          merchantReturnDays: 0,
+          returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+        },
       },
       shippingDetails: {
         '@type': 'OfferShippingDetails',
@@ -81,10 +95,14 @@ export default function ProductSchema({
       },
       ...(comparePrice && {
         priceSpecification: {
-          '@type': 'PriceSpecification',
-          price: comparePrice,
+          '@type': 'UnitPriceSpecification',
+          price: price,
           priceCurrency: 'INR',
           valueAddedTaxIncluded: true,
+          referenceQuantity: {
+            '@type': 'QuantitativeValue',
+            value: 1,
+          },
         },
       }),
     },
@@ -110,7 +128,7 @@ export default function ProductSchema({
       {
         '@type': 'ListItem',
         position: 2,
-        name: 'Shop Flowers Jaipur',
+        name: 'Shop Flowers',
         item: `${siteUrl}/shop`,
       },
       {
