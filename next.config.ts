@@ -13,11 +13,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Disable static page generation at build time
-  // All pages will be server-rendered on demand
-  experimental: {
-    // This prevents build-time prerendering
-  },
 }
 
 export default nextConfig
