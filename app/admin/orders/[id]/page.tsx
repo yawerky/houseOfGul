@@ -4,6 +4,7 @@ import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import AdminSidebar from '@/components/admin/AdminSidebar'
 import OrderStatusUpdate from '@/components/admin/OrderStatusUpdate'
+import OrderDeleteButton from '@/components/admin/OrderDeleteButton'
 
 async function getOrder(id: string) {
   return prisma.order.findUnique({
@@ -221,6 +222,13 @@ export default async function OrderDetailPage({
               currentStatus={order.status}
               currentPaymentStatus={order.paymentStatus}
             />
+
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <p className="text-sm text-charcoal-light mb-3">
+                Remove test or duplicate orders. For real orders, set the status to Cancelled instead so you keep a record.
+              </p>
+              <OrderDeleteButton orderId={order.id} orderNumber={order.orderNumber} />
+            </div>
 
             {/* Customer Info */}
             <div className="bg-white rounded-lg shadow-sm">
