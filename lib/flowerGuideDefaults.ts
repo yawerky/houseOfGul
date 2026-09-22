@@ -21,7 +21,7 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     colors: ['Red – Deep love', 'Pink – Grace and gratitude', 'White – Purity and new beginnings', 'Yellow – Friendship and joy', 'Peach – Warmth and appreciation'],
     season: 'All year · best Nov – Mar',
     careLevel: 'Moderate',
-    image: '/images/products/the-keepsake-hatbox-winter-4.jpg',
+    image: '/images/flowers/rose.jpg',
     order: 1,
   },
   {
@@ -41,7 +41,7 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     colors: ['Pink – Admiration', 'Red – Love', 'White – Purity', 'Yellow – Joy', 'Orange – Energy'],
     season: 'All year',
     careLevel: 'Easy',
-    image: '/images/products/the-garden-drawer-spring-4.jpg',
+    image: '/images/flowers/gerbera.jpg',
     order: 3,
   },
   {
@@ -51,7 +51,7 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     colors: ['White – Honesty', 'Yellow – Friendship', 'Pink and mauve – Love', 'Bronze – Warm wishes'],
     season: 'Peak Oct – Jan · available all year',
     careLevel: 'Easy',
-    image: '/images/products/the-garden-drawer-autumn-3.jpg',
+    image: '/images/flowers/chrysanthemum.jpg',
     order: 4,
   },
   {
@@ -61,7 +61,7 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     colors: ['White – Purity', 'Yellow – Friendship', 'Lilac – Gentle affection'],
     season: 'All year',
     careLevel: 'Easy',
-    image: '/images/products/the-bloom-letter-summer-1.jpg',
+    image: '/images/flowers/daisy.jpg',
     order: 5,
   },
   {
@@ -71,7 +71,7 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     colors: ['White and cream – Purity', 'Pink – Romance', 'Purple – Admiration'],
     season: 'All year',
     careLevel: 'Moderate',
-    image: '/images/products/the-petal-tote-summer-1.jpg',
+    image: '/images/flowers/lisianthus.jpg',
     order: 6,
   },
   {
@@ -81,7 +81,7 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     colors: ['Lilac and purple – Grace and remembrance', 'White – Purity', 'Yellow – Success'],
     season: 'All year · dries beautifully',
     careLevel: 'Easy',
-    image: '/images/products/the-petal-tote-spring-1.jpg',
+    image: '/images/flowers/limonium.jpg',
     order: 7,
   },
   {
@@ -91,7 +91,7 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     colors: ['White – Purity and sincerity'],
     season: 'All year',
     careLevel: 'Easy',
-    image: '/images/products/the-keepsake-hatbox-spring-4.jpg',
+    image: '/images/flowers/gypsophila.jpg',
     order: 8,
   },
   {
@@ -101,7 +101,19 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     colors: ['Golden yellow – Optimism'],
     season: 'All year',
     careLevel: 'Easy',
-    image: '/images/products/the-bloom-letter-autumn-1.jpg',
+    image: '/images/flowers/solidago.jpg',
     order: 9,
   },
 ]
+
+// Earlier temporary photos, replaced automatically on live if still in use.
+export const previousFlowerImages: Record<string, string> = {
+  '/images/products/the-keepsake-hatbox-winter-4.jpg': '/images/flowers/rose.jpg',
+  '/images/products/the-garden-drawer-spring-4.jpg': '/images/flowers/gerbera.jpg',
+  '/images/products/the-garden-drawer-autumn-3.jpg': '/images/flowers/chrysanthemum.jpg',
+  '/images/products/the-bloom-letter-summer-1.jpg': '/images/flowers/daisy.jpg',
+  '/images/products/the-petal-tote-summer-1.jpg': '/images/flowers/lisianthus.jpg',
+  '/images/products/the-petal-tote-spring-1.jpg': '/images/flowers/limonium.jpg',
+  '/images/products/the-keepsake-hatbox-spring-4.jpg': '/images/flowers/gypsophila.jpg',
+  '/images/products/the-bloom-letter-autumn-1.jpg': '/images/flowers/solidago.jpg',
+}

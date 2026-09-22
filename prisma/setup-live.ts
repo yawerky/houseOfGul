@@ -11,7 +11,8 @@ import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { execFileSync } from 'child_process'
 import path from 'path'
-import { defaultFlowerGuide } from '../lib/flowerGuideDefaults'
+import { defaultFlowerGuide, previousFlowerImages } from '../lib/flowerGuideDefaults'
+import { defaultBanners } from '../lib/bannerDefaults'
 
 const prisma = new PrismaClient()
 
@@ -76,8 +77,24 @@ async function main() {
     }
     console.log(`✓ Flower Guide: ${defaultFlowerGuide.length} flowers added`)
   } else {
-    console.log('✓ Flower Guide already set up')
+    // Swap temporary product photos for the proper flower photos, only where
+    // the photo hasn't been changed in admin.
+    let updated = 0
+    for (const [oldImage, newImage] of Object.entries(previousFlowerImages)) {
+      const res = await prisma.flowerGuide.updateMany({ where: { image: oldImage }, data: { image: newImage } })
+      updated += res.count
+    }
+    console.log(`✓ Flower Guide already set up${updated ? ` (${updated} photos updated)` : ''}`)
   }
+
+  // Banners: add the shipped banner for any position that has none yet.
+  let addedBanners = 0
+  for (const b of defaultBanners) {
+    if ((await prisma.banner.count({ where: { position: b.position } })) > 0) continue
+    await prisma.banner.create({ data: { ...b, isActive: true, order: 0 } })
+    addedBanners++
+  }
+  console.log(`✓ Banners: ${addedBanners} added (${defaultBanners.length - addedBanners} positions already had one)`)
 
   await prisma.$disconnect()
 
