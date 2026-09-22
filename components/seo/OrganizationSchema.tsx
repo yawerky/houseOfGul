@@ -1,5 +1,5 @@
 export default function OrganizationSchema() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
 
   // Online Florist Business Schema
   const organizationSchema = {
@@ -19,7 +19,6 @@ export default function OrganizationSchema() {
     description:
       'Online flower delivery in Jaipur. House of Gul is a luxury floral atelier offering same-day flower delivery, wedding flowers, birthday bouquets, and custom floral arrangements across Jaipur, Rajasthan.',
     telephone: '+91-9461900344',
-    email: 'hello@houseofgul.com',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Jaipur',

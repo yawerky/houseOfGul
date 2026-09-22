@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     return { title: 'Category Not Found' }
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
 
   return {
     title: `${category.name} Flowers | Buy Online in Jaipur`,

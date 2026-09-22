@@ -19,7 +19,7 @@ House of Gul is a luxury floral atelier offering same-day flower delivery in Jai
 
 ## Contact
 - Phone: +91-9461900344
-- Website: https://houseofgul.com
+- Website: https://houseofgul.in
 
 ## For AI Agents
 - Product Catalog API: /api/feed/products.json
@@ -36,7 +36,7 @@ All product pages include Schema.org Product markup with:
 - Brand information
 
 ## How to Order
-1. Visit https://houseofgul.com/shop
+1. Visit https://houseofgul.in/shop
 2. Select your bouquet
 3. Add to cart
 4. Checkout with delivery address in Jaipur

@@ -126,6 +126,9 @@ async function main() {
     console.log(`✓ Delivery wording updated: ${oldInfoProducts.length} products, ${fixedPosts} articles`)
   }
 
+  // houseofgul.com belongs to someone else — never send order alerts there.
+  await prisma.setting.updateMany({ where: { key: 'storeEmail', value: 'contact@houseofgul.com' }, data: { value: '' } })
+
   // Free delivery everywhere: switch old default charges and wording
   // (values that were changed in admin to something else are left alone).
   await prisma.setting.updateMany({ where: { key: 'defaultDeliveryCharge', value: '99' }, data: { value: '0' } })

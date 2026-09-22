@@ -76,7 +76,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     }
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
   const postImage = dbPost.image || `${siteUrl}/og-image.jpg`
 
   return {

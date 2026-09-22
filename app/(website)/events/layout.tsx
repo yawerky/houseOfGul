@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
 
 export const metadata: Metadata = {
   title: 'Wedding & Event Flowers Jaipur | Corporate Events',

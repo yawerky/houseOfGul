@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 export async function GET() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
 
   try {
     const products = await prisma.product.findMany({

@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: StoryPageProps): Promise<Meta
     return { title: 'Story Not Found' }
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
   const images = JSON.parse(product.images || '[]')
 
   return {
@@ -53,7 +53,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
   }
 
   const images = JSON.parse(product.images || '[]')
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
 
   // Generate Web Story HTML
   const storyHtml = `

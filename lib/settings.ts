@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 // Anything not saved yet falls back to these defaults.
 export const settingDefaults = {
   storeName: 'House of Gul',
-  storeEmail: 'contact@houseofgul.com',
+  storeEmail: '', // set in Admin → Settings (where order alerts go)
   storePhone: '+91-9461900344',
   whatsappNumber: '919461900344',
   orderPrefix: 'HOG',

@@ -7,7 +7,7 @@ import { getActiveBanner } from '@/lib/banners'
 // Banner images come from Admin → Banners.
 export const dynamic = 'force-dynamic'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
 
 export const metadata: Metadata = {
   title: 'About Us - Best Florist in Jaipur',

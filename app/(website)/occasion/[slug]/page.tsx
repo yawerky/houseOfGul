@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: OccasionPageProps): Promise<M
     return { title: 'Occasion Not Found' }
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
 
   return {
     title: `${occasion.name} Flowers Jaipur | Same Day Delivery`,

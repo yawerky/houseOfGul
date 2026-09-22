@@ -3,11 +3,11 @@ import { getSettings } from '@/lib/settings'
 
 // Order emails sent through Resend (https://resend.com).
 // Needs RESEND_API_KEY. Optional: EMAIL_FROM (a sender on your verified
-// domain, e.g. "House of Gul <orders@houseofgul.com>") and ORDER_ALERT_EMAIL
+// domain, e.g. "House of Gul <orders@houseofgul.in>") and ORDER_ALERT_EMAIL
 // (where new-order alerts go; defaults to the store email in Settings).
 // Without RESEND_API_KEY nothing is sent and orders still work.
 
-const siteUrl = () => process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+const siteUrl = () => process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
 
 const esc = (value: unknown) =>
   String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)

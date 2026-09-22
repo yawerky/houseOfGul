@@ -25,7 +25,7 @@ export default function ProductSchema({
   ratingValue = 4.6,
   reviewCount = 50,
 }: ProductSchemaProps) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
   const productSku = sku || `HOG-${slug.toUpperCase()}`
 
   const productSchema = {

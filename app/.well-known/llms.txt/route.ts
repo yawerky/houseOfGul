@@ -14,7 +14,7 @@ export async function GET() {
       },
     })
   } catch {
-    return new NextResponse('# House of Gul - AI Agent Information\n\nVisit https://houseofgul.com for more information.', {
+    return new NextResponse('# House of Gul - AI Agent Information\n\nVisit https://houseofgul.in for more information.', {
       headers: {
         'Content-Type': 'text/plain',
       },

@@ -12,7 +12,7 @@ import { getActiveBanner } from '@/lib/banners'
 export const dynamic = 'force-dynamic'
 
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
 
 export const metadata: Metadata = {
   title: 'Buy Flowers Online in Jaipur | Shop Bouquets',

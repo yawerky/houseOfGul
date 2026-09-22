@@ -126,7 +126,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
       return { title: 'Product Not Found' }
     }
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
     const images = JSON.parse(dbProduct.images || '[]')
     const productImage = images[0] || `${siteUrl}/og-image.jpg`
 
