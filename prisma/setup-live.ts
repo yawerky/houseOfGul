@@ -14,6 +14,7 @@ import path from 'path'
 import { defaultFlowerGuide, previousFlowerImages } from '../lib/flowerGuideDefaults'
 import { defaultBanners, replacedBannerImages } from '../lib/bannerDefaults'
 import { defaultJournalPosts, journalTextFixes } from '../lib/journalDefaults'
+import { jaipurPincodes, JAIPUR_DELIVERY_CHARGE } from '../lib/jaipurPincodes'
 
 const prisma = new PrismaClient()
 
@@ -123,6 +124,28 @@ async function main() {
   }
   if (oldInfoProducts.length || fixedPosts) {
     console.log(`✓ Delivery wording updated: ${oldInfoProducts.length} products, ${fixedPosts} articles`)
+  }
+
+  // Delivery areas: add Jaipur city pincodes once, when none exist yet.
+  if ((await prisma.pincode.count({ where: { city: 'Jaipur' } })) === 0) {
+    for (const p of jaipurPincodes) {
+      await prisma.pincode.upsert({
+        where: { code: p.code },
+        update: {},
+        create: {
+          code: p.code,
+          area: p.area,
+          city: 'Jaipur',
+          state: 'Rajasthan',
+          deliveryZone: 'same-day',
+          deliveryCharge: JAIPUR_DELIVERY_CHARGE,
+          isActive: true,
+        },
+      })
+    }
+    console.log(`✓ Delivery areas: ${jaipurPincodes.length} Jaipur pincodes added`)
+  } else {
+    console.log('✓ Delivery areas already set up')
   }
 
   // Journal: publish the first articles once (matched by slug, never overwritten).
