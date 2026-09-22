@@ -13,7 +13,7 @@ import { execFileSync } from 'child_process'
 import path from 'path'
 import { defaultFlowerGuide, previousFlowerImages } from '../lib/flowerGuideDefaults'
 import { defaultBanners, replacedBannerImages } from '../lib/bannerDefaults'
-import { defaultJournalPosts } from '../lib/journalDefaults'
+import { defaultJournalPosts, journalTextFixes } from '../lib/journalDefaults'
 
 const prisma = new PrismaClient()
 
@@ -101,6 +101,29 @@ async function main() {
     addedBanners++
   }
   console.log(`✓ Banners: ${addedBanners} added (${defaultBanners.length - addedBanners} positions already had one)`)
+
+  // Delivery-policy wording: update product delivery info and articles that
+  // still carry the old midnight-delivery sentence (anything edited is left alone).
+  const oldDeliveryInfo = "Same-day delivery across Jaipur. Midnight delivery available on request."
+  const newDeliveryInfo = "Same-day delivery across Jaipur: order by 2 PM for delivery by 6 PM; later orders arrive by 12 PM."
+  const oldInfoProducts = await prisma.product.findMany({ where: { deliveryInfo: { contains: oldDeliveryInfo } } })
+  for (const p of oldInfoProducts) {
+    await prisma.product.update({
+      where: { id: p.id },
+      data: { deliveryInfo: (p.deliveryInfo || '').replace(oldDeliveryInfo, newDeliveryInfo) },
+    })
+  }
+  let fixedPosts = 0
+  for (const fix of journalTextFixes) {
+    const posts = await prisma.blogPost.findMany({ where: { content: { contains: fix.from } } })
+    for (const post of posts) {
+      await prisma.blogPost.update({ where: { id: post.id }, data: { content: post.content.replace(fix.from, fix.to) } })
+      fixedPosts++
+    }
+  }
+  if (oldInfoProducts.length || fixedPosts) {
+    console.log(`✓ Delivery wording updated: ${oldInfoProducts.length} products, ${fixedPosts} articles`)
+  }
 
   // Journal: publish the first articles once (matched by slug, never overwritten).
   let addedPosts = 0

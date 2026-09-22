@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
 import { formatPrice } from '@/lib/utils'
 import LuxuryButton from '@/components/ui/LuxuryButton'
+import { deliveryPolicyText, friendlyDate, isDeliveryAllowed, slotLabel } from '@/lib/deliveryWindows'
 
 interface CheckoutConfig {
   freeDeliveryThreshold: number
@@ -14,6 +15,7 @@ interface CheckoutConfig {
   storePhone: string
   today: string
   slots: { id: string; label: string; charge: number }[]
+  earliest: { date: string; slot: string }
   razorpay: { keyId: string } | null
 }
 
@@ -88,8 +90,7 @@ export default function CheckoutPage() {
     pincode: '',
     phone: '',
     deliveryDate: '',
-    deliverySlot: 'morning',
-    preferredTime: '',
+    deliverySlot: '',
     instructions: '',
     giftMessage: '',
     senderName: '',
@@ -103,6 +104,12 @@ export default function CheckoutPage() {
       .then((data: CheckoutConfig) => {
         setConfig(data)
         if (data.razorpay) setPaymentMethod('razorpay')
+        // Pre-select the next available delivery
+        setFormData((prev) => ({
+          ...prev,
+          deliveryDate: prev.deliveryDate || data.earliest.date,
+          deliverySlot: prev.deliverySlot || data.earliest.slot,
+        }))
       })
       .catch(() => setError('Could not load checkout. Please refresh the page.'))
   }, [])
@@ -168,8 +175,8 @@ export default function CheckoutPage() {
   const validateStep2 = (): string => {
     if (!formData.deliveryDate) return 'Please choose a delivery date.'
     if (config && formData.deliveryDate < config.today) return 'Please choose a delivery date from today onwards.'
-    if (formData.deliverySlot === 'specific' && !formData.preferredTime.trim()) {
-      return 'Please tell us the exact time you would like the delivery.'
+    if (!isDeliveryAllowed(formData.deliveryDate, formData.deliverySlot)) {
+      return 'That delivery time is no longer available. Please choose a later time or date.'
     }
     return ''
   }
@@ -258,12 +265,7 @@ export default function CheckoutPage() {
     setIsProcessing(true)
     setError('')
 
-    const notes = [
-      formData.deliverySlot === 'specific' && formData.preferredTime ? `Preferred time: ${formData.preferredTime}` : '',
-      formData.instructions,
-    ]
-      .filter(Boolean)
-      .join('\n')
+    const notes = formData.instructions
 
     try {
       const res = await fetch('/api/orders', {
@@ -376,7 +378,7 @@ export default function CheckoutPage() {
                       })
                     : ''}
                   {' · '}
-                  {config?.slots.find((s) => s.id === formData.deliverySlot)?.label}
+                  {slotLabel(formData.deliverySlot)}
                 </p>
               </div>
             </div>
@@ -538,6 +540,15 @@ export default function CheckoutPage() {
                     Delivery Options
                   </h2>
 
+                  <div className="p-4 bg-champagne/50 rounded-sm text-sm text-charcoal dark:bg-dark-border dark:text-ivory">
+                    {config && (
+                      <p className="font-medium mb-1">
+                        Next available delivery: {friendlyDate(config.earliest.date)} {slotLabel(config.earliest.slot).toLowerCase()}
+                      </p>
+                    )}
+                    <p className="text-charcoal-light dark:text-ivory/70">{deliveryPolicyText} You can also choose a later date.</p>
+                  </div>
+
                   <div>
                     <label htmlFor="deliveryDate" className={labelClass}>Delivery Date</label>
                     <input
@@ -545,47 +556,54 @@ export default function CheckoutPage() {
                       type="date"
                       name="deliveryDate"
                       value={formData.deliveryDate}
-                      onChange={handleInputChange}
+                      onChange={(e) => {
+                        const date = e.target.value
+                        setFormData((prev) => ({
+                          ...prev,
+                          deliveryDate: date,
+                          // keep the chosen time if still possible, otherwise pick the one that is
+                          deliverySlot: isDeliveryAllowed(date, prev.deliverySlot)
+                            ? prev.deliverySlot
+                            : (config?.slots.find((slot) => isDeliveryAllowed(date, slot.id))?.id ?? prev.deliverySlot),
+                        }))
+                      }}
                       className="luxury-input"
-                      min={config?.today}
+                      min={config?.earliest.date}
                     />
                   </div>
 
                   <fieldset>
-                    <legend className={labelClass}>Delivery Time Slot</legend>
+                    <legend className={labelClass}>Delivery Time</legend>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {(config?.slots || []).map((slot) => (
-                        <label
-                          key={slot.id}
-                          className={`border p-3 rounded-sm cursor-pointer transition-all flex justify-between gap-2 ${
-                            formData.deliverySlot === slot.id
-                              ? 'border-gold bg-gold/5'
-                              : 'border-blush-dark/20 hover:border-gold/50 dark:border-dark-border'
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            name="deliverySlot"
-                            value={slot.id}
-                            checked={formData.deliverySlot === slot.id}
-                            onChange={handleInputChange}
-                            className="sr-only"
-                          />
-                          <span className="text-sm text-charcoal dark:text-ivory">{slot.label}</span>
-                          <span className="text-sm text-gold whitespace-nowrap">
-                            {slot.charge > 0 ? `+${formatPrice(slot.charge)}` : 'Free'}
-                          </span>
-                        </label>
-                      ))}
+                      {(config?.slots || []).map((slot) => {
+                        const available = isDeliveryAllowed(formData.deliveryDate, slot.id)
+                        return (
+                          <label
+                            key={slot.id}
+                            className={`border p-3 rounded-sm transition-all flex justify-between gap-2 ${
+                              !available
+                                ? 'opacity-40 cursor-not-allowed border-blush-dark/20 dark:border-dark-border'
+                                : formData.deliverySlot === slot.id
+                                ? 'border-gold bg-gold/5 cursor-pointer'
+                                : 'border-blush-dark/20 hover:border-gold/50 cursor-pointer dark:border-dark-border'
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="deliverySlot"
+                              value={slot.id}
+                              checked={formData.deliverySlot === slot.id}
+                              onChange={handleInputChange}
+                              disabled={!available}
+                              className="sr-only"
+                            />
+                            <span className="text-sm text-charcoal dark:text-ivory">{slot.label}</span>
+                            <span className="text-sm text-gold whitespace-nowrap">{available ? 'Free' : 'Not available'}</span>
+                          </label>
+                        )
+                      })}
                     </div>
                   </fieldset>
-
-                  {formData.deliverySlot === 'specific' && (
-                    <div>
-                      <label htmlFor="preferredTime" className={labelClass}>Preferred Time</label>
-                      <input id="preferredTime" type="time" name="preferredTime" value={formData.preferredTime} onChange={handleInputChange} className="luxury-input" />
-                    </div>
-                  )}
 
                   <div>
                     <label htmlFor="instructions" className={labelClass}>Delivery Instructions (optional)</label>

@@ -148,7 +148,7 @@ Red and white feel romantic, yellow feels joyful, peach feels warm and grateful,
 
 ## Little touches that matter
 
-Write a short, sincere message — it is often the part that is remembered most. If it is a gift, you can ask us to hide the price, and choose a delivery slot, including midnight delivery, so the flowers arrive at exactly the right moment.`,
+Write a short, sincere message — it is often the part that is remembered most. If it is a gift, you can ask us to hide the price, and choose your delivery date and time (by 12 PM or by 6 PM) so the flowers arrive at the right moment.`,
   },
   {
     slug: 'festive-flowers-for-navratri-and-diwali',
@@ -180,5 +180,14 @@ The days before Diwali are the busiest of the year. Order a day or two early, ch
 Keep arrangements away from diyas, candles and direct sun, top up the water or floral foam every day, and remove any fading blooms so the rest stay fresh.
 
 Wishing you a joyful, bright and beautiful festive season from all of us at House of Gul.`,
+  },
+]
+
+// Text fixes applied to already-published articles on live (only if the old
+// sentence is still there unchanged).
+export const journalTextFixes: { from: string; to: string }[] = [
+  {
+    from: "and choose a delivery slot, including midnight delivery, so the flowers arrive at exactly the right moment.",
+    to: "and choose your delivery date and time (by 12 PM or by 6 PM) so the flowers arrive at the right moment.",
   },
 ]

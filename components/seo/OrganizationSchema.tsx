@@ -127,14 +127,6 @@ export default function OrganizationSchema() {
           '@type': 'Offer',
           itemOffered: {
             '@type': 'Service',
-            name: 'Midnight Flower Delivery',
-            description: 'Surprise your loved ones with midnight flower delivery',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
             name: 'Wedding Flower Services',
             description: 'Complete wedding floral decoration and bridal bouquets',
           },

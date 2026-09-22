@@ -11,8 +11,6 @@ export const settingDefaults = {
   minimumOrderAmount: '0',
   freeDeliveryThreshold: '999',
   defaultDeliveryCharge: '99',
-  specificSlotCharge: '199',
-  midnightSlotCharge: '299',
 }
 
 export type StoreSettings = typeof settingDefaults
@@ -36,22 +34,6 @@ export async function getSettings(): Promise<StoreSettings> {
 export function toAmount(value: string): number {
   const n = parseFloat(value)
   return Number.isFinite(n) && n >= 0 ? n : 0
-}
-
-export const deliverySlots = [
-  { id: 'morning', label: 'Morning (9am – 12pm)' },
-  { id: 'afternoon', label: 'Afternoon (12pm – 5pm)' },
-  { id: 'evening', label: 'Evening (5pm – 9pm)' },
-  { id: 'specific', label: 'Specific Hour' },
-  { id: 'midnight', label: 'Midnight (11pm – 12am)' },
-] as const
-
-export type DeliverySlotId = (typeof deliverySlots)[number]['id']
-
-export function slotCharge(slotId: string, settings: StoreSettings): number {
-  if (slotId === 'specific') return toAmount(settings.specificSlotCharge)
-  if (slotId === 'midnight') return toAmount(settings.midnightSlotCharge)
-  return 0
 }
 
 export function razorpayEnabled(): boolean {

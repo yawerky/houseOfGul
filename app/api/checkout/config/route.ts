@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
-import { getSettings, deliverySlots, slotCharge, toAmount, razorpayEnabled } from '@/lib/settings'
+import { getSettings, toAmount, razorpayEnabled } from '@/lib/settings'
 import { todayInIndia } from '@/lib/checkout'
+import { deliverySlots, earliestDelivery } from '@/lib/deliveryWindows'
+
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
   const settings = await getSettings()
@@ -10,7 +13,8 @@ export async function GET() {
     whatsappNumber: settings.whatsappNumber,
     storePhone: settings.storePhone,
     today: todayInIndia(),
-    slots: deliverySlots.map((s) => ({ ...s, charge: slotCharge(s.id, settings) })),
+    earliest: earliestDelivery(),
+    slots: deliverySlots.map((s) => ({ id: s.id, label: s.label, charge: 0 })),
     razorpay: razorpayEnabled() ? { keyId: process.env.RAZORPAY_KEY_ID } : null,
   })
 }

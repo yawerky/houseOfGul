@@ -11,8 +11,6 @@ type Settings = {
   minimumOrderAmount: string
   freeDeliveryThreshold: string
   defaultDeliveryCharge: string
-  specificSlotCharge: string
-  midnightSlotCharge: string
 }
 
 const fields: { key: keyof Settings; label: string; type: 'text' | 'email' | 'tel' | 'number'; help?: string }[] = [
@@ -24,8 +22,6 @@ const fields: { key: keyof Settings; label: string; type: 'text' | 'email' | 'te
   { key: 'minimumOrderAmount', label: 'Minimum Order Amount (₹)', type: 'number', help: '0 = no minimum' },
   { key: 'freeDeliveryThreshold', label: 'Free Delivery Above (₹)', type: 'number', help: 'Used when a pincode has no own limit. 0 = never free' },
   { key: 'defaultDeliveryCharge', label: 'Default Delivery Charge (₹)', type: 'number', help: 'Used until you add delivery pincodes' },
-  { key: 'specificSlotCharge', label: 'Specific Hour Delivery Charge (₹)', type: 'number' },
-  { key: 'midnightSlotCharge', label: 'Midnight Delivery Charge (₹)', type: 'number' },
 ]
 
 export default function SettingsForm() {

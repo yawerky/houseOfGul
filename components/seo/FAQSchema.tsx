@@ -18,7 +18,7 @@ export default function FAQSchema() {
         name: 'What are your delivery timings in Jaipur?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'We deliver flowers in Jaipur from 9 AM to 9 PM, 7 days a week. We also offer midnight flower delivery for special occasions. Same-day delivery is available for orders placed before 4 PM.',
+          text: 'We deliver across Jaipur 7 days a week in two windows. Orders placed between 6 AM and 2 PM are delivered the same day by 6 PM. Orders placed after 2 PM are delivered by 12 PM (noon). You can also choose a later delivery date at checkout.',
         },
       },
       {
@@ -26,7 +26,7 @@ export default function FAQSchema() {
         name: 'How much does flower delivery cost in Jaipur?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'We offer free delivery on orders above ₹999 within Jaipur city limits. For orders below ₹999, a nominal delivery charge applies. Midnight delivery has an additional charge. Check our website for current delivery rates.',
+          text: 'We offer free delivery on orders above ₹999 within Jaipur city limits. For orders below ₹999, a nominal delivery charge applies. Check our website for current delivery rates.',
         },
       },
       {

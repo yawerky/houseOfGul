@@ -52,7 +52,6 @@ export const metadata: Metadata = {
     'fresh flowers jaipur',
     'flower shop jaipur',
     'online florist jaipur',
-    'midnight flower delivery jaipur',
     // Area-specific
     'flower delivery malviya nagar jaipur',
     'flower delivery c scheme jaipur',

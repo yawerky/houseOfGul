@@ -7,7 +7,6 @@ House of Gul is a luxury floral atelier offering same-day flower delivery in Jai
 
 ## Services
 - Same-day flower delivery in Jaipur
-- Midnight flower delivery
 - Wedding flower decoration
 - Corporate event flowers
 - Birthday bouquets
@@ -50,5 +49,6 @@ All product pages include Schema.org Product markup with:
 - All prices include taxes
 
 ## Business Hours
-- Monday to Sunday: 9:00 AM - 9:00 PM
-- Midnight delivery available on request
+- Orders 6 AM – 2 PM: delivered the same day by 6 PM
+- Orders 2 PM – 6 AM: delivered by 12 PM (noon)
+- Delivery 7 days a week; later dates can be chosen at checkout

@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma'
-import { getSettings, slotCharge, toAmount, deliverySlots, type StoreSettings } from '@/lib/settings'
+import { getSettings, toAmount, type StoreSettings } from '@/lib/settings'
 
 // Server-side pricing for checkout. Prices always come from the database,
 // never from the browser, so a customer cannot change what they pay.
@@ -150,8 +150,8 @@ export async function buildQuote(input: QuoteInput): Promise<Quote> {
   const deliveryCharge =
     subtotal > 0 && freeThreshold > 0 && subtotal >= freeThreshold ? 0 : roundRupees(baseDelivery)
 
-  const slotId = deliverySlots.some((s) => s.id === input.deliverySlot) ? input.deliverySlot! : 'morning'
-  const slotFee = roundRupees(slotCharge(slotId, settings))
+  // Both delivery windows are free.
+  const slotFee = 0
 
   // Coupon
   let coupon: CouponResult | null = null

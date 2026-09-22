@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse, after } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { buildQuote, generateOrderNumber, normalizePincode, todayInIndia } from '@/lib/checkout'
-import { deliverySlots, razorpayEnabled } from '@/lib/settings'
+import { razorpayEnabled } from '@/lib/settings'
+import { isDeliveryAllowed, isValidSlot, slotLabel } from '@/lib/deliveryWindows'
 import { createRazorpayOrder } from '@/lib/razorpay'
 import { sendNewOrderEmails } from '@/lib/notify'
 
@@ -46,7 +47,10 @@ export async function POST(request: NextRequest) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(deliveryDate) || deliveryDate < todayInIndia()) {
     return bad('Please choose a delivery date from today onwards.')
   }
-  if (!deliverySlots.some((s) => s.id === deliverySlot)) return bad('Please choose a delivery time slot.')
+  if (!isValidSlot(deliverySlot)) return bad('Please choose a delivery time.')
+  if (!isDeliveryAllowed(deliveryDate, deliverySlot)) {
+    return bad('That delivery time is no longer available. Please choose the next available delivery time.')
+  }
   if (items.length === 0) return bad('Your cart is empty.')
   if (paymentMethod === 'razorpay' && !razorpayEnabled()) {
     return bad('Online payment is not available right now. Please choose pay on delivery.')
@@ -69,7 +73,6 @@ export async function POST(request: NextRequest) {
       return bad(`The minimum order amount is ₹${quote.minimumOrderAmount.toLocaleString('en-IN')}.`)
     }
 
-    const slotLabel = deliverySlots.find((s) => s.id === deliverySlot)!.label
 
     let order = null
     for (let attempt = 0; attempt < 5 && !order; attempt++) {
@@ -100,7 +103,7 @@ export async function POST(request: NextRequest) {
               senderName: senderName || null,
               hidePrice,
               deliveryDate: new Date(`${deliveryDate}T00:00:00+05:30`),
-              deliverySlot: slotLabel,
+              deliverySlot: slotLabel(deliverySlot),
               deliveryZone: quote.pincode.deliveryZone,
               status: 'pending',
               paymentStatus: 'pending',
