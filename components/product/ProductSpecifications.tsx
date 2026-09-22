@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import LineIcon from '@/components/ui/LineIcon'
 
 interface ProductSpecificationsProps {
   name: string
@@ -79,13 +80,13 @@ export default function ProductSpecifications({
             {/* Product Highlights */}
             <div className="grid md:grid-cols-4 gap-4 mb-8 not-prose">
               {[
-                { icon: '🌸', text: '100% Fresh Flowers' },
-                { icon: '🚚', text: 'Same Day Delivery' },
-                { icon: '🎁', text: 'Premium Packaging' },
-                { icon: '💯', text: 'Quality Guaranteed' },
+                { icon: 'flower', text: '100% Fresh Flowers' },
+                { icon: 'truck', text: 'Same Day Delivery' },
+                { icon: 'gift', text: 'Premium Packaging' },
+                { icon: 'badge', text: 'Quality Guaranteed' },
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-3 p-4 bg-champagne/30 rounded-sm">
-                  <span className="text-2xl">{item.icon}</span>
+                  <LineIcon name={item.icon} className="w-7 h-7 flex-shrink-0 text-gold" />
                   <span className="text-sm font-medium text-charcoal">{item.text}</span>
                 </div>
               ))}

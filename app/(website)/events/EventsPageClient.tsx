@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import SectionWrapper from '@/components/ui/SectionWrapper'
 import LuxuryButton from '@/components/ui/LuxuryButton'
+import LineIcon from '@/components/ui/LineIcon'
 
 export default function EventsPageClient({ heroImage }: { heroImage?: string | null }) {
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -103,26 +104,26 @@ export default function EventsPageClient({ heroImage }: { heroImage?: string | n
             {
               title: 'Weddings',
               description: 'Bridal bouquets, ceremony arrangements, reception centerpieces, and more.',
-              icon: '💒',
+              icon: 'ring',
             },
             {
               title: 'Corporate Events',
               description: 'Sophisticated arrangements for galas, conferences, and business functions.',
-              icon: '🏢',
+              icon: 'building',
             },
             {
               title: 'Private Parties',
               description: 'Birthday celebrations, anniversaries, and intimate dinner parties.',
-              icon: '🎉',
+              icon: 'gift',
             },
             {
               title: 'Luxury Installations',
               description: 'Statement pieces for hotels, restaurants, and exclusive venues.',
-              icon: '✨',
+              icon: 'sparkles',
             },
           ].map((service) => (
             <div key={service.title} className="bg-white p-8 rounded-sm text-center hover:shadow-lg transition-shadow duration-300">
-              <span className="text-4xl mb-4 block">{service.icon}</span>
+              <LineIcon name={service.icon} className="w-10 h-10 mx-auto mb-4 text-gold" />
               <h3 className="font-serif text-xl text-charcoal mb-3">{service.title}</h3>
               <p className="text-sm text-charcoal-light">{service.description}</p>
             </div>

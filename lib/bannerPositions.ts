@@ -10,7 +10,8 @@ export const bannerPositions = [
   { value: 'about', label: 'About — Top banner', size: 'Wide strip, 2560 × 1100. Top 15% sits behind the menu.' },
   { value: 'about-beginning', label: 'About — "The Beginning" photo', size: '4:5 portrait, 1600 × 2000. No text on top.' },
   { value: 'about-craft', label: 'About — "The Craft" photo', size: '4:5 portrait, 1600 × 2000. No text on top.' },
-  { value: 'events', label: 'Events — Top banner', size: 'Wide strip, 2560 × 1100. Top 15% sits behind the menu.' },
+  // Events page is hidden for now; re-enable together with app/(website)/events/page.tsx
+  // { value: 'events', label: 'Events — Top banner', size: 'Wide strip, 2560 × 1100. Top 15% sits behind the menu.' },
   { value: 'blog', label: 'Journal — Top banner', size: 'Very wide strip, 2560 × 900. Top 15% sits behind the menu.' },
 ] as const
 

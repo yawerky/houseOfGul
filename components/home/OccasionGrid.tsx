@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { occasions as defaultOccasions } from '@/lib/products'
 import SectionWrapper from '@/components/ui/SectionWrapper'
 import ScrollReveal from '@/components/ui/ScrollReveal'
+import LineIcon from '@/components/ui/LineIcon'
 
 interface Occasion {
   id: string
@@ -14,15 +14,16 @@ interface Occasion {
   image: string | null
 }
 
-const occasionIcons: Record<string, string> = {
-  wedding: '💒',
-  anniversary: '💕',
-  birthday: '🎂',
-  sympathy: '🕊️',
-  congratulations: '🎉',
-  'thank-you': '🙏',
-  romance: '❤️',
-  'new-baby': '👶',
+// Occasion → line icon (no emojis)
+const occasionIcon: Record<string, string> = {
+  birthday: 'gift',
+  anniversary: 'rings',
+  romance: 'heart',
+  'thank-you': 'letter',
+  congratulations: 'sparkles',
+  wedding: 'ring',
+  'new-baby': 'moon',
+  sympathy: 'flower',
 }
 
 export default function OccasionGrid() {
@@ -44,10 +45,8 @@ export default function OccasionGrid() {
     ? occasions.map((o) => ({
         id: o.slug,
         label: o.name,
-        icon: occasionIcons[o.slug] || '🌸',
-        image: o.image,
       }))
-    : defaultOccasions
+    : defaultOccasions.map((o) => ({ id: o.id, label: o.label }))
 
   return (
     <SectionWrapper background="ivory">
@@ -68,7 +67,10 @@ export default function OccasionGrid() {
               href={`/shop?occasion=${occasion.id}`}
               className="group p-6 md:p-8 bg-white rounded-sm text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 block"
             >
-              <span className="text-4xl mb-4 block">{occasion.icon}</span>
+              <LineIcon
+                name={occasionIcon[occasion.id] || 'flower'}
+                className="w-10 h-10 mx-auto mb-4 text-gold transition-transform duration-300 group-hover:scale-110"
+              />
               <h3 className="font-serif text-lg text-charcoal group-hover:text-gold transition-colors duration-300">
                 {occasion.label}
               </h3>

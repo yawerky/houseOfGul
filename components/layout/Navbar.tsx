@@ -36,7 +36,6 @@ export default function Navbar() {
     { href: '/shop', label: 'Shop' },
     { href: '/gul-club', label: 'Gul Club' },
     { href: '/flower-guide', label: 'Flower Guide' },
-    { href: '/events', label: 'Events' },
     { href: '/about', label: 'About' },
     { href: '/blog', label: 'Journal' },
   ]

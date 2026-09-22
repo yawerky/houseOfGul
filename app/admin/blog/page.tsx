@@ -23,7 +23,7 @@ export default async function BlogPage() {
       <main className="flex-1 ml-64 p-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-2xl font-serif text-charcoal">Blog Posts</h1>
+            <h1 className="text-2xl font-serif text-charcoal">Journal</h1>
             <p className="text-charcoal-light">Manage your blog content</p>
           </div>
           <Link
