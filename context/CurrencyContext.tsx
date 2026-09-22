@@ -10,25 +10,29 @@ interface CurrencyInfo {
   rate: number
 }
 
+// All product prices are stored in INR. Other currencies are display-only
+// approximations for overseas customers sending gifts to Jaipur.
 const currencies: Record<Currency, CurrencyInfo> = {
-  USD: { code: 'USD', symbol: '$', rate: 1 },
-  GBP: { code: 'GBP', symbol: '£', rate: 0.79 },
-  EUR: { code: 'EUR', symbol: '€', rate: 0.92 },
-  INR: { code: 'INR', symbol: '₹', rate: 83 },
+  INR: { code: 'INR', symbol: '₹', rate: 1 },
+  USD: { code: 'USD', symbol: '$', rate: 1 / 83 },
+  GBP: { code: 'GBP', symbol: '£', rate: 1 / 105 },
+  EUR: { code: 'EUR', symbol: '€', rate: 1 / 90 },
 }
+
+const localeFor = (currency: Currency) => (currency === 'INR' ? 'en-IN' : 'en-US')
 
 interface CurrencyContextType {
   currency: Currency
   currencyInfo: CurrencyInfo
   setCurrency: (currency: Currency) => void
-  formatPrice: (priceInUSD: number) => string
-  convertPrice: (priceInUSD: number) => number
+  formatPrice: (priceInINR: number) => string
+  convertPrice: (priceInINR: number) => number
 }
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined)
 
 export function CurrencyProvider({ children }: { children: ReactNode }) {
-  const [currency, setCurrencyState] = useState<Currency>('USD')
+  const [currency, setCurrencyState] = useState<Currency>('INR')
 
   useEffect(() => {
     const saved = localStorage.getItem('house-of-gul-currency') as Currency
@@ -44,13 +48,13 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
 
   const currencyInfo = currencies[currency]
 
-  const convertPrice = (priceInUSD: number): number => {
-    return Math.round(priceInUSD * currencyInfo.rate)
+  const convertPrice = (priceInINR: number): number => {
+    return Math.round(priceInINR * currencyInfo.rate)
   }
 
-  const formatPrice = (priceInUSD: number): string => {
-    const converted = convertPrice(priceInUSD)
-    return `${currencyInfo.symbol}${converted.toLocaleString()}`
+  const formatPrice = (priceInINR: number): string => {
+    const converted = convertPrice(priceInINR)
+    return `${currencyInfo.symbol}${converted.toLocaleString(localeFor(currency))}`
   }
 
   return (
@@ -72,13 +76,13 @@ export function useCurrency() {
   const context = useContext(CurrencyContext)
   if (!context) {
     // Return a fallback for SSR/static generation
-    const defaultCurrency = currencies.USD
+    const defaultCurrency = currencies.INR
     return {
-      currency: 'USD' as Currency,
+      currency: 'INR' as Currency,
       currencyInfo: defaultCurrency,
       setCurrency: () => {},
-      formatPrice: (priceInUSD: number) => `$${priceInUSD.toLocaleString()}`,
-      convertPrice: (priceInUSD: number) => priceInUSD,
+      formatPrice: (priceInINR: number) => `₹${priceInINR.toLocaleString('en-IN')}`,
+      convertPrice: (priceInINR: number) => priceInINR,
     }
   }
   return context

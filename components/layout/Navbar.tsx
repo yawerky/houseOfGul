@@ -59,7 +59,7 @@ export default function Navbar() {
               "transition-colors duration-500",
               useWhiteText ? "text-white/90" : "text-charcoal-light"
             )}>
-              Complimentary delivery on orders over $200
+              Free delivery in Jaipur on orders over ₹999
             </p>
             <div className="flex items-center gap-4">
               <Link

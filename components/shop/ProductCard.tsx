@@ -121,6 +121,11 @@ export default function ProductCard({ product }: ProductCardProps) {
             {product.description}
           </p>
           <p className="text-gold font-light">{formatPrice(product.price)}</p>
+          {product.seasonCount && product.seasonCount > 1 && (
+            <p className="text-xs text-charcoal-light mt-1 dark:text-ivory/60">
+              Available in {product.seasonCount} seasons
+            </p>
+          )}
         </div>
       </Link>
 

@@ -1,0 +1,418 @@
+[
+  {
+    "name": "The Bloom Letter — Summer Sunshine",
+    "slug": "the-bloom-letter-summer",
+    "price": 699,
+    "category": "Signature Collection",
+    "occasion": "thank-you",
+    "season": "summer",
+    "flowers": [
+      "Yellow Roses",
+      "White Daisies",
+      "Button Chrysanthemums",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "Some feelings are too big for words, so we folded them into flowers — a letter that opens in sunshine.",
+    "description": "A hand-folded envelope of textured handmade paper, opened to reveal four butter-yellow roses nestled among white daisies, golden button chrysanthemums and soft clouds of gypsophila, with sprigs of yellow solidago spreading out like wings. Bright, cheerful and full of warmth, it's the perfect way to say thank you, happy birthday or simply \"thinking of you\". The envelope stands on its own, so it goes straight from their hands to a desk, shelf or bedside table — no vase needed. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. Arrives ready to display — the envelope box stands on its own, no vase needed.",
+    "images": [
+      "/images/products/the-bloom-letter-summer-1.jpg",
+      "/images/products/the-bloom-letter-summer-2.jpg",
+      "/images/products/the-bloom-letter-summer-3.jpg",
+      "/images/products/the-bloom-letter-summer-4.jpg",
+      "/images/products/the-bloom-letter-summer-5.jpg",
+      "/images/products/the-bloom-letter-summer-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Bloom Letter — Spring Blush",
+    "slug": "the-bloom-letter-spring",
+    "price": 699,
+    "category": "Signature Collection",
+    "occasion": "thank-you",
+    "season": "spring",
+    "flowers": [
+      "Blush Pink Roses",
+      "Lilac Daisies",
+      "Pink Button Chrysanthemums",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "A soft pink love note for the season of new beginnings, written in petals instead of ink.",
+    "description": "Our handmade-paper envelope, filled with four blush-pink roses, soft lilac daisies and delicate pink button chrysanthemums, finished with airy gypsophila and golden solidago sprigs. Gentle, romantic and fresh as a spring morning — a sweet surprise for someone you adore, a new beginning or a simple \"just because\". The envelope stands on its own, ready to display without a vase. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. Arrives ready to display — the envelope box stands on its own, no vase needed.",
+    "images": [
+      "/images/products/the-bloom-letter-spring-1.jpg",
+      "/images/products/the-bloom-letter-spring-2.jpg",
+      "/images/products/the-bloom-letter-spring-3.jpg",
+      "/images/products/the-bloom-letter-spring-4.jpg",
+      "/images/products/the-bloom-letter-spring-5.jpg",
+      "/images/products/the-bloom-letter-spring-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Bloom Letter — Festive Glow",
+    "slug": "the-bloom-letter-autumn",
+    "price": 699,
+    "category": "Signature Collection",
+    "occasion": "thank-you",
+    "season": "fall",
+    "flowers": [
+      "Peach-Orange Roses",
+      "Yellow Daisies",
+      "Bronze Button Chrysanthemums",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "Warm as a diya on a festive evening — a letter of blessings in peach, gold and bronze.",
+    "description": "Our handmade-paper envelope, brimming with four peach-orange roses, sunny yellow daisies and rich bronze button chrysanthemums, with gypsophila and golden solidago sprigs rising on either side. Warm, glowing tones made for the festive season — a thoughtful gift for Navratri, Diwali, housewarmings or to send blessings to family and friends. The envelope stands on its own, ready to display without a vase. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. Arrives ready to display — the envelope box stands on its own, no vase needed.",
+    "images": [
+      "/images/products/the-bloom-letter-autumn-1.jpg",
+      "/images/products/the-bloom-letter-autumn-2.jpg",
+      "/images/products/the-bloom-letter-autumn-3.jpg",
+      "/images/products/the-bloom-letter-autumn-4.jpg",
+      "/images/products/the-bloom-letter-autumn-5.jpg",
+      "/images/products/the-bloom-letter-autumn-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Bloom Letter — Winter Crimson",
+    "slug": "the-bloom-letter-winter",
+    "price": 699,
+    "category": "Signature Collection",
+    "occasion": "thank-you",
+    "season": "winter",
+    "flowers": [
+      "Red Roses",
+      "White Daisies",
+      "Green Button Chrysanthemums",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "A love letter for the coldest months — deep red roses that say everything you mean.",
+    "description": "Our handmade-paper envelope, holding four deep velvet-red roses with crisp white daisies, fresh lime-green button chrysanthemums, soft gypsophila and golden solidago sprigs. Bold, classic and full of heart — made for anniversaries, cosy winter surprises, New Year wishes and every \"I love you\". The envelope stands on its own, ready to display without a vase. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. Arrives ready to display — the envelope box stands on its own, no vase needed.",
+    "images": [
+      "/images/products/the-bloom-letter-winter-1.jpg",
+      "/images/products/the-bloom-letter-winter-2.jpg",
+      "/images/products/the-bloom-letter-winter-3.jpg",
+      "/images/products/the-bloom-letter-winter-4.jpg",
+      "/images/products/the-bloom-letter-winter-5.jpg",
+      "/images/products/the-bloom-letter-winter-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Petal Tote — Summer Garden",
+    "slug": "the-petal-tote-summer",
+    "price": 999,
+    "category": "Celebration",
+    "occasion": "birthday",
+    "season": "summer",
+    "flowers": [
+      "Peach Roses",
+      "Pink Roses",
+      "Lisianthus",
+      "Limonium",
+      "Button Chrysanthemums"
+    ],
+    "story": "A little garden you can carry — picked, packed and ready to hand over with a smile.",
+    "description": "A cream oval flower tub with a lilac carry strap, filled with a lush dome of peach and pink roses, a ruffled cream lisianthus, sprigs of lilac limonium, tiny cream button chrysanthemums and fresh green leaves. Soft, joyful and effortlessly pretty — a gift that's as lovely to carry as it is to receive, perfect for birthdays, visits and celebrations. The tub keeps the flowers upright and ready to display anywhere. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. Comes with a lilac carry strap — easy to hand over, easy to carry home.",
+    "images": [
+      "/images/products/the-petal-tote-summer-1.jpg",
+      "/images/products/the-petal-tote-summer-2.jpg",
+      "/images/products/the-petal-tote-summer-3.jpg",
+      "/images/products/the-petal-tote-summer-4.jpg",
+      "/images/products/the-petal-tote-summer-5.jpg",
+      "/images/products/the-petal-tote-summer-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Petal Tote — Spring Whisper",
+    "slug": "the-petal-tote-spring",
+    "price": 999,
+    "category": "Celebration",
+    "occasion": "birthday",
+    "season": "spring",
+    "flowers": [
+      "White Roses",
+      "Light Pink Roses",
+      "Lisianthus",
+      "Limonium",
+      "Button Chrysanthemums"
+    ],
+    "story": "Pale petals and soft lilac — a gentle hello for the start of something new.",
+    "description": "Our cream oval flower tub with its lilac carry strap, filled with pure white and light pink roses, a ruffled cream lisianthus, lilac limonium, tiny cream button chrysanthemums and fresh green leaves. Light, airy and delicate — lovely for birthdays, new babies, congratulations or simply brightening someone's day. The tub keeps the flowers upright and ready to display anywhere. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. Comes with a lilac carry strap — easy to hand over, easy to carry home.",
+    "images": [
+      "/images/products/the-petal-tote-spring-1.jpg",
+      "/images/products/the-petal-tote-spring-2.jpg",
+      "/images/products/the-petal-tote-spring-3.jpg",
+      "/images/products/the-petal-tote-spring-4.jpg",
+      "/images/products/the-petal-tote-spring-5.jpg",
+      "/images/products/the-petal-tote-spring-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Petal Tote — Golden Harvest",
+    "slug": "the-petal-tote-autumn",
+    "price": 999,
+    "category": "Celebration",
+    "occasion": "birthday",
+    "season": "fall",
+    "flowers": [
+      "Peach-Orange Roses",
+      "Yellow Roses",
+      "Lisianthus",
+      "Yellow Limonium",
+      "Button Chrysanthemums"
+    ],
+    "story": "Carry the warmth of the festive season — gold, peach and sunshine in one little tote.",
+    "description": "Our cream oval flower tub with its lilac carry strap, filled with warm peach-orange and golden-yellow roses, a ruffled cream lisianthus, sprigs of soft yellow limonium, tiny cream button chrysanthemums and fresh green leaves. Glowing, festive tones that feel like celebration — perfect for Navratri and Diwali visits, housewarmings and birthdays. The tub keeps the flowers upright and ready to display anywhere. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. Comes with a lilac carry strap — easy to hand over, easy to carry home.",
+    "images": [
+      "/images/products/the-petal-tote-autumn-1.jpg",
+      "/images/products/the-petal-tote-autumn-2.jpg",
+      "/images/products/the-petal-tote-autumn-3.jpg",
+      "/images/products/the-petal-tote-autumn-4.jpg",
+      "/images/products/the-petal-tote-autumn-5.jpg",
+      "/images/products/the-petal-tote-autumn-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Petal Tote — Winter Rose",
+    "slug": "the-petal-tote-winter",
+    "price": 999,
+    "category": "Celebration",
+    "occasion": "birthday",
+    "season": "winter",
+    "flowers": [
+      "Red Roses",
+      "White Roses",
+      "Lisianthus",
+      "White Limonium",
+      "Button Chrysanthemums"
+    ],
+    "story": "Red and white, classic and cosy — a winter gift that warms the heart.",
+    "description": "Our cream oval flower tub with its lilac carry strap, filled with deep velvet-red and pure white roses, a ruffled cream lisianthus, sprigs of white limonium, tiny cream button chrysanthemums and fresh green leaves. Timeless and romantic — made for anniversaries, winter birthdays, New Year wishes and every cosy surprise. The tub keeps the flowers upright and ready to display anywhere. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. Comes with a lilac carry strap — easy to hand over, easy to carry home.",
+    "images": [
+      "/images/products/the-petal-tote-winter-1.jpg",
+      "/images/products/the-petal-tote-winter-2.jpg",
+      "/images/products/the-petal-tote-winter-3.jpg",
+      "/images/products/the-petal-tote-winter-4.jpg",
+      "/images/products/the-petal-tote-winter-5.jpg",
+      "/images/products/the-petal-tote-winter-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Keepsake Hatbox — Summer Peach",
+    "slug": "the-keepsake-hatbox-summer",
+    "price": 1199,
+    "category": "Romantic",
+    "occasion": "anniversary",
+    "season": "summer",
+    "flowers": [
+      "Peach Roses",
+      "Cream Roses",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "A crown of peach roses in a keepsake box — made to be remembered long after the last petal.",
+    "description": "A tall round hatbox in textured handmade paper, with a violet ribbon handle, crowned with a full dome of soft peach roses and creamy ivory roses, tucked with gypsophila and finished with golden solidago sprigs. Elegant, romantic and made to impress — perfect for anniversaries, dates and heartfelt surprises. The hatbox is sturdy and beautiful enough to keep and reuse long after the flowers. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. The hatbox makes a keepsake — reuse it for jewellery, letters or trinkets long after the flowers.",
+    "images": [
+      "/images/products/the-keepsake-hatbox-summer-1.jpg",
+      "/images/products/the-keepsake-hatbox-summer-2.jpg",
+      "/images/products/the-keepsake-hatbox-summer-3.jpg",
+      "/images/products/the-keepsake-hatbox-summer-4.jpg",
+      "/images/products/the-keepsake-hatbox-summer-5.jpg",
+      "/images/products/the-keepsake-hatbox-summer-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Keepsake Hatbox — Spring Blush",
+    "slug": "the-keepsake-hatbox-spring",
+    "price": 1199,
+    "category": "Romantic",
+    "occasion": "anniversary",
+    "season": "spring",
+    "flowers": [
+      "Light Pink Roses",
+      "White Roses",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "Soft pink and pure white — a keepsake as gentle as a first spring morning.",
+    "description": "Our tall handmade-paper hatbox with its violet ribbon handle, crowned with light pink and pure white roses, tucked with gypsophila and finished with golden solidago sprigs. Soft, graceful and romantic — lovely for anniversaries, proposals, new beginnings and \"just because\" moments. The hatbox is sturdy and beautiful enough to keep and reuse long after the flowers. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. The hatbox makes a keepsake — reuse it for jewellery, letters or trinkets long after the flowers.",
+    "images": [
+      "/images/products/the-keepsake-hatbox-spring-1.jpg",
+      "/images/products/the-keepsake-hatbox-spring-2.jpg",
+      "/images/products/the-keepsake-hatbox-spring-3.jpg",
+      "/images/products/the-keepsake-hatbox-spring-4.jpg",
+      "/images/products/the-keepsake-hatbox-spring-5.jpg",
+      "/images/products/the-keepsake-hatbox-spring-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Keepsake Hatbox — Festive Gold",
+    "slug": "the-keepsake-hatbox-autumn",
+    "price": 1199,
+    "category": "Romantic",
+    "occasion": "anniversary",
+    "season": "fall",
+    "flowers": [
+      "Peach-Orange Roses",
+      "Yellow Roses",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "Peach and gold for the season of lights — a keepsake that glows like a festive evening.",
+    "description": "Our tall handmade-paper hatbox with its violet ribbon handle, crowned with warm peach-orange and golden-yellow roses, tucked with gypsophila and finished with golden solidago sprigs. Rich, warm and celebratory — a beautiful festive gift for Navratri, Karwa Chauth, Diwali and anniversaries. The hatbox is sturdy and beautiful enough to keep and reuse long after the flowers. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. The hatbox makes a keepsake — reuse it for jewellery, letters or trinkets long after the flowers.",
+    "images": [
+      "/images/products/the-keepsake-hatbox-autumn-1.jpg",
+      "/images/products/the-keepsake-hatbox-autumn-2.jpg",
+      "/images/products/the-keepsake-hatbox-autumn-3.jpg",
+      "/images/products/the-keepsake-hatbox-autumn-4.jpg",
+      "/images/products/the-keepsake-hatbox-autumn-5.jpg",
+      "/images/products/the-keepsake-hatbox-autumn-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Keepsake Hatbox — Winter Romance",
+    "slug": "the-keepsake-hatbox-winter",
+    "price": 1199,
+    "category": "Romantic",
+    "occasion": "anniversary",
+    "season": "winter",
+    "flowers": [
+      "Red Roses",
+      "White Roses",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "Deep red roses in a box you'll keep forever — the classic way to say \"I love you\".",
+    "description": "Our tall handmade-paper hatbox with its violet ribbon handle, crowned with deep velvet-red roses and pure white roses, tucked with gypsophila and finished with golden solidago sprigs. Classic, passionate and unforgettable — made for anniversaries, proposals, winter birthdays and New Year's Eve. The hatbox is sturdy and beautiful enough to keep and reuse long after the flowers. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. The hatbox makes a keepsake — reuse it for jewellery, letters or trinkets long after the flowers.",
+    "images": [
+      "/images/products/the-keepsake-hatbox-winter-1.jpg",
+      "/images/products/the-keepsake-hatbox-winter-2.jpg",
+      "/images/products/the-keepsake-hatbox-winter-3.jpg",
+      "/images/products/the-keepsake-hatbox-winter-4.jpg",
+      "/images/products/the-keepsake-hatbox-winter-5.jpg",
+      "/images/products/the-keepsake-hatbox-winter-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Garden Drawer — Summer Sunflower",
+    "slug": "the-garden-drawer-summer",
+    "price": 899,
+    "category": "Seasonal",
+    "occasion": "congratulations",
+    "season": "summer",
+    "flowers": [
+      "Sunflower",
+      "Spray Chrysanthemums",
+      "Gypsophila"
+    ],
+    "story": "A peek of sunshine through the window, then a whole garden when you slide it open.",
+    "description": "A long handmade-paper box with a window sleeve — a single golden sunflower peeks through, and sliding open the drawer reveals it resting on a bed of mauve-pink spray chrysanthemums and delicate gypsophila. A gift with a little moment of surprise built in, perfect for birthdays, congratulations and brightening someone's day. Unique, modern and beautiful on a table, desk or bed. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. Arrives closed in its window sleeve — slide open the drawer to reveal the flowers.",
+    "images": [
+      "/images/products/the-garden-drawer-summer-1.jpg",
+      "/images/products/the-garden-drawer-summer-2.jpg",
+      "/images/products/the-garden-drawer-summer-3.jpg",
+      "/images/products/the-garden-drawer-summer-4.jpg",
+      "/images/products/the-garden-drawer-summer-5.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Garden Drawer — Spring Bloom",
+    "slug": "the-garden-drawer-spring",
+    "price": 899,
+    "category": "Seasonal",
+    "occasion": "congratulations",
+    "season": "spring",
+    "flowers": [
+      "Pink Gerbera",
+      "White Spray Chrysanthemums",
+      "Gypsophila"
+    ],
+    "story": "Slide it open to find a soft pink bloom resting on a bed of white — spring, delivered.",
+    "description": "Our long handmade-paper box with its window sleeve — a soft pink gerbera peeks through, and sliding open the drawer reveals it resting on a bed of pure white spray chrysanthemums and delicate gypsophila. Fresh, pretty and full of charm — made for birthdays, congratulations, new babies and cheerful surprises. Unique, modern and beautiful on a table, desk or bed. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. Arrives closed in its window sleeve — slide open the drawer to reveal the flowers.",
+    "images": [
+      "/images/products/the-garden-drawer-spring-1.jpg",
+      "/images/products/the-garden-drawer-spring-2.jpg",
+      "/images/products/the-garden-drawer-spring-3.jpg",
+      "/images/products/the-garden-drawer-spring-4.jpg",
+      "/images/products/the-garden-drawer-spring-5.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Garden Drawer — Autumn Amber",
+    "slug": "the-garden-drawer-autumn",
+    "price": 899,
+    "category": "Seasonal",
+    "occasion": "congratulations",
+    "season": "fall",
+    "flowers": [
+      "Peach-Orange Roses",
+      "Yellow Spray Chrysanthemums",
+      "Gypsophila"
+    ],
+    "story": "Three peach roses on a bed of gold — open the drawer and let the festive glow in.",
+    "description": "Our long handmade-paper box with its window sleeve — peach-orange roses peek through, and sliding open the drawer reveals three roses resting on a bed of golden-yellow spray chrysanthemums and delicate gypsophila. Warm, glowing and festive — a lovely gift for Navratri, Diwali, housewarmings and celebrations. Unique, modern and beautiful on a table, desk or bed. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. Arrives closed in its window sleeve — slide open the drawer to reveal the flowers.",
+    "images": [
+      "/images/products/the-garden-drawer-autumn-1.jpg",
+      "/images/products/the-garden-drawer-autumn-2.jpg",
+      "/images/products/the-garden-drawer-autumn-3.jpg",
+      "/images/products/the-garden-drawer-autumn-4.jpg",
+      "/images/products/the-garden-drawer-autumn-5.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "name": "The Garden Drawer — Winter Scarlet",
+    "slug": "the-garden-drawer-winter",
+    "price": 899,
+    "category": "Seasonal",
+    "occasion": "congratulations",
+    "season": "winter",
+    "flowers": [
+      "Red Gerbera",
+      "White Spray Chrysanthemums",
+      "Gypsophila"
+    ],
+    "story": "One bold red bloom on a bed of white — a winter surprise waiting behind the window.",
+    "description": "Our long handmade-paper box with its window sleeve — a deep red gerbera peeks through, and sliding open the drawer reveals it resting on a bed of pure white spray chrysanthemums and delicate gypsophila. Striking, clean and full of love — made for winter birthdays, anniversaries, New Year wishes and cosy surprises. Unique, modern and beautiful on a table, desk or bed. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur. Midnight delivery available on request. Free delivery on orders above ₹999. Arrives closed in its window sleeve — slide open the drawer to reveal the flowers.",
+    "images": [
+      "/images/products/the-garden-drawer-winter-1.jpg",
+      "/images/products/the-garden-drawer-winter-2.jpg",
+      "/images/products/the-garden-drawer-winter-3.jpg",
+      "/images/products/the-garden-drawer-winter-4.jpg",
+      "/images/products/the-garden-drawer-winter-5.jpg"
+    ],
+    "featured": true
+  }
+]

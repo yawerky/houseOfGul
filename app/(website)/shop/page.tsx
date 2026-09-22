@@ -4,6 +4,12 @@ import ProductGrid from '@/components/shop/ProductGrid'
 import SectionWrapper from '@/components/ui/SectionWrapper'
 import Image from 'next/image'
 import { Product } from '@/lib/products'
+import { mapDbProduct } from '@/lib/productMapper'
+import { collapseSeasonVariants } from '@/lib/variants'
+
+// Always read the latest products, banners and posts from the database.
+export const dynamic = 'force-dynamic'
+
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
 
@@ -50,22 +56,8 @@ async function getProducts(): Promise<Product[]> {
       orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }],
     })
 
-    return dbProducts.map((p) => ({
-      id: p.slug,
-      name: p.name,
-      price: p.price,
-      description: p.description || '',
-      story: p.story || '',
-      flowers: JSON.parse(p.flowers || '[]'),
-      images: JSON.parse(p.images || '[]'),
-      category: p.category || 'Uncategorized',
-      featured: p.featured,
-      deliveryInfo: p.deliveryInfo || 'Same-day delivery available in select areas.',
-      occasions: p.occasion ? [p.occasion] : [],
-      season: p.season || 'all',
-      rating: p.rating || 4.5,
-      reviewCount: p.reviewCount || 0,
-    }))
+    const { items, seasonCounts } = collapseSeasonVariants(dbProducts)
+    return items.map((p) => mapDbProduct(p, seasonCounts.get(p.slug)))
   } catch (error) {
     console.error('Error fetching products:', error)
     return []

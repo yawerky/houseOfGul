@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import ImageUploader from '@/components/admin/ImageUploader'
 
 interface Banner {
   id: string
@@ -148,15 +149,24 @@ export default function BannerManager({ initialBanners }: { initialBanners: Bann
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-charcoal mb-1">Image URL *</label>
+              <label className="block text-sm font-medium text-charcoal mb-1">Image *</label>
+              <ImageUploader
+                images={formData.image ? [formData.image] : []}
+                onChange={(list) => setFormData((prev) => ({ ...prev, image: list[0] || '' }))}
+                folder="banners"
+                multiple={false}
+              />
               <input
-                type="url"
+                type="text"
                 value={formData.image}
                 onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                 required
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
-                placeholder="https://..."
+                className="mt-3 w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
+                placeholder="…or paste an image link"
               />
+              <p className="text-xs text-charcoal-light mt-1">
+                Hero: wide 16:9 image (2560×1440). Secondary: wide strip (2560×1100). Popup: 4:3.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

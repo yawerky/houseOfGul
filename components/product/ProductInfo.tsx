@@ -7,12 +7,14 @@ import { useWishlist } from '@/context/WishlistContext'
 import { useCurrency } from '@/context/CurrencyContext'
 import LuxuryButton from '@/components/ui/LuxuryButton'
 import DeliveryDateChecker from '@/components/ui/DeliveryDateChecker'
+import SeasonPicker, { type SeasonOption } from './SeasonPicker'
 
 interface ProductInfoProps {
   product: Product
+  seasonOptions?: SeasonOption[]
 }
 
-export default function ProductInfo({ product }: ProductInfoProps) {
+export default function ProductInfo({ product, seasonOptions = [] }: ProductInfoProps) {
   const [quantity, setQuantity] = useState(1)
   const [isAdded, setIsAdded] = useState(false)
   const { addItem } = useCart()
@@ -76,6 +78,8 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       </div>
 
       <div className="w-12 h-px bg-gold" />
+
+      {seasonOptions.length > 1 && <SeasonPicker options={seasonOptions} currentSlug={product.id} />}
 
       {/* Description */}
       <p className="text-charcoal-light leading-relaxed dark:text-ivory/70">{product.description}</p>

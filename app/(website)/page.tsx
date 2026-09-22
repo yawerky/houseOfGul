@@ -10,22 +10,35 @@ import InstagramGallery from '@/components/home/InstagramGallery'
 import Newsletter from '@/components/home/Newsletter'
 import RecentlyViewed from '@/components/home/RecentlyViewed'
 import FAQSchema from '@/components/seo/FAQSchema'
+import PromoPopup from '@/components/home/PromoPopup'
+import { getActiveBanner, getActiveBanners } from '@/lib/banners'
 
-export default function HomePage() {
+// Always read the latest products, banners and posts from the database.
+export const dynamic = 'force-dynamic'
+
+
+export default async function HomePage() {
+  const [heroBanners, secondaryBanner, popupBanner] = await Promise.all([
+    getActiveBanners('hero'),
+    getActiveBanner('secondary'),
+    getActiveBanner('popup'),
+  ])
+
   return (
     <>
       <FAQSchema />
-      <HeroBanner />
+      <HeroBanner banners={heroBanners} />
       <OccasionGrid />
       <FeaturedProducts />
       <BrandStatement />
       <Testimonials />
-      <SignatureBanner />
+      <SignatureBanner banner={secondaryBanner} />
       <PressSection />
       <WhyHouseOfGul />
       <InstagramGallery />
       <RecentlyViewed />
       <Newsletter />
+      {popupBanner && <PromoPopup banner={popupBanner} />}
     </>
   )
 }

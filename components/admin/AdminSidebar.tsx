@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
@@ -139,6 +140,23 @@ const menuItems = [
 export default function AdminSidebar() {
   const pathname = usePathname()
   const router = useRouter()
+  const [pendingOrders, setPendingOrders] = useState(0)
+
+  // Check for new orders every minute
+  useEffect(() => {
+    let cancelled = false
+    const load = () =>
+      fetch('/api/admin/orders/pending-count')
+        .then((res) => (res.ok ? res.json() : { count: 0 }))
+        .then((data) => !cancelled && setPendingOrders(data.count || 0))
+        .catch(() => {})
+    load()
+    const timer = setInterval(load, 60000)
+    return () => {
+      cancelled = true
+      clearInterval(timer)
+    }
+  }, [pathname])
 
   const handleLogout = async () => {
     await fetch('/api/admin/logout', { method: 'POST' })
@@ -184,6 +202,14 @@ export default function AdminSidebar() {
             >
               {item.icon}
               <span className="text-sm font-medium">{item.label}</span>
+              {item.href === '/admin/orders' && pendingOrders > 0 && (
+                <span
+                  className="ml-auto min-w-[1.5rem] px-1.5 py-0.5 text-xs text-center rounded-full bg-red-500 text-white"
+                  aria-label={`${pendingOrders} new orders`}
+                >
+                  {pendingOrders}
+                </span>
+              )}
             </Link>
           )
         })}

@@ -1,66 +1,148 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
-import { useCurrency } from '@/context/CurrencyContext'
+import { formatPrice } from '@/lib/utils'
 import LuxuryButton from '@/components/ui/LuxuryButton'
 
-const giftWrappingOptions = [
-  {
-    id: 'signature',
-    name: 'Signature Ribbon',
-    description: 'Our classic satin ribbon with House of Gul wax seal',
-    price: 0,
-    image: '/images/gift-ribbon.jpg',
-  },
-  {
-    id: 'deluxe',
-    name: 'Deluxe Gift Box',
-    description: 'Premium matte black box with gold foil embossing',
-    price: 25,
-    image: '/images/gift-box.jpg',
-  },
-  {
-    id: 'luxe',
-    name: 'Luxe Presentation',
-    description: 'Handcrafted wooden keepsake box with velvet lining',
-    price: 65,
-    image: '/images/gift-luxe.jpg',
-  },
-]
+interface CheckoutConfig {
+  freeDeliveryThreshold: number
+  minimumOrderAmount: number
+  whatsappNumber: string
+  storePhone: string
+  today: string
+  slots: { id: string; label: string; charge: number }[]
+  razorpay: { keyId: string } | null
+}
 
-const deliveryTimeSlots = [
-  { id: 'morning', label: 'Morning (9am - 12pm)', price: 0 },
-  { id: 'afternoon', label: 'Afternoon (12pm - 5pm)', price: 0 },
-  { id: 'evening', label: 'Evening (5pm - 8pm)', price: 10 },
-  { id: 'specific', label: 'Specific Hour (+$25)', price: 25 },
-]
+interface QuoteResponse {
+  subtotal: number
+  deliveryCharge: number
+  slotCharge: number
+  discount: number
+  total: number
+  freeDeliveryThreshold: number
+  minimumOrderAmount: number
+  missingItems: string[]
+  pincode: { checked: boolean; serviceable: boolean; message: string; area: string | null }
+  coupon: { code: string; valid: boolean; message: string } | null
+}
+
+interface PlacedOrder {
+  orderId: string
+  orderNumber: string
+  total: number
+  paymentMethod: 'cod' | 'razorpay'
+  razorpay: { keyId: string; razorpayOrderId: string; amount: number; currency: string } | null
+}
+
+type RazorpayResponse = {
+  razorpay_order_id: string
+  razorpay_payment_id: string
+  razorpay_signature: string
+}
+
+declare global {
+  interface Window {
+    Razorpay?: new (options: Record<string, unknown>) => { open: () => void }
+  }
+}
+
+function loadRazorpayScript(): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (window.Razorpay) return resolve(true)
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.onload = () => resolve(true)
+    script.onerror = () => resolve(false)
+    document.body.appendChild(script)
+  })
+}
+
+const labelClass = 'block text-xs tracking-widest uppercase text-charcoal-light mb-2 dark:text-ivory/70'
 
 export default function CheckoutPage() {
-  const { state, totalPrice } = useCart()
-  const { formatPrice } = useCurrency()
+  const { state, totalPrice, clearCart } = useCart()
   const [step, setStep] = useState(1)
+  const [config, setConfig] = useState<CheckoutConfig | null>(null)
+  const [quote, setQuote] = useState<QuoteResponse | null>(null)
+  const [quoteLoading, setQuoteLoading] = useState(false)
+  const [error, setError] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
-  const [orderComplete, setOrderComplete] = useState(false)
+  const [placedOrder, setPlacedOrder] = useState<PlacedOrder | null>(null)
+  const [orderComplete, setOrderComplete] = useState<{ orderNumber: string; paid: boolean } | null>(null)
+  const [paymentPending, setPaymentPending] = useState(false)
+  const [couponInput, setCouponInput] = useState('')
+  const [appliedCoupon, setAppliedCoupon] = useState('')
+  const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('cod')
 
   const [formData, setFormData] = useState({
     email: '',
     firstName: '',
     lastName: '',
     address: '',
-    city: '',
-    postalCode: '',
+    apartment: '',
+    city: 'Jaipur',
+    pincode: '',
     phone: '',
     deliveryDate: '',
-    deliveryTimeSlot: 'morning',
+    deliverySlot: 'morning',
+    preferredTime: '',
+    instructions: '',
     giftMessage: '',
     senderName: '',
     isGift: false,
-    giftWrapping: 'signature',
     hidePrice: false,
   })
+
+  useEffect(() => {
+    fetch('/api/checkout/config')
+      .then((res) => res.json())
+      .then((data: CheckoutConfig) => {
+        setConfig(data)
+        if (data.razorpay) setPaymentMethod('razorpay')
+      })
+      .catch(() => setError('Could not load checkout. Please refresh the page.'))
+  }, [])
+
+  const cartItems = useMemo(
+    () => state.items.map((item) => ({ slug: item.product.id, quantity: item.quantity })),
+    [state.items]
+  )
+  const cartKey = JSON.stringify(cartItems)
+  const pincodeReady = formData.pincode.replace(/\D/g, '').length === 6
+
+  // Server-side price calculation: delivery charge, slot charge, coupon.
+  const quoteRequest = useRef(0)
+  useEffect(() => {
+    if (cartItems.length === 0) return
+    const id = ++quoteRequest.current
+    setQuoteLoading(true)
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch('/api/checkout/quote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items: cartItems,
+            pincode: pincodeReady ? formData.pincode : '',
+            deliverySlot: formData.deliverySlot,
+            couponCode: appliedCoupon,
+          }),
+        })
+        const data = await res.json()
+        if (id === quoteRequest.current && res.ok) setQuote(data)
+      } catch {
+        // keep the previous quote
+      } finally {
+        if (id === quoteRequest.current) setQuoteLoading(false)
+      }
+    }, 300)
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartKey, formData.pincode, pincodeReady, formData.deliverySlot, appliedCoupon])
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -73,15 +155,158 @@ export default function CheckoutPage() {
     }))
   }
 
+  const validateStep1 = (): string => {
+    if (!formData.firstName.trim() || !formData.lastName.trim()) return "Please enter the recipient's first and last name."
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) return 'Please enter a valid email address.'
+    if (formData.phone.replace(/\D/g, '').length < 10) return 'Please enter a valid 10-digit phone number.'
+    if (!formData.address.trim()) return 'Please enter the delivery address.'
+    if (!pincodeReady) return 'Please enter a valid 6-digit pincode.'
+    if (quote && quote.pincode.checked && !quote.pincode.serviceable) return quote.pincode.message
+    return ''
+  }
+
+  const validateStep2 = (): string => {
+    if (!formData.deliveryDate) return 'Please choose a delivery date.'
+    if (config && formData.deliveryDate < config.today) return 'Please choose a delivery date from today onwards.'
+    if (formData.deliverySlot === 'specific' && !formData.preferredTime.trim()) {
+      return 'Please tell us the exact time you would like the delivery.'
+    }
+    return ''
+  }
+
+  const goToStep = (next: number) => {
+    const message = next >= 2 ? validateStep1() : ''
+    const message2 = !message && next >= 3 ? validateStep2() : ''
+    if (message || message2) {
+      setError(message || message2)
+      return
+    }
+    setError('')
+    setStep(next)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const openRazorpay = async (order: PlacedOrder) => {
+    if (!order.razorpay) return
+    const loaded = await loadRazorpayScript()
+    if (!loaded || !window.Razorpay) {
+      setPaymentPending(true)
+      setError('Could not open the payment window. Check your connection and try again.')
+      return
+    }
+
+    const rzp = new window.Razorpay({
+      key: order.razorpay.keyId,
+      amount: order.razorpay.amount,
+      currency: order.razorpay.currency,
+      order_id: order.razorpay.razorpayOrderId,
+      name: 'House of Gul',
+      description: `Order ${order.orderNumber}`,
+      prefill: {
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        contact: formData.phone,
+      },
+      theme: { color: '#C4A35A' },
+      handler: async (response: RazorpayResponse) => {
+        setIsProcessing(true)
+        try {
+          const res = await fetch('/api/orders/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: order.orderId, ...response }),
+          })
+          const data = await res.json()
+          if (!res.ok) throw new Error(data.error)
+          clearCart()
+          setOrderComplete({ orderNumber: order.orderNumber, paid: true })
+        } catch (err) {
+          setPaymentPending(true)
+          setError(
+            `${(err as Error).message || 'We could not confirm your payment.'} Your order number is ${order.orderNumber} — please contact us and we'll sort it out.`
+          )
+        } finally {
+          setIsProcessing(false)
+        }
+      },
+      modal: {
+        ondismiss: () => {
+          setPaymentPending(true)
+          setError(`Payment was not completed. Your order ${order.orderNumber} is saved — tap "Pay now" to try again.`)
+        },
+      },
+    })
+    rzp.open()
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (step !== 3) return
+
+    const message = validateStep1() || validateStep2()
+    if (message) {
+      setError(message)
+      return
+    }
+
+    if (placedOrder && paymentPending) {
+      setError('')
+      await openRazorpay(placedOrder)
+      return
+    }
+
     setIsProcessing(true)
+    setError('')
 
-    // Simulate payment processing
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    const notes = [
+      formData.deliverySlot === 'specific' && formData.preferredTime ? `Preferred time: ${formData.preferredTime}` : '',
+      formData.instructions,
+    ]
+      .filter(Boolean)
+      .join('\n')
 
-    setOrderComplete(true)
-    setIsProcessing(false)
+    try {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: cartItems,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          apartment: formData.apartment,
+          city: formData.city,
+          pincode: formData.pincode,
+          deliveryDate: formData.deliveryDate,
+          deliverySlot: formData.deliverySlot,
+          customerNote: notes,
+          isGift: formData.isGift,
+          giftMessage: formData.giftMessage,
+          senderName: formData.senderName,
+          hidePrice: formData.hidePrice,
+          couponCode: appliedCoupon,
+          paymentMethod,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'We could not place your order.')
+
+      const order = data as PlacedOrder
+      setPlacedOrder(order)
+
+      if (order.paymentMethod === 'razorpay') {
+        await openRazorpay(order)
+      } else {
+        clearCart()
+        setOrderComplete({ orderNumber: order.orderNumber, paid: false })
+      }
+    } catch (err) {
+      setError((err as Error).message)
+    } finally {
+      setIsProcessing(false)
+    }
   }
 
   if (state.items.length === 0 && !orderComplete) {
@@ -128,31 +353,53 @@ export default function CheckoutPage() {
               Thank You for Your Order
             </h1>
             <p className="text-charcoal-light mb-2">
-              Your order has been confirmed and will be delivered with care.
+              {orderComplete.paid
+                ? 'Your payment was received and your order is confirmed.'
+                : 'Your order has been placed. You can pay by cash or UPI when it is delivered. We will call you to confirm.'}
             </p>
-            <p className="text-sm text-gold mb-8">Order #HOG-2026-0001</p>
-            <div className="bg-white p-8 rounded-sm shadow-sm mb-8">
+            <p className="text-sm text-gold mb-8">Order #{orderComplete.orderNumber}</p>
+            <div className="bg-white p-8 rounded-sm shadow-sm mb-8 dark:bg-dark-surface">
               <p className="text-charcoal-light text-sm mb-4">
-                A confirmation email has been sent to{' '}
-                <span className="text-charcoal">{formData.email || 'your email'}</span>
+                Save your order number. You can track your order with it and the phone number{' '}
+                <span className="text-charcoal dark:text-ivory">{formData.phone}</span>.
               </p>
               <div className="border-t border-blush-dark/20 pt-4">
                 <p className="text-xs tracking-widest uppercase text-charcoal-light">
-                  Estimated Delivery
+                  Delivery
                 </p>
-                <p className="font-serif text-lg text-charcoal mt-1">
-                  {formData.deliveryDate || 'Within 24-48 hours'}
+                <p className="font-serif text-lg text-charcoal mt-1 dark:text-ivory">
+                  {formData.deliveryDate
+                    ? new Date(`${formData.deliveryDate}T00:00:00`).toLocaleDateString('en-IN', {
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'long',
+                      })
+                    : ''}
+                  {' · '}
+                  {config?.slots.find((s) => s.id === formData.deliverySlot)?.label}
                 </p>
               </div>
             </div>
-            <Link href="/shop">
-              <LuxuryButton variant="secondary">Continue Shopping</LuxuryButton>
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href={`/track-order?order=${encodeURIComponent(orderComplete.orderNumber)}`}>
+                <LuxuryButton variant="primary">Track Order</LuxuryButton>
+              </Link>
+              <Link href="/shop">
+                <LuxuryButton variant="secondary">Continue Shopping</LuxuryButton>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
     )
   }
+
+  const subtotal = quote?.subtotal ?? totalPrice
+  const deliveryCharge = quote?.deliveryCharge ?? 0
+  const slotFee = quote?.slotCharge ?? 0
+  const discount = quote?.discount ?? 0
+  const total = quote?.total ?? totalPrice
+  const freeThreshold = quote?.freeDeliveryThreshold ?? config?.freeDeliveryThreshold ?? 0
 
   return (
     <div className="min-h-screen pt-28 pb-16 bg-ivory">
@@ -169,7 +416,7 @@ export default function CheckoutPage() {
         {/* Progress Steps */}
         <div className="flex justify-center mb-12">
           <div className="flex items-center gap-4">
-            {['Shipping', 'Delivery', 'Payment'].map((s, i) => (
+            {['Recipient', 'Delivery', 'Payment'].map((s, i) => (
               <div key={s} className="flex items-center gap-4">
                 <div
                   className={`flex items-center gap-2 ${
@@ -210,120 +457,75 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Form */}
           <div className="lg:col-span-2">
-            <form onSubmit={handleSubmit}>
-              {/* Step 1: Shipping */}
+            {error && (
+              <div role="alert" className="mb-6 p-4 border border-red-200 bg-red-50 text-red-700 text-sm rounded-sm">
+                {error}
+              </div>
+            )}
+
+            {quote && quote.missingItems.length > 0 && (
+              <div className="mb-6 p-4 border border-yellow-200 bg-yellow-50 text-yellow-800 text-sm rounded-sm">
+                Some items in your cart are no longer available. Please remove them from your cart to continue.
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} noValidate>
+              {/* Step 1: Recipient */}
               {step === 1 && (
                 <div className="bg-white p-8 rounded-sm shadow-sm space-y-6 dark:bg-dark-surface">
                   <h2 className="font-serif text-xl text-charcoal mb-6 dark:text-ivory">
-                    Shipping Information
+                    Who are the flowers for?
                   </h2>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-2">
-                        First Name
-                      </label>
-                      <input
-                        type="text"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleInputChange}
-                        className="luxury-input"
-                        required
-                      />
+                      <label htmlFor="firstName" className={labelClass}>Recipient First Name</label>
+                      <input id="firstName" type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className="luxury-input" autoComplete="given-name" />
                     </div>
                     <div>
-                      <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-2">
-                        Last Name
-                      </label>
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                        className="luxury-input"
-                        required
-                      />
+                      <label htmlFor="lastName" className={labelClass}>Recipient Last Name</label>
+                      <input id="lastName" type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className="luxury-input" autoComplete="family-name" />
                     </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-2">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="luxury-input"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-2">
-                      Phone
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className="luxury-input"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-2">
-                      Delivery Address
-                    </label>
-                    <input
-                      type="text"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleInputChange}
-                      className="luxury-input"
-                      required
-                    />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-2">
-                        City
-                      </label>
-                      <input
-                        type="text"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleInputChange}
-                        className="luxury-input"
-                        required
-                      />
+                      <label htmlFor="phone" className={labelClass}>Phone (for delivery)</label>
+                      <input id="phone" type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="luxury-input" placeholder="10-digit mobile number" autoComplete="tel" />
                     </div>
                     <div>
-                      <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-2">
-                        Postal Code
-                      </label>
-                      <input
-                        type="text"
-                        name="postalCode"
-                        value={formData.postalCode}
-                        onChange={handleInputChange}
-                        className="luxury-input"
-                        required
-                      />
+                      <label htmlFor="email" className={labelClass}>Your Email</label>
+                      <input id="email" type="email" name="email" value={formData.email} onChange={handleInputChange} className="luxury-input" autoComplete="email" />
                     </div>
                   </div>
 
-                  <LuxuryButton
-                    type="button"
-                    variant="primary"
-                    className="w-full mt-6"
-                    onClick={() => setStep(2)}
-                  >
+                  <div>
+                    <label htmlFor="address" className={labelClass}>Delivery Address</label>
+                    <input id="address" type="text" name="address" value={formData.address} onChange={handleInputChange} className="luxury-input" placeholder="House no., street, area" autoComplete="street-address" />
+                  </div>
+
+                  <div>
+                    <label htmlFor="apartment" className={labelClass}>Landmark / Apartment (optional)</label>
+                    <input id="apartment" type="text" name="apartment" value={formData.apartment} onChange={handleInputChange} className="luxury-input" />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="city" className={labelClass}>City</label>
+                      <input id="city" type="text" name="city" value={formData.city} onChange={handleInputChange} className="luxury-input" autoComplete="address-level2" />
+                    </div>
+                    <div>
+                      <label htmlFor="pincode" className={labelClass}>Pincode</label>
+                      <input id="pincode" type="text" inputMode="numeric" maxLength={6} name="pincode" value={formData.pincode} onChange={handleInputChange} className="luxury-input" placeholder="e.g. 302017" autoComplete="postal-code" />
+                      {pincodeReady && quote?.pincode.checked && (
+                        <p className={`text-xs mt-2 ${quote.pincode.serviceable ? 'text-green-700' : 'text-red-600'}`}>
+                          {quote.pincode.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <LuxuryButton type="button" variant="primary" className="w-full mt-6" onClick={() => goToStep(2)}>
                     Continue to Delivery
                   </LuxuryButton>
                 </div>
@@ -336,49 +538,67 @@ export default function CheckoutPage() {
                     Delivery Options
                   </h2>
 
-                  {/* Delivery Date */}
                   <div>
-                    <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-2 dark:text-ivory/70">
-                      Preferred Delivery Date
-                    </label>
+                    <label htmlFor="deliveryDate" className={labelClass}>Delivery Date</label>
                     <input
+                      id="deliveryDate"
                       type="date"
                       name="deliveryDate"
                       value={formData.deliveryDate}
                       onChange={handleInputChange}
                       className="luxury-input"
-                      min={new Date().toISOString().split('T')[0]}
-                      required
+                      min={config?.today}
                     />
                   </div>
 
-                  {/* Delivery Time Slot */}
-                  <div>
-                    <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-3 dark:text-ivory/70">
-                      Delivery Time Slot
-                    </label>
-                    <div className="grid grid-cols-2 gap-3">
-                      {deliveryTimeSlots.map((slot) => (
+                  <fieldset>
+                    <legend className={labelClass}>Delivery Time Slot</legend>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {(config?.slots || []).map((slot) => (
                         <label
                           key={slot.id}
-                          className={`border p-3 rounded-sm cursor-pointer transition-all ${
-                            formData.deliveryTimeSlot === slot.id
+                          className={`border p-3 rounded-sm cursor-pointer transition-all flex justify-between gap-2 ${
+                            formData.deliverySlot === slot.id
                               ? 'border-gold bg-gold/5'
                               : 'border-blush-dark/20 hover:border-gold/50 dark:border-dark-border'
                           }`}
                         >
                           <input
                             type="radio"
-                            name="deliveryTimeSlot"
+                            name="deliverySlot"
                             value={slot.id}
-                            checked={formData.deliveryTimeSlot === slot.id}
+                            checked={formData.deliverySlot === slot.id}
                             onChange={handleInputChange}
                             className="sr-only"
                           />
                           <span className="text-sm text-charcoal dark:text-ivory">{slot.label}</span>
+                          <span className="text-sm text-gold whitespace-nowrap">
+                            {slot.charge > 0 ? `+${formatPrice(slot.charge)}` : 'Free'}
+                          </span>
                         </label>
                       ))}
                     </div>
+                  </fieldset>
+
+                  {formData.deliverySlot === 'specific' && (
+                    <div>
+                      <label htmlFor="preferredTime" className={labelClass}>Preferred Time</label>
+                      <input id="preferredTime" type="time" name="preferredTime" value={formData.preferredTime} onChange={handleInputChange} className="luxury-input" />
+                    </div>
+                  )}
+
+                  <div>
+                    <label htmlFor="instructions" className={labelClass}>Delivery Instructions (optional)</label>
+                    <textarea
+                      id="instructions"
+                      name="instructions"
+                      value={formData.instructions}
+                      onChange={handleInputChange}
+                      rows={2}
+                      maxLength={300}
+                      className="luxury-input resize-none"
+                      placeholder="e.g. Call before arriving, it's a surprise!"
+                    />
                   </div>
 
                   {/* Gift Options */}
@@ -395,7 +615,7 @@ export default function CheckoutPage() {
                         <div>
                           <span className="text-charcoal dark:text-ivory">This is a gift</span>
                           <p className="text-xs text-charcoal-light mt-1 dark:text-ivory/60">
-                            Add special gift wrapping and a personalized note card
+                            Add a free personalised message card
                           </p>
                         </div>
                       </label>
@@ -404,47 +624,6 @@ export default function CheckoutPage() {
 
                   {formData.isGift && (
                     <>
-                      {/* Gift Wrapping Options */}
-                      <div>
-                        <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-3 dark:text-ivory/70">
-                          Gift Wrapping
-                        </label>
-                        <div className="space-y-3">
-                          {giftWrappingOptions.map((option) => (
-                            <label
-                              key={option.id}
-                              className={`flex items-center gap-4 border p-4 rounded-sm cursor-pointer transition-all ${
-                                formData.giftWrapping === option.id
-                                  ? 'border-gold bg-gold/5'
-                                  : 'border-blush-dark/20 hover:border-gold/50 dark:border-dark-border'
-                              }`}
-                            >
-                              <input
-                                type="radio"
-                                name="giftWrapping"
-                                value={option.id}
-                                checked={formData.giftWrapping === option.id}
-                                onChange={handleInputChange}
-                                className="sr-only"
-                              />
-                              <div className="w-16 h-16 bg-champagne rounded-sm flex-shrink-0 flex items-center justify-center dark:bg-dark-border">
-                                <svg className="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-                                </svg>
-                              </div>
-                              <div className="flex-1">
-                                <p className="text-charcoal font-medium dark:text-ivory">{option.name}</p>
-                                <p className="text-xs text-charcoal-light dark:text-ivory/60">{option.description}</p>
-                              </div>
-                              <span className="text-gold font-medium">
-                                {option.price === 0 ? 'Free' : `+${formatPrice(option.price)}`}
-                              </span>
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Hide Price Option */}
                       <div className="border border-blush-dark/20 p-4 rounded-sm dark:border-dark-border">
                         <label className="flex items-center gap-3 cursor-pointer">
                           <input
@@ -455,31 +634,20 @@ export default function CheckoutPage() {
                             className="w-5 h-5 border-blush-dark/30 text-gold focus:ring-gold rounded"
                           />
                           <span className="text-charcoal dark:text-ivory">
-                            Hide price on delivery note
+                            Don&apos;t show the price to the recipient
                           </span>
                         </label>
                       </div>
 
-                      {/* Gift Message */}
                       <div>
-                        <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-2 dark:text-ivory/70">
-                          Your Name (for the card)
-                        </label>
-                        <input
-                          type="text"
-                          name="senderName"
-                          value={formData.senderName}
-                          onChange={handleInputChange}
-                          className="luxury-input"
-                          placeholder="From..."
-                        />
+                        <label htmlFor="senderName" className={labelClass}>Your Name (for the card)</label>
+                        <input id="senderName" type="text" name="senderName" value={formData.senderName} onChange={handleInputChange} className="luxury-input" placeholder="From..." />
                       </div>
 
                       <div>
-                        <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-2 dark:text-ivory/70">
-                          Personal Message
-                        </label>
+                        <label htmlFor="giftMessage" className={labelClass}>Personal Message</label>
                         <textarea
+                          id="giftMessage"
                           name="giftMessage"
                           value={formData.giftMessage}
                           onChange={handleInputChange}
@@ -493,18 +661,10 @@ export default function CheckoutPage() {
                         </p>
                       </div>
 
-                      {/* Note Card Preview */}
                       {(formData.giftMessage || formData.senderName) && (
                         <div>
-                          <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-3 dark:text-ivory/70">
-                            Card Preview
-                          </label>
+                          <p className={labelClass}>Card Preview</p>
                           <div className="relative bg-ivory p-6 rounded-sm border border-gold/30 shadow-lg dark:bg-charcoal">
-                            <div className="absolute top-2 right-2">
-                              <svg className="w-8 h-8 text-gold/30" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                              </svg>
-                            </div>
                             <div className="text-center mb-4">
                               <p className="text-[10px] tracking-[0.3em] uppercase text-gold">House of Gul</p>
                             </div>
@@ -516,9 +676,6 @@ export default function CheckoutPage() {
                                 — {formData.senderName}
                               </p>
                             )}
-                            <div className="absolute bottom-2 left-1/2 -translate-x-1/2">
-                              <div className="w-8 h-px bg-gold/50" />
-                            </div>
                           </div>
                         </div>
                       )}
@@ -526,19 +683,10 @@ export default function CheckoutPage() {
                   )}
 
                   <div className="flex gap-4 mt-6">
-                    <LuxuryButton
-                      type="button"
-                      variant="secondary"
-                      onClick={() => setStep(1)}
-                    >
+                    <LuxuryButton type="button" variant="secondary" onClick={() => { setError(''); setStep(1) }}>
                       Back
                     </LuxuryButton>
-                    <LuxuryButton
-                      type="button"
-                      variant="primary"
-                      className="flex-1"
-                      onClick={() => setStep(3)}
-                    >
+                    <LuxuryButton type="button" variant="primary" className="flex-1" onClick={() => goToStep(3)}>
                       Continue to Payment
                     </LuxuryButton>
                   </div>
@@ -549,72 +697,106 @@ export default function CheckoutPage() {
               {step === 3 && (
                 <div className="bg-white p-8 rounded-sm shadow-sm space-y-6 dark:bg-dark-surface">
                   <h2 className="font-serif text-xl text-charcoal mb-6 dark:text-ivory">
-                    Payment Details
+                    Payment
                   </h2>
 
+                  {/* Coupon */}
                   <div>
-                    <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-2">
-                      Card Number
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="1234 5678 9012 3456"
-                      className="luxury-input"
-                      required
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-2">
-                        Expiry Date
-                      </label>
+                    <label htmlFor="coupon" className={labelClass}>Coupon Code</label>
+                    <div className="flex gap-3">
                       <input
+                        id="coupon"
                         type="text"
-                        placeholder="MM/YY"
-                        className="luxury-input"
-                        required
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                        className="luxury-input flex-1"
+                        placeholder="Enter code"
+                        disabled={!!placedOrder}
                       />
+                      {appliedCoupon ? (
+                        <LuxuryButton
+                          type="button"
+                          variant="secondary"
+                          disabled={!!placedOrder}
+                          onClick={() => { setAppliedCoupon(''); setCouponInput('') }}
+                        >
+                          Remove
+                        </LuxuryButton>
+                      ) : (
+                        <LuxuryButton
+                          type="button"
+                          variant="secondary"
+                          disabled={!couponInput.trim()}
+                          onClick={() => setAppliedCoupon(couponInput.trim())}
+                        >
+                          Apply
+                        </LuxuryButton>
+                      )}
                     </div>
-                    <div>
-                      <label className="block text-xs tracking-widest uppercase text-charcoal-light mb-2">
-                        CVV
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="123"
-                        className="luxury-input"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="bg-champagne/50 p-4 rounded-sm">
-                    <div className="flex items-center gap-3">
-                      <svg
-                        className="w-5 h-5 text-gold"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1}
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                      <p className="text-xs text-charcoal-light">
-                        Your payment is secured with 256-bit SSL encryption
+                    {appliedCoupon && quote?.coupon && (
+                      <p className={`text-xs mt-2 ${quote.coupon.valid ? 'text-green-700' : 'text-red-600'}`}>
+                        {quote.coupon.message}
                       </p>
-                    </div>
+                    )}
                   </div>
+
+                  {/* Payment method */}
+                  <fieldset>
+                    <legend className={labelClass}>Payment Method</legend>
+                    <div className="space-y-3">
+                      {config?.razorpay && (
+                        <label
+                          className={`flex items-start gap-3 border p-4 rounded-sm cursor-pointer ${
+                            paymentMethod === 'razorpay' ? 'border-gold bg-gold/5' : 'border-blush-dark/20 dark:border-dark-border'
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="paymentMethod"
+                            value="razorpay"
+                            checked={paymentMethod === 'razorpay'}
+                            onChange={() => setPaymentMethod('razorpay')}
+                            disabled={!!placedOrder}
+                            className="mt-1"
+                          />
+                          <span>
+                            <span className="block text-charcoal dark:text-ivory">Pay online</span>
+                            <span className="block text-xs text-charcoal-light dark:text-ivory/60">
+                              UPI, cards, net banking and wallets — secured by Razorpay
+                            </span>
+                          </span>
+                        </label>
+                      )}
+                      <label
+                        className={`flex items-start gap-3 border p-4 rounded-sm cursor-pointer ${
+                          paymentMethod === 'cod' ? 'border-gold bg-gold/5' : 'border-blush-dark/20 dark:border-dark-border'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value="cod"
+                          checked={paymentMethod === 'cod'}
+                          onChange={() => setPaymentMethod('cod')}
+                          disabled={!!placedOrder}
+                          className="mt-1"
+                        />
+                        <span>
+                          <span className="block text-charcoal dark:text-ivory">Pay on delivery</span>
+                          <span className="block text-xs text-charcoal-light dark:text-ivory/60">
+                            Cash or UPI when your flowers arrive. We&apos;ll call to confirm your order.
+                          </span>
+                        </span>
+                      </label>
+                    </div>
+                  </fieldset>
 
                   <div className="flex gap-4 mt-6">
                     <LuxuryButton
                       type="button"
                       variant="secondary"
-                      onClick={() => setStep(2)}
+                      disabled={!!placedOrder}
+                      onClick={() => { setError(''); setStep(2) }}
                     >
                       Back
                     </LuxuryButton>
@@ -622,14 +804,15 @@ export default function CheckoutPage() {
                       type="submit"
                       variant="gold"
                       className="flex-1"
-                      disabled={isProcessing}
+                      disabled={isProcessing || quoteLoading || !quote || quote.missingItems.length > 0}
                     >
-                      {isProcessing ? 'Processing...' : `Pay ${formatPrice(
-                        totalPrice +
-                        (totalPrice >= 200 ? 0 : 15) +
-                        (formData.isGift ? (giftWrappingOptions.find(o => o.id === formData.giftWrapping)?.price || 0) : 0) +
-                        (deliveryTimeSlots.find(s => s.id === formData.deliveryTimeSlot)?.price || 0)
-                      )}`}
+                      {isProcessing
+                        ? 'Placing order...'
+                        : placedOrder && paymentPending
+                        ? `Pay now ${formatPrice(placedOrder.total)}`
+                        : paymentMethod === 'razorpay'
+                        ? `Pay ${formatPrice(total)}`
+                        : `Place Order · ${formatPrice(total)}`}
                     </LuxuryButton>
                   </div>
                 </div>
@@ -648,12 +831,14 @@ export default function CheckoutPage() {
                 {state.items.map((item) => (
                   <div key={item.product.id} className="flex gap-4">
                     <div className="relative w-16 h-16 rounded-sm overflow-hidden bg-champagne flex-shrink-0 dark:bg-dark-border">
-                      <Image
-                        src={item.product.images[0]}
-                        alt={item.product.name}
-                        fill
-                        className="object-cover"
-                      />
+                      {item.product.images[0] && (
+                        <Image
+                          src={item.product.images[0]}
+                          alt={item.product.name}
+                          fill
+                          className="object-cover"
+                        />
+                      )}
                       <span className="absolute -top-1 -right-1 w-5 h-5 bg-charcoal text-ivory text-xs flex items-center justify-center rounded-full">
                         {item.quantity}
                       </span>
@@ -673,40 +858,36 @@ export default function CheckoutPage() {
               <div className="border-t border-blush-dark/20 pt-4 space-y-2 dark:border-dark-border">
                 <div className="flex justify-between text-sm">
                   <span className="text-charcoal-light dark:text-ivory/70">Subtotal</span>
-                  <span className="text-charcoal dark:text-ivory">{formatPrice(totalPrice)}</span>
+                  <span className="text-charcoal dark:text-ivory">{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-charcoal-light dark:text-ivory/70">Shipping</span>
+                  <span className="text-charcoal-light dark:text-ivory/70">Delivery</span>
                   <span className="text-charcoal dark:text-ivory">
-                    {totalPrice >= 200 ? (
+                    {!pincodeReady ? (
+                      <span className="text-charcoal-light">Enter pincode</span>
+                    ) : deliveryCharge === 0 ? (
                       <span className="text-gold">Free</span>
                     ) : (
-                      formatPrice(15)
+                      formatPrice(deliveryCharge)
                     )}
                   </span>
                 </div>
-                {formData.isGift && (
+                {slotFee > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-charcoal-light dark:text-ivory/70">
-                      Gift Wrapping ({giftWrappingOptions.find(o => o.id === formData.giftWrapping)?.name})
-                    </span>
-                    <span className="text-charcoal dark:text-ivory">
-                      {giftWrappingOptions.find(o => o.id === formData.giftWrapping)?.price === 0 ? (
-                        <span className="text-gold">Free</span>
-                      ) : (
-                        formatPrice(giftWrappingOptions.find(o => o.id === formData.giftWrapping)?.price || 0)
-                      )}
-                    </span>
+                    <span className="text-charcoal-light dark:text-ivory/70">Time Slot</span>
+                    <span className="text-charcoal dark:text-ivory">{formatPrice(slotFee)}</span>
                   </div>
                 )}
-                {deliveryTimeSlots.find(s => s.id === formData.deliveryTimeSlot)?.price !== undefined &&
-                 deliveryTimeSlots.find(s => s.id === formData.deliveryTimeSlot)!.price > 0 && (
+                {discount > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-charcoal-light dark:text-ivory/70">Priority Delivery</span>
-                    <span className="text-charcoal dark:text-ivory">
-                      {formatPrice(deliveryTimeSlots.find(s => s.id === formData.deliveryTimeSlot)?.price || 0)}
-                    </span>
+                    <span className="text-charcoal-light dark:text-ivory/70">Discount ({quote?.coupon?.code})</span>
+                    <span className="text-green-700">−{formatPrice(discount)}</span>
                   </div>
+                )}
+                {freeThreshold > 0 && subtotal < freeThreshold && (
+                  <p className="text-xs text-charcoal-light pt-1 dark:text-ivory/60">
+                    Add {formatPrice(freeThreshold - subtotal)} more for free delivery.
+                  </p>
                 )}
               </div>
 
@@ -714,39 +895,16 @@ export default function CheckoutPage() {
                 <div className="flex justify-between">
                   <span className="text-charcoal font-medium dark:text-ivory">Total</span>
                   <span className="font-serif text-xl text-gold">
-                    {formatPrice(
-                      totalPrice +
-                      (totalPrice >= 200 ? 0 : 15) +
-                      (formData.isGift ? (giftWrappingOptions.find(o => o.id === formData.giftWrapping)?.price || 0) : 0) +
-                      (deliveryTimeSlots.find(s => s.id === formData.deliveryTimeSlot)?.price || 0)
-                    )}
+                    {formatPrice(total)}
                   </span>
                 </div>
               </div>
 
-              {/* Trust Badges */}
-              <div className="mt-6 pt-4 border-t border-blush-dark/20 dark:border-dark-border">
-                <div className="flex items-center justify-center gap-4 text-charcoal-light dark:text-ivory/60">
-                  <div className="flex flex-col items-center">
-                    <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                    <span className="text-[10px]">Secure</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                    <span className="text-[10px]">Protected</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                    </svg>
-                    <span className="text-[10px]">Encrypted</span>
-                  </div>
-                </div>
-              </div>
+              {config && (
+                <p className="mt-6 pt-4 border-t border-blush-dark/20 text-xs text-center text-charcoal-light dark:border-dark-border dark:text-ivory/60">
+                  Need help? Call or WhatsApp us at {config.storePhone}
+                </p>
+              )}
             </div>
           </div>
         </div>

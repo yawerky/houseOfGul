@@ -4,6 +4,10 @@ import BlogCard from '@/components/blog/BlogCard'
 import SectionWrapper from '@/components/ui/SectionWrapper'
 import Image from 'next/image'
 
+// Always read the latest products, banners and posts from the database.
+export const dynamic = 'force-dynamic'
+
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
 
 export const metadata: Metadata = {

@@ -118,7 +118,7 @@ export default async function CustomersPage() {
                     <td className="px-6 py-4 text-charcoal">{customer.phone || '-'}</td>
                     <td className="px-6 py-4 text-charcoal">{customer.orders.length}</td>
                     <td className="px-6 py-4 text-charcoal font-medium">
-                      ${customer.orders.reduce((sum, o) => sum + o.total, 0).toFixed(2)}
+                      ₹{customer.orders.reduce((sum, o) => sum + o.total, 0).toLocaleString('en-IN')}
                     </td>
                     <td className="px-6 py-4 text-charcoal-light text-sm">
                       {new Date(customer.createdAt).toLocaleDateString()}

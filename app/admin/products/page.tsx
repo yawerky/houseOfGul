@@ -168,10 +168,10 @@ export default async function ProductsPage({
                       </span>
                     </td>
                     <td className="px-6 py-4 text-charcoal">
-                      ${product.price.toFixed(2)}
+                      ₹{product.price.toLocaleString('en-IN')}
                       {product.comparePrice && (
                         <span className="text-sm text-charcoal-light line-through ml-2">
-                          ${product.comparePrice.toFixed(2)}
+                          ₹{product.comparePrice.toLocaleString('en-IN')}
                         </span>
                       )}
                     </td>

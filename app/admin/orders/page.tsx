@@ -132,7 +132,7 @@ export default async function OrdersPage({
                       {order.items.length} item(s)
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-charcoal font-medium">
-                      ${order.total.toFixed(2)}
+                      ₹{order.total.toLocaleString('en-IN')}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(order.status)}`}>

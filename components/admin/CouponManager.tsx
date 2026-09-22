@@ -146,12 +146,12 @@ export default function CouponManager({ initialCoupons }: { initialCoupons: Coup
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
                 >
                   <option value="percentage">Percentage (%)</option>
-                  <option value="fixed">Fixed Amount ($)</option>
+                  <option value="fixed">Fixed Amount (₹)</option>
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-medium text-charcoal mb-1">
-                  Discount Value * {formData.discountType === 'percentage' ? '(%)' : '($)'}
+                  Discount Value * {formData.discountType === 'percentage' ? '(%)' : '(₹)'}
                 </label>
                 <input
                   type="number"
@@ -179,7 +179,7 @@ export default function CouponManager({ initialCoupons }: { initialCoupons: Coup
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-charcoal mb-1">Min Order Amount ($)</label>
+                <label className="block text-sm font-medium text-charcoal mb-1">Min Order Amount (₹)</label>
                 <input
                   type="number"
                   step="0.01"
@@ -191,7 +191,7 @@ export default function CouponManager({ initialCoupons }: { initialCoupons: Coup
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-charcoal mb-1">Max Discount ($)</label>
+                <label className="block text-sm font-medium text-charcoal mb-1">Max Discount (₹)</label>
                 <input
                   type="number"
                   step="0.01"
@@ -260,13 +260,13 @@ export default function CouponManager({ initialCoupons }: { initialCoupons: Coup
                   <td className="px-6 py-4 text-charcoal">
                     {coupon.discountType === 'percentage'
                       ? `${coupon.discountValue}%`
-                      : `$${coupon.discountValue}`}
+                      : `₹${coupon.discountValue}`}
                     {coupon.maxDiscount && (
-                      <span className="text-sm text-charcoal-light block">Max: ${coupon.maxDiscount}</span>
+                      <span className="text-sm text-charcoal-light block">Max: ₹{coupon.maxDiscount}</span>
                     )}
                   </td>
                   <td className="px-6 py-4 text-charcoal">
-                    {coupon.minOrderAmount ? `$${coupon.minOrderAmount}` : '-'}
+                    {coupon.minOrderAmount ? `₹${coupon.minOrderAmount}` : '-'}
                   </td>
                   <td className="px-6 py-4 text-charcoal">
                     {coupon.usedCount} / {coupon.usageLimit || '∞'}

@@ -1,155 +1,113 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+
+type Settings = {
+  storeName: string
+  storeEmail: string
+  storePhone: string
+  whatsappNumber: string
+  orderPrefix: string
+  minimumOrderAmount: string
+  freeDeliveryThreshold: string
+  defaultDeliveryCharge: string
+  specificSlotCharge: string
+  midnightSlotCharge: string
+}
+
+const fields: { key: keyof Settings; label: string; type: 'text' | 'email' | 'tel' | 'number'; help?: string }[] = [
+  { key: 'storeName', label: 'Store Name', type: 'text' },
+  { key: 'storeEmail', label: 'Store Email', type: 'email' },
+  { key: 'storePhone', label: 'Store Phone', type: 'tel' },
+  { key: 'whatsappNumber', label: 'WhatsApp Number', type: 'tel', help: 'With country code, digits only, e.g. 919461900344' },
+  { key: 'orderPrefix', label: 'Order Number Prefix', type: 'text', help: 'Order numbers look like HOG-260922-AB12' },
+  { key: 'minimumOrderAmount', label: 'Minimum Order Amount (₹)', type: 'number', help: '0 = no minimum' },
+  { key: 'freeDeliveryThreshold', label: 'Free Delivery Above (₹)', type: 'number', help: 'Used when a pincode has no own limit. 0 = never free' },
+  { key: 'defaultDeliveryCharge', label: 'Default Delivery Charge (₹)', type: 'number', help: 'Used until you add delivery pincodes' },
+  { key: 'specificSlotCharge', label: 'Specific Hour Delivery Charge (₹)', type: 'number' },
+  { key: 'midnightSlotCharge', label: 'Midnight Delivery Charge (₹)', type: 'number' },
+]
 
 export default function SettingsForm() {
+  const [settings, setSettings] = useState<Settings | null>(null)
   const [loading, setLoading] = useState(false)
-  const [saved, setSaved] = useState(false)
+  const [message, setMessage] = useState<{ type: 'ok' | 'error'; text: string } | null>(null)
 
-  const [settings, setSettings] = useState({
-    storeName: 'House of Gul',
-    storeEmail: 'contact@houseofgul.com',
-    storePhone: '+1 (555) 123-4567',
-    currency: 'USD',
-    timezone: 'America/New_York',
-    orderPrefix: 'HOG',
-    minimumOrderAmount: '50',
-    freeShippingThreshold: '150',
-  })
+  useEffect(() => {
+    fetch('/api/admin/settings')
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then(setSettings)
+      .catch(() => setMessage({ type: 'error', text: 'Could not load settings. Refresh the page to try again.' }))
+  }, [])
 
   const handleSave = async () => {
+    if (!settings) return
     setLoading(true)
-    setSaved(false)
-
-    // In a real app, you would save these to the database
-    // For now, we just simulate a save
-    await new Promise((resolve) => setTimeout(resolve, 500))
-
-    setLoading(false)
-    setSaved(true)
-    setTimeout(() => setSaved(false), 3000)
+    setMessage(null)
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings),
+      })
+      if (!res.ok) throw new Error()
+      setSettings(await res.json())
+      setMessage({ type: 'ok', text: 'Settings saved.' })
+      setTimeout(() => setMessage(null), 3000)
+    } catch {
+      setMessage({ type: 'error', text: 'Settings were not saved. Please try again.' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">
-      <h2 className="font-serif text-lg text-charcoal mb-4">Store Settings</h2>
+      <h2 className="font-serif text-lg text-charcoal mb-1">Store Settings</h2>
+      <p className="text-sm text-charcoal-light mb-4">
+        Prices are in Indian Rupees (₹). These values are used at checkout.
+      </p>
 
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-charcoal mb-1">Store Name</label>
-            <input
-              type="text"
-              value={settings.storeName}
-              onChange={(e) => setSettings({ ...settings, storeName: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
-            />
+      {!settings ? (
+        <p className="text-sm text-charcoal-light">{message?.text || 'Loading settings…'}</p>
+      ) : (
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {fields.map((field) => (
+              <div key={field.key}>
+                <label htmlFor={`setting-${field.key}`} className="block text-sm font-medium text-charcoal mb-1">
+                  {field.label}
+                </label>
+                <input
+                  id={`setting-${field.key}`}
+                  type={field.type}
+                  min={field.type === 'number' ? 0 : undefined}
+                  step={field.type === 'number' ? 1 : undefined}
+                  value={settings[field.key]}
+                  onChange={(e) => setSettings({ ...settings, [field.key]: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
+                />
+                {field.help && <p className="text-xs text-charcoal-light mt-1">{field.help}</p>}
+              </div>
+            ))}
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-charcoal mb-1">Store Email</label>
-            <input
-              type="email"
-              value={settings.storeEmail}
-              onChange={(e) => setSettings({ ...settings, storeEmail: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-charcoal mb-1">Store Phone</label>
-            <input
-              type="tel"
-              value={settings.storePhone}
-              onChange={(e) => setSettings({ ...settings, storePhone: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-charcoal mb-1">Order Prefix</label>
-            <input
-              type="text"
-              value={settings.orderPrefix}
-              onChange={(e) => setSettings({ ...settings, orderPrefix: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-charcoal mb-1">Currency</label>
-            <select
-              value={settings.currency}
-              onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
+          <div className="flex items-center gap-4 pt-4">
+            <button
+              onClick={handleSave}
+              disabled={loading}
+              className="px-6 py-2 bg-gold text-white rounded-lg hover:bg-gold-dark transition-colors disabled:opacity-50"
             >
-              <option value="USD">USD - US Dollar</option>
-              <option value="INR">INR - Indian Rupee</option>
-              <option value="EUR">EUR - Euro</option>
-              <option value="GBP">GBP - British Pound</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-charcoal mb-1">Timezone</label>
-            <select
-              value={settings.timezone}
-              onChange={(e) => setSettings({ ...settings, timezone: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
-            >
-              <option value="America/New_York">Eastern Time (ET)</option>
-              <option value="America/Chicago">Central Time (CT)</option>
-              <option value="America/Denver">Mountain Time (MT)</option>
-              <option value="America/Los_Angeles">Pacific Time (PT)</option>
-              <option value="Asia/Kolkata">India Standard Time (IST)</option>
-              <option value="Europe/London">Greenwich Mean Time (GMT)</option>
-            </select>
+              {loading ? 'Saving...' : 'Save Settings'}
+            </button>
+            {message && (
+              <span className={`text-sm ${message.type === 'ok' ? 'text-green-600' : 'text-red-600'}`}>
+                {message.text}
+              </span>
+            )}
           </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-charcoal mb-1">
-              Minimum Order Amount ($)
-            </label>
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              value={settings.minimumOrderAmount}
-              onChange={(e) => setSettings({ ...settings, minimumOrderAmount: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-charcoal mb-1">
-              Free Shipping Threshold ($)
-            </label>
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              value={settings.freeShippingThreshold}
-              onChange={(e) => setSettings({ ...settings, freeShippingThreshold: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4 pt-4">
-          <button
-            onClick={handleSave}
-            disabled={loading}
-            className="px-6 py-2 bg-gold text-white rounded-lg hover:bg-gold-dark transition-colors disabled:opacity-50"
-          >
-            {loading ? 'Saving...' : 'Save Settings'}
-          </button>
-          {saved && <span className="text-green-600 text-sm">Settings saved successfully!</span>}
-        </div>
-      </div>
+      )}
     </div>
   )
 }

@@ -251,6 +251,7 @@ export default function PincodeManager({
                 <option value="same-day">Same Day</option>
                 <option value="next-day">Next Day</option>
                 <option value="2-3-days">2-3 Days</option>
+                <option value="not-serviceable">Not Serviceable</option>
               </select>
             </div>
             <div>
@@ -341,7 +342,7 @@ export default function PincodeManager({
                     {p.city}, {p.state}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-charcoal">
-                    ₹{p.deliveryCharge.toFixed(2)}
+                    ₹{p.deliveryCharge.toLocaleString('en-IN')}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 text-xs rounded-full ${
@@ -349,10 +350,13 @@ export default function PincodeManager({
                         ? 'bg-green-100 text-green-800'
                         : p.deliveryZone === 'next-day'
                         ? 'bg-blue-100 text-blue-800'
+                        : p.deliveryZone === 'not-serviceable'
+                        ? 'bg-red-100 text-red-800'
                         : 'bg-yellow-100 text-yellow-800'
                     }`}>
                       {p.deliveryZone === 'same-day' ? 'Same Day' :
-                       p.deliveryZone === 'next-day' ? 'Next Day' : '2-3 Days'}
+                       p.deliveryZone === 'next-day' ? 'Next Day' :
+                       p.deliveryZone === 'not-serviceable' ? 'Not Serviceable' : '2-3 Days'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">

@@ -5,10 +5,10 @@ import { useCurrency, Currency } from '@/context/CurrencyContext'
 import { cn } from '@/lib/utils'
 
 const currencyOptions: { code: Currency; label: string; symbol: string }[] = [
+  { code: 'INR', label: 'INR', symbol: '₹' },
   { code: 'USD', label: 'USD', symbol: '$' },
   { code: 'GBP', label: 'GBP', symbol: '£' },
   { code: 'EUR', label: 'EUR', symbol: '€' },
-  { code: 'INR', label: 'INR', symbol: '₹' },
 ]
 
 interface CurrencySelectorProps {

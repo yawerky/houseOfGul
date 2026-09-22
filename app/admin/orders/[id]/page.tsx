@@ -10,6 +10,7 @@ async function getOrder(id: string) {
     where: { id },
     include: {
       items: true,
+      timeline: { orderBy: { createdAt: 'asc' } },
     },
   })
 }
@@ -70,7 +71,7 @@ export default async function OrderDetailPage({
             <div>
               <h1 className="text-2xl font-serif text-charcoal">Order {order.orderNumber}</h1>
               <p className="text-charcoal-light">
-                Placed on {new Date(order.createdAt).toLocaleDateString('en-US', {
+                Placed on {new Date(order.createdAt).toLocaleDateString('en-IN', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
@@ -113,8 +114,8 @@ export default async function OrderDetailPage({
                         <p className="text-sm text-charcoal-light">Qty: {item.quantity}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium text-charcoal">${(item.price * item.quantity).toFixed(2)}</p>
-                        <p className="text-sm text-charcoal-light">${item.price.toFixed(2)} each</p>
+                        <p className="font-medium text-charcoal">₹{(item.price * item.quantity).toLocaleString('en-IN')}</p>
+                        <p className="text-sm text-charcoal-light">₹{item.price.toLocaleString('en-IN')} each</p>
                       </div>
                     </div>
                   ))}
@@ -123,21 +124,21 @@ export default async function OrderDetailPage({
                 <div className="mt-6 pt-4 border-t border-gray-200 space-y-2">
                   <div className="flex justify-between text-charcoal-light">
                     <span>Subtotal</span>
-                    <span>${order.subtotal.toFixed(2)}</span>
+                    <span>₹{order.subtotal.toLocaleString('en-IN')}</span>
                   </div>
                   <div className="flex justify-between text-charcoal-light">
-                    <span>Shipping</span>
-                    <span>${order.deliveryCharge.toFixed(2)}</span>
+                    <span>Delivery</span>
+                    <span>₹{order.deliveryCharge.toLocaleString('en-IN')}</span>
                   </div>
                   {order.discount > 0 && (
                     <div className="flex justify-between text-green-600">
                       <span>Discount</span>
-                      <span>-${order.discount.toFixed(2)}</span>
+                      <span>-₹{order.discount.toLocaleString('en-IN')}</span>
                     </div>
                   )}
                   <div className="flex justify-between text-lg font-semibold text-charcoal pt-2 border-t border-gray-200">
                     <span>Total</span>
-                    <span>${order.total.toFixed(2)}</span>
+                    <span>₹{order.total.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
               </div>
@@ -155,6 +156,14 @@ export default async function OrderDetailPage({
                       <span className="font-medium">Gift Wrap:</span> {order.giftWrapType}
                     </p>
                   )}
+                  {order.senderName && (
+                    <p className="text-charcoal mb-2">
+                      <span className="font-medium">From:</span> {order.senderName}
+                    </p>
+                  )}
+                  {order.hidePrice && (
+                    <p className="text-charcoal mb-2 font-medium">Do not show the price to the recipient.</p>
+                  )}
                   {order.giftMessage && (
                     <div>
                       <span className="font-medium text-charcoal">Gift Message:</span>
@@ -164,6 +173,27 @@ export default async function OrderDetailPage({
                     </div>
                   )}
                 </div>
+              </div>
+            )}
+
+            {/* Timeline */}
+            {order.timeline.length > 0 && (
+              <div className="bg-white rounded-lg shadow-sm">
+                <div className="px-6 py-4 border-b border-gray-200">
+                  <h2 className="font-serif text-lg text-charcoal">Timeline</h2>
+                </div>
+                <ul className="p-6 space-y-3">
+                  {order.timeline.map((t) => (
+                    <li key={t.id} className="flex justify-between gap-4 text-sm">
+                      <span className="text-charcoal">
+                        <span className="font-medium capitalize">{t.status.replace(/-/g, ' ')}</span> — {t.message}
+                      </span>
+                      <span className="text-charcoal-light whitespace-nowrap">
+                        {new Date(t.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
 
@@ -183,7 +213,11 @@ export default async function OrderDetailPage({
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Update Status */}
-            <OrderStatusUpdate orderId={order.id} currentStatus={order.status} />
+            <OrderStatusUpdate
+              orderId={order.id}
+              currentStatus={order.status}
+              currentPaymentStatus={order.paymentStatus}
+            />
 
             {/* Customer Info */}
             <div className="bg-white rounded-lg shadow-sm">
@@ -194,6 +228,24 @@ export default async function OrderDetailPage({
                 <p className="font-medium text-charcoal">{order.shippingFirstName} {order.shippingLastName}</p>
                 <p className="text-charcoal-light">{order.email}</p>
                 <p className="text-charcoal-light">{order.phone}</p>
+                <div className="flex gap-2 mt-4">
+                  <a
+                    href={`https://wa.me/91${order.phone.replace(/\D/g, '').slice(-10)}?text=${encodeURIComponent(
+                      `Hello ${order.shippingFirstName}, this is House of Gul about your order ${order.orderNumber}. `
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 text-center px-3 py-2 text-sm rounded-lg bg-green-600 text-white hover:bg-green-700"
+                  >
+                    WhatsApp
+                  </a>
+                  <a
+                    href={`tel:+91${order.phone.replace(/\D/g, '').slice(-10)}`}
+                    className="flex-1 text-center px-3 py-2 text-sm rounded-lg border border-gray-200 text-charcoal hover:bg-gray-50"
+                  >
+                    Call
+                  </a>
+                </div>
               </div>
             </div>
 
@@ -221,7 +273,7 @@ export default async function OrderDetailPage({
                   <p><span className="font-medium text-charcoal">Zone:</span> {order.deliveryZone}</p>
                 )}
                 {order.deliveryDate && (
-                  <p><span className="font-medium text-charcoal">Date:</span> {new Date(order.deliveryDate).toLocaleDateString()}</p>
+                  <p><span className="font-medium text-charcoal">Date:</span> {new Date(order.deliveryDate).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', year: 'numeric' })}</p>
                 )}
                 {order.deliverySlot && (
                   <p><span className="font-medium text-charcoal">Time Slot:</span> {order.deliverySlot}</p>
@@ -235,8 +287,9 @@ export default async function OrderDetailPage({
                 <h2 className="font-serif text-lg text-charcoal">Payment</h2>
               </div>
               <div className="p-6 text-charcoal-light">
-                <p><span className="font-medium text-charcoal">Method:</span> {order.paymentMethod || 'N/A'}</p>
+                <p><span className="font-medium text-charcoal">Method:</span> {order.paymentMethod === 'cod' ? 'Pay on delivery' : order.paymentMethod === 'razorpay' ? 'Online (Razorpay)' : order.paymentMethod || 'N/A'}</p>
                 <p><span className="font-medium text-charcoal">Status:</span> {order.paymentStatus}</p>
+                {order.adminNote && <p className="mt-2 text-sm whitespace-pre-line">{order.adminNote}</p>}
               </div>
             </div>
           </div>

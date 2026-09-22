@@ -1,6 +1,10 @@
 import { MetadataRoute } from 'next'
 import { prisma } from '@/lib/prisma'
 
+// Always read the latest products, banners and posts from the database.
+export const dynamic = 'force-dynamic'
+
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
 
@@ -81,20 +85,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       select: { slug: true },
     })
 
-    // Category pages
+    // Category pages (dedicated cluster pages)
     const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({
-      url: `${baseUrl}/shop?category=${cat.slug}`,
+      url: `${baseUrl}/category/${cat.slug}`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
-      priority: 0.85,
+      priority: 0.9,
     }))
 
-    // Occasion pages
+    // Occasion pages (dedicated cluster pages)
     const occasionPages: MetadataRoute.Sitemap = occasions.map((occ) => ({
-      url: `${baseUrl}/shop?occasion=${occ.slug}`,
+      url: `${baseUrl}/occasion/${occ.slug}`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
-      priority: 0.85,
+      priority: 0.9,
+    }))
+
+    // Web Stories
+    const storyPages: MetadataRoute.Sitemap = products.slice(0, 10).map((product) => ({
+      url: `${baseUrl}/stories/${product.slug}`,
+      lastModified: product.updatedAt,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
     }))
 
     // Product pages
@@ -113,7 +125,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }))
 
-    return [...staticPages, ...categoryPages, ...occasionPages, ...productPages, ...blogPages]
+    return [...staticPages, ...categoryPages, ...occasionPages, ...productPages, ...blogPages, ...storyPages]
   } catch (error) {
     console.error('Error generating sitemap:', error)
     return staticPages

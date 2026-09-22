@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import ImageUploader from '@/components/admin/ImageUploader'
 
 interface Product {
   id: string
@@ -197,6 +198,9 @@ export default function ProductForm({ product }: { product?: Product }) {
               className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
               placeholder="e.g., classic-rose-bouquet"
             />
+            <p className="text-xs text-charcoal-light mt-1">
+              Seasonal versions: end the slug with -spring, -summer, -autumn or -winter (e.g. the-bloom-letter-summer) to show them as one product with a season picker.
+            </p>
           </div>
 
           <div>
@@ -300,7 +304,7 @@ export default function ProductForm({ product }: { product?: Product }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium text-charcoal mb-1">
-              Price ($) *
+              Price (₹) *
             </label>
             <input
               type="number"
@@ -316,7 +320,7 @@ export default function ProductForm({ product }: { product?: Product }) {
 
           <div>
             <label className="block text-sm font-medium text-charcoal mb-1">
-              Compare at Price ($)
+              Compare at Price (₹)
             </label>
             <input
               type="number"
@@ -369,21 +373,26 @@ export default function ProductForm({ product }: { product?: Product }) {
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
         <h2 className="font-serif text-lg text-charcoal mb-4">Images</h2>
 
-        <div>
-          <label className="block text-sm font-medium text-charcoal mb-1">
-            Image URLs (one per line)
-          </label>
+        <ImageUploader
+          images={formData.images.split('\n').map((s: string) => s.trim()).filter(Boolean)}
+          onChange={(list) => setFormData((prev) => ({ ...prev, images: list.join('\n') }))}
+          folder="products"
+        />
+        <p className="text-sm text-charcoal-light mt-3">
+          Upload in order: main front photo first. Use ← → to reorder. 3:4 portrait photos (e.g. 1500×2000) look best.
+        </p>
+
+        <details className="mt-4">
+          <summary className="text-sm text-charcoal-light cursor-pointer">Or paste image links</summary>
           <textarea
             value={formData.images}
             onChange={(e) => setFormData({ ...formData, images: e.target.value })}
             rows={4}
-            className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
+            className="mt-2 w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
             placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
           />
-          <p className="text-sm text-charcoal-light mt-1">
-            Enter image URLs, one per line. The first image will be used as the main product image.
-          </p>
-        </div>
+          <p className="text-sm text-charcoal-light mt-1">One link per line.</p>
+        </details>
       </div>
 
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">

@@ -13,6 +13,7 @@ export interface Product {
   season: string
   rating: number
   reviewCount: number
+  seasonCount?: number
 }
 
 export interface Review {
