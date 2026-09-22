@@ -142,7 +142,7 @@ export default async function AboutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="order-2 lg:order-1 relative aspect-[4/5] rounded-sm overflow-hidden">
             <Image
-              src={craftPhoto?.image || "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80"}
+              src={craftPhoto?.image || "/images/products/the-keepsake-hatbox-autumn-4.jpg"}
               alt="Master florist at work"
               fill
               className="object-cover"
