@@ -26,7 +26,7 @@ export default function FAQSchema() {
         name: 'How much does flower delivery cost in Jaipur?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'We offer free delivery on orders above ₹999 within Jaipur city limits. For orders below ₹999, a nominal delivery charge applies. Check our website for current delivery rates.',
+          text: 'Delivery is free on every order, across all the areas of Jaipur we deliver to.',
         },
       },
       {

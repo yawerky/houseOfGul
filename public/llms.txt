@@ -45,7 +45,7 @@ All product pages include Schema.org Product markup with:
 
 ## Pricing
 - Bouquets start from ₹499
-- Free delivery on orders above ₹999
+- Free delivery across Jaipur
 - All prices include taxes
 
 ## Business Hours

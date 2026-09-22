@@ -132,9 +132,9 @@ export default function ProductSpecifications({
                   <h4 className="font-medium text-charcoal mb-1">Delivery Information</h4>
                   <p className="text-sm text-charcoal-light">{deliveryInfo}</p>
                   <ul className="mt-3 space-y-1 text-sm text-charcoal-light">
-                    <li>• Same-day delivery for orders before 2 PM</li>
-                    <li>• Express 3-hour delivery available</li>
-                    <li>• Free delivery on orders above ₹999</li>
+                    <li>• Order 6 AM – 2 PM: delivered the same day by 6 PM</li>
+                    <li>• Order after 2 PM: delivered by 12 PM (noon)</li>
+                    <li>• Free delivery across Jaipur</li>
                     <li>• Available across all Jaipur localities</li>
                   </ul>
                 </div>

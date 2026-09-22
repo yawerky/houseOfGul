@@ -34,4 +34,5 @@ export const jaipurPincodes: { code: string; area: string }[] = [
   { code: '302039', area: 'Vidhyadhar Nagar' },
 ]
 
-export const JAIPUR_DELIVERY_CHARGE = 99
+// Delivery is free in all areas.
+export const JAIPUR_DELIVERY_CHARGE = 0

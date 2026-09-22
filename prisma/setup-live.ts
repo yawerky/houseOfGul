@@ -126,6 +126,25 @@ async function main() {
     console.log(`✓ Delivery wording updated: ${oldInfoProducts.length} products, ${fixedPosts} articles`)
   }
 
+  // Free delivery everywhere: switch old default charges and wording
+  // (values that were changed in admin to something else are left alone).
+  await prisma.setting.updateMany({ where: { key: 'defaultDeliveryCharge', value: '99' }, data: { value: '0' } })
+  await prisma.setting.updateMany({ where: { key: 'freeDeliveryThreshold', value: '999' }, data: { value: '0' } })
+  const oldFreeText = 'Free delivery on orders above ₹999.'
+  const paidInfo = await prisma.product.findMany({ where: { deliveryInfo: { contains: oldFreeText } } })
+  for (const p of paidInfo) {
+    await prisma.product.update({
+      where: { id: p.id },
+      data: { deliveryInfo: (p.deliveryInfo || '').replace(oldFreeText, 'Free delivery across Jaipur.') },
+    })
+  }
+  if (paidInfo.length) console.log(`✓ Free delivery wording updated on ${paidInfo.length} products`)
+  const freedAreas = await prisma.pincode.updateMany({
+    where: { city: 'Jaipur', deliveryCharge: 99 },
+    data: { deliveryCharge: 0 },
+  })
+  if (freedAreas.count) console.log(`✓ Free delivery set on ${freedAreas.count} Jaipur pincodes`)
+
   // Delivery areas: add Jaipur city pincodes once, when none exist yet.
   if ((await prisma.pincode.count({ where: { city: 'Jaipur' } })) === 0) {
     for (const p of jaipurPincodes) {

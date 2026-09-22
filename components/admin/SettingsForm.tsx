@@ -20,8 +20,8 @@ const fields: { key: keyof Settings; label: string; type: 'text' | 'email' | 'te
   { key: 'whatsappNumber', label: 'WhatsApp Number', type: 'tel', help: 'With country code, digits only, e.g. 919461900344' },
   { key: 'orderPrefix', label: 'Order Number Prefix', type: 'text', help: 'Order numbers look like HOG-260922-AB12' },
   { key: 'minimumOrderAmount', label: 'Minimum Order Amount (₹)', type: 'number', help: '0 = no minimum' },
-  { key: 'freeDeliveryThreshold', label: 'Free Delivery Above (₹)', type: 'number', help: 'Used when a pincode has no own limit. 0 = never free' },
-  { key: 'defaultDeliveryCharge', label: 'Default Delivery Charge (₹)', type: 'number', help: 'Used until you add delivery pincodes' },
+  { key: 'freeDeliveryThreshold', label: 'Free Delivery Above (₹)', type: 'number', help: 'Only matters if you charge for delivery. 0 = no threshold' },
+  { key: 'defaultDeliveryCharge', label: 'Default Delivery Charge (₹)', type: 'number', help: '0 = free delivery (areas without their own charge)' },
 ]
 
 export default function SettingsForm() {

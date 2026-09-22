@@ -123,7 +123,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
       </amp-story-grid-layer>
       <amp-story-grid-layer template="vertical" class="center">
         <h2 class="title">Order Now</h2>
-        <p class="subtitle">Free delivery on orders above ₹999</p>
+        <p class="subtitle">Free delivery across Jaipur</p>
         <a href="${siteUrl}/product/${slug}" class="cta">Shop Now</a>
       </amp-story-grid-layer>
       <amp-story-cta-layer>

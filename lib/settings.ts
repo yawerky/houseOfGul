@@ -9,8 +9,8 @@ export const settingDefaults = {
   whatsappNumber: '919461900344',
   orderPrefix: 'HOG',
   minimumOrderAmount: '0',
-  freeDeliveryThreshold: '999',
-  defaultDeliveryCharge: '99',
+  freeDeliveryThreshold: '0',
+  defaultDeliveryCharge: '0',
 }
 
 export type StoreSettings = typeof settingDefaults

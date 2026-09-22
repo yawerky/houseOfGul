@@ -902,7 +902,7 @@ export default function CheckoutPage() {
                     <span className="text-green-700">−{formatPrice(discount)}</span>
                   </div>
                 )}
-                {freeThreshold > 0 && subtotal < freeThreshold && (
+                {deliveryCharge > 0 && freeThreshold > 0 && subtotal < freeThreshold && (
                   <p className="text-xs text-charcoal-light pt-1 dark:text-ivory/60">
                     Add {formatPrice(freeThreshold - subtotal)} more for free delivery.
                   </p>

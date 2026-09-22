@@ -19,7 +19,7 @@ const quickReplies = [
 
 const responses: Record<string, string> = {
   'track': 'To track your order, please visit our Track Order page at /track-order or provide your order ID and we\'ll look it up for you.',
-  'delivery': 'We offer same-day flower delivery across Jaipur! Orders placed before 2 PM are delivered the same day. Delivery is free on orders above ₹999.',
+  'delivery': 'We offer same-day flower delivery across Jaipur! Orders placed between 6 AM and 2 PM are delivered the same day by 6 PM; orders after 2 PM arrive by 12 PM (noon). Delivery is free across Jaipur.',
   'areas': 'We deliver to all major areas in Jaipur including Malviya Nagar, C-Scheme, Vaishali Nagar, Mansarovar, Jagatpura, Tonk Road, MI Road, and more!',
   'same-day': 'Yes! We offer same-day delivery in Jaipur. Place your order before 2 PM for same-day delivery. Express delivery within 3 hours is also available.',
   'custom': 'We\'d love to create a custom bouquet for you! Please share your preferences (flowers, colors, budget) and we\'ll design something special.',
