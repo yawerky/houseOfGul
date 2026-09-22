@@ -22,7 +22,7 @@ export default function Testimonials() {
   useEffect(() => {
     fetch('/api/testimonials')
       .then((res) => res.json())
-      .then((data) => setTestimonials(data))
+      .then((data) => setTestimonials(Array.isArray(data) ? data : []))
       .catch(() => setTestimonials([]))
   }, [])
 

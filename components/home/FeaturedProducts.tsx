@@ -14,7 +14,7 @@ export default function FeaturedProducts() {
   useEffect(() => {
     fetch('/api/products?featured=true&limit=8')
       .then((res) => res.json())
-      .then((data) => setProducts(data))
+      .then((data) => setProducts(Array.isArray(data) ? data : []))
       .catch(() => setProducts([]))
   }, [])
 
