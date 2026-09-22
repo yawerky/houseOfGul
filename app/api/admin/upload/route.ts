@@ -70,6 +70,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ url: `/uploads/${folder}/${filename}` })
   } catch (error) {
     console.error('Error uploading image:', error)
-    return NextResponse.json({ error: 'Upload failed. Please try again.' }, { status: 500 })
+    const reason = error instanceof Error ? error.message.replace(/^Vercel Blob:\s*/, '') : ''
+    return NextResponse.json(
+      { error: reason ? `Upload failed: ${reason}` : 'Upload failed. Please try again.' },
+      { status: 500 }
+    )
   }
 }
