@@ -156,6 +156,7 @@ export default function BannerManager({ initialBanners }: { initialBanners: Bann
                 onChange={(list) => setFormData((prev) => ({ ...prev, image: list[0] || '' }))}
                 folder="banners"
                 multiple={false}
+                maxDimension={2600}
               />
               <input
                 type="text"

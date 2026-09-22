@@ -2,11 +2,10 @@
 
 import { useRef, useState } from 'react'
 
-// Shrinks large photos in the browser before upload (max 2000px, JPEG),
+// Shrinks large photos in the browser before upload (max 2000px by default, JPEG),
 // so phone photos upload quickly and stay under the 4 MB limit.
-async function prepareImage(file: File): Promise<File> {
+async function prepareImage(file: File, MAX = 2000): Promise<File> {
   if (!file.type.startsWith('image/') || file.type === 'image/gif') return file
-  const MAX = 2000
   try {
     const bitmap = await createImageBitmap(file)
     const scale = Math.min(1, MAX / Math.max(bitmap.width, bitmap.height))
@@ -23,8 +22,8 @@ async function prepareImage(file: File): Promise<File> {
   }
 }
 
-export async function uploadImage(file: File, folder: string): Promise<string> {
-  const prepared = await prepareImage(file)
+export async function uploadImage(file: File, folder: string, maxDimension = 2000): Promise<string> {
+  const prepared = await prepareImage(file, maxDimension)
   const body = new FormData()
   body.append('file', prepared)
   body.append('folder', folder)
@@ -39,9 +38,10 @@ interface ImageUploaderProps {
   onChange: (images: string[]) => void
   folder?: string
   multiple?: boolean
+  maxDimension?: number
 }
 
-export default function ImageUploader({ images, onChange, folder = 'products', multiple = true }: ImageUploaderProps) {
+export default function ImageUploader({ images, onChange, folder = 'products', multiple = true, maxDimension = 2000 }: ImageUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [status, setStatus] = useState('')
   const [error, setError] = useState('')
@@ -56,7 +56,7 @@ export default function ImageUploader({ images, onChange, folder = 'products', m
     try {
       for (let i = 0; i < list.length; i++) {
         setStatus(`Uploading ${i + 1} of ${list.length}…`)
-        const url = await uploadImage(list[i], folder)
+        const url = await uploadImage(list[i], folder, maxDimension)
         current = multiple ? [...current, url] : [url]
         onChange(current)
       }
