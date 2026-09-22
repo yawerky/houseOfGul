@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Dark styles apply only when the site's own theme switch adds the "dark"
+   class — not when a phone is in dark mode (the site is designed light). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Luxury Color Palette */
   --color-ivory: #FDFBF7;
