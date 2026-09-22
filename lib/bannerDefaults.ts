@@ -8,7 +8,7 @@ export const defaultBanners = [
       'Discover the art of floral couture. Each arrangement is a masterpiece, crafted with passion and delivered with elegance.',
     buttonText: 'Shop Bouquets',
     buttonLink: '/shop',
-    image: '/images/banners/home-main.jpg',
+    image: '/images/banners/home-main-v2.jpg',
   },
   {
     position: 'secondary',
@@ -25,3 +25,9 @@ export const defaultBanners = [
   { position: 'about', title: 'The House of Gul', image: '/images/banners/about.jpg' },
   { position: 'about-beginning', title: 'Born from a Love of Beauty', image: '/images/banners/about-beginning.jpg' },
 ]
+
+// Replaced banner images: live banners still using the old file are switched
+// to the new one (only if the image hasn't been changed in admin).
+export const replacedBannerImages: Record<string, string> = {
+  '/images/banners/home-main.jpg': '/images/banners/home-main-v2.jpg',
+}

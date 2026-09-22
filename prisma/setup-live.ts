@@ -12,7 +12,7 @@ import bcrypt from 'bcryptjs'
 import { execFileSync } from 'child_process'
 import path from 'path'
 import { defaultFlowerGuide, previousFlowerImages } from '../lib/flowerGuideDefaults'
-import { defaultBanners } from '../lib/bannerDefaults'
+import { defaultBanners, replacedBannerImages } from '../lib/bannerDefaults'
 
 const prisma = new PrismaClient()
 
@@ -85,6 +85,11 @@ async function main() {
       updated += res.count
     }
     console.log(`✓ Flower Guide already set up${updated ? ` (${updated} photos updated)` : ''}`)
+  }
+
+  for (const [oldImage, newImage] of Object.entries(replacedBannerImages)) {
+    const res = await prisma.banner.updateMany({ where: { image: oldImage }, data: { image: newImage } })
+    if (res.count) console.log(`✓ Banners: ${res.count} switched to ${newImage}`)
   }
 
   // Banners: add the shipped banner for any position that has none yet.
