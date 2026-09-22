@@ -46,7 +46,11 @@ export const metadata: Metadata = {
 }
 
 export default async function AboutPage() {
-  const pageBanner = await getActiveBanner('about')
+  const [pageBanner, beginningPhoto, craftPhoto] = await Promise.all([
+    getActiveBanner('about'),
+    getActiveBanner('about-beginning'),
+    getActiveBanner('about-craft'),
+  ])
   return (
     <>
       {/* Hero Section */}
@@ -101,7 +105,7 @@ export default async function AboutPage() {
           </div>
           <div className="relative aspect-[4/5] rounded-sm overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1563241527-3004b7be0ffd?w=800&q=80"
+              src={beginningPhoto?.image || "https://images.unsplash.com/photo-1563241527-3004b7be0ffd?w=800&q=80"}
               alt="Floral arrangement being crafted"
               fill
               className="object-cover"
@@ -138,7 +142,7 @@ export default async function AboutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="order-2 lg:order-1 relative aspect-[4/5] rounded-sm overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80"
+              src={craftPhoto?.image || "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80"}
               alt="Master florist at work"
               fill
               className="object-cover"
