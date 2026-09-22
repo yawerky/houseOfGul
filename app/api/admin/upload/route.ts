@@ -14,8 +14,9 @@ const allowedTypes: Record<string, string> = {
 const MAX_BYTES = 4 * 1024 * 1024
 
 // Uploads one image and returns its public URL.
-// On Vercel it uses Vercel Blob (BLOB_READ_WRITE_TOKEN). Locally, without a
-// token, it saves into public/uploads so you can test.
+// On Vercel it uses Vercel Blob (BLOB_STORE_ID with Vercel's built-in sign-in,
+// or BLOB_READ_WRITE_TOKEN). Locally, without either, it saves into
+// public/uploads so you can test.
 export async function POST(request: NextRequest) {
   const session = await getAdminSession()
   if (!session) {
@@ -47,7 +48,7 @@ export async function POST(request: NextRequest) {
         .slice(0, 60) || 'image'
     const filename = `${base}-${Date.now().toString(36)}.${ext}`
 
-    if (process.env.BLOB_READ_WRITE_TOKEN) {
+    if (process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID) {
       const blob = await put(`${folder}/${filename}`, file, {
         access: 'public',
         addRandomSuffix: true,
