@@ -9,7 +9,7 @@ async function getOrder(id: string) {
   return prisma.order.findUnique({
     where: { id },
     include: {
-      items: true,
+      items: { include: { product: { select: { sku: true } } } },
       timeline: { orderBy: { createdAt: 'asc' } },
     },
   })
@@ -111,7 +111,10 @@ export default async function OrderDetailPage({
                       )}
                       <div className="flex-1">
                         <h3 className="font-medium text-charcoal">{item.name}</h3>
-                        <p className="text-sm text-charcoal-light">Qty: {item.quantity}</p>
+                        <p className="text-sm text-charcoal-light">
+                          {item.product?.sku && <span className="font-mono mr-2">{item.product.sku}</span>}
+                          Qty: {item.quantity}
+                        </p>
                       </div>
                       <div className="text-right">
                         <p className="font-medium text-charcoal">₹{(item.price * item.quantity).toLocaleString('en-IN')}</p>

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { mapDbProduct } from '@/lib/productMapper'
-import { collapseSeasonVariants } from '@/lib/variants'
+import { groupSeasonVariants } from '@/lib/variants'
 
 export async function GET(request: NextRequest) {
   try {
@@ -40,12 +40,11 @@ export async function GET(request: NextRequest) {
       orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }],
     })
 
-    // One card per seasonal group, then apply the limit
-    const { items, seasonCounts } = collapseSeasonVariants(products)
+    // Each season is its own product; keep a box's seasons together
     const max = limit ? parseInt(limit) : undefined
-    const formattedProducts = items
+    const formattedProducts = groupSeasonVariants(products)
       .slice(0, max && max > 0 ? max : undefined)
-      .map((p) => mapDbProduct(p, seasonCounts.get(p.slug)))
+      .map((p) => mapDbProduct(p))
 
     return NextResponse.json(formattedProducts)
   } catch (error) {

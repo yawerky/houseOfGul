@@ -52,11 +52,17 @@ export async function PUT(
       return NextResponse.json({ error: 'A product with this slug already exists' }, { status: 400 })
     }
 
+    const sku = typeof data.sku === 'string' && data.sku.trim() ? data.sku.trim().toUpperCase() : null
+    if (sku && (await prisma.product.findFirst({ where: { sku, NOT: { id } } }))) {
+      return NextResponse.json({ error: `SKU ${sku} is already used by another product` }, { status: 400 })
+    }
+
     const product = await prisma.product.update({
       where: { id },
       data: {
         name: data.name,
         slug: data.slug,
+        sku,
         price: data.price,
         comparePrice: data.comparePrice || null,
         description: data.description,

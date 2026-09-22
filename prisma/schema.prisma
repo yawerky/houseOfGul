@@ -23,6 +23,7 @@ model Product {
   id           String   @id @default(cuid())
   name         String
   slug         String   @unique
+  sku          String?  // unique per product; enforced by the admin API
   price        Float
   comparePrice Float?
   description  String

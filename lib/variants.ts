@@ -67,6 +67,19 @@ export function collapseSeasonVariants<T extends { slug: string }>(
   return { items, seasonCounts }
 }
 
+// Every seasonal version is its own product (SKU). For listings, keep all of
+// them but show each box's seasons together, in season order.
+export function groupSeasonVariants<T extends { slug: string }>(rows: T[]): T[] {
+  const groups = new Map<string, T[]>()
+  for (const row of rows) {
+    const parsed = parseSeasonSlug(row.slug)
+    const key = parsed ? `group:${parsed.base}` : `single:${row.slug}`
+    if (!groups.has(key)) groups.set(key, [])
+    groups.get(key)!.push(row)
+  }
+  return Array.from(groups.values()).flatMap((members) => sortBySeason(members))
+}
+
 export function sortBySeason<T extends { slug: string }>(rows: T[]): T[] {
   return [...rows].sort(
     (a, b) =>

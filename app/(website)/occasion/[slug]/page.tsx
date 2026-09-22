@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { mapDbProduct } from '@/lib/productMapper'
-import { collapseSeasonVariants } from '@/lib/variants'
+import { groupSeasonVariants } from '@/lib/variants'
 import ProductCard from '@/components/shop/ProductCard'
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import SectionWrapper from '@/components/ui/SectionWrapper'
@@ -33,9 +33,9 @@ async function getOccasionProducts(occasionName: string, occasionSlug: string) {
       where: { inStock: true, OR: [{ occasion: occasionSlug }, { occasion: occasionName }] },
       orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }],
     })
-    return collapseSeasonVariants(products)
+    return groupSeasonVariants(products)
   } catch {
-    return { items: [], seasonCounts: new Map<string, number>() }
+    return []
   }
 }
 
@@ -84,10 +84,10 @@ export default async function OccasionPage({ params }: OccasionPageProps) {
     notFound()
   }
 
-  const { items: products, seasonCounts } = await getOccasionProducts(occasion.name, occasion.slug)
+  const products = await getOccasionProducts(occasion.name, occasion.slug)
   const relatedOccasions = await getRelatedOccasions(slug)
 
-  const mappedProducts = products.map((p) => mapDbProduct(p, seasonCounts.get(p.slug)))
+  const mappedProducts = products.map((p) => mapDbProduct(p))
 
   return (
     <>

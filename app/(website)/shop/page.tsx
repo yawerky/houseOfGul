@@ -5,7 +5,7 @@ import SectionWrapper from '@/components/ui/SectionWrapper'
 import Image from 'next/image'
 import { Product } from '@/lib/products'
 import { mapDbProduct } from '@/lib/productMapper'
-import { collapseSeasonVariants } from '@/lib/variants'
+import { groupSeasonVariants } from '@/lib/variants'
 
 // Always read the latest products, banners and posts from the database.
 export const dynamic = 'force-dynamic'
@@ -56,8 +56,7 @@ async function getProducts(): Promise<Product[]> {
       orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }],
     })
 
-    const { items, seasonCounts } = collapseSeasonVariants(dbProducts)
-    return items.map((p) => mapDbProduct(p, seasonCounts.get(p.slug)))
+    return groupSeasonVariants(dbProducts).map((p) => mapDbProduct(p))
   } catch (error) {
     console.error('Error fetching products:', error)
     return []

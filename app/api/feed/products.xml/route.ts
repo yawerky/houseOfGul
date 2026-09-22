@@ -12,7 +12,7 @@ export async function GET() {
     const xmlItems = products.map((product) => {
       const images = JSON.parse(product.images || '[]')
       const imageUrl = images[0] || `${siteUrl}/og-image.jpg`
-      const sku = `HOG-${product.slug.toUpperCase()}`
+      const sku = product.sku || `HOG-${product.slug.toUpperCase()}`
 
       return `
     <item>

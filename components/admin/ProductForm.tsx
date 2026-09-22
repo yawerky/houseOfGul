@@ -9,6 +9,7 @@ interface Product {
   id: string
   name: string
   slug: string
+  sku: string | null
   price: number
   comparePrice: number | null
   description: string
@@ -79,6 +80,7 @@ export default function ProductForm({ product }: { product?: Product }) {
   const [formData, setFormData] = useState({
     name: product?.name || '',
     slug: product?.slug || '',
+    sku: product?.sku || '',
     price: product?.price?.toString() || '',
     comparePrice: product?.comparePrice?.toString() || '',
     description: product?.description || '',
@@ -119,6 +121,7 @@ export default function ProductForm({ product }: { product?: Product }) {
       const payload = {
         name: formData.name,
         slug: formData.slug || generateSlug(formData.name),
+        sku: formData.sku.trim().toUpperCase() || null,
         price: parseFloat(formData.price),
         comparePrice: formData.comparePrice ? parseFloat(formData.comparePrice) : null,
         description: formData.description,
@@ -201,6 +204,21 @@ export default function ProductForm({ product }: { product?: Product }) {
             <p className="text-xs text-charcoal-light mt-1">
               Seasonal versions: end the slug with -spring, -summer, -autumn or -winter (e.g. the-bloom-letter-summer) to show them as one product with a season picker.
             </p>
+          </div>
+
+          <div>
+            <label htmlFor="product-sku" className="block text-sm font-medium text-charcoal mb-1">
+              SKU
+            </label>
+            <input
+              id="product-sku"
+              type="text"
+              value={formData.sku}
+              onChange={(e) => setFormData({ ...formData, sku: e.target.value.toUpperCase() })}
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50 font-mono"
+              placeholder="e.g., HOG-BL-SUM"
+            />
+            <p className="text-xs text-charcoal-light mt-1">Unique stock code for this product. Must not repeat.</p>
           </div>
 
           <div>

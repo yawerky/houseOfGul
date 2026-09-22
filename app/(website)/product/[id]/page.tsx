@@ -31,22 +31,7 @@ async function getProductBySlug(slug: string): Promise<Product | null> {
 
     if (!dbProduct) return null
 
-    return {
-      id: dbProduct.slug,
-      name: dbProduct.name,
-      price: dbProduct.price,
-      description: dbProduct.description || '',
-      story: dbProduct.story || '',
-      flowers: JSON.parse(dbProduct.flowers || '[]'),
-      images: JSON.parse(dbProduct.images || '[]'),
-      category: dbProduct.category || 'Uncategorized',
-      featured: dbProduct.featured,
-      deliveryInfo: dbProduct.deliveryInfo || 'Same-day delivery available in select areas.',
-      occasions: dbProduct.occasion ? [dbProduct.occasion] : [],
-      season: dbProduct.season || 'all',
-      rating: dbProduct.rating || 4.5,
-      reviewCount: dbProduct.reviewCount || 0,
-    }
+    return mapDbProduct(dbProduct)
   } catch {
     return null
   }
@@ -77,8 +62,8 @@ async function getRelatedProducts(excludeSlug: string, category: string): Promis
       candidates = [...candidates, ...featured.filter((p) => notSameProduct(p.slug))]
     }
 
-    const { items, seasonCounts } = collapseSeasonVariants(candidates)
-    return items.slice(0, 4).map((p) => mapDbProduct(p, seasonCounts.get(p.slug)))
+    const { items } = collapseSeasonVariants(candidates)
+    return items.slice(0, 4).map((p) => mapDbProduct(p))
   } catch {
     return []
   }
@@ -216,6 +201,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         name={dbProduct.name}
         description={dbProduct.description || ''}
         slug={dbProduct.slug}
+        sku={dbProduct.sku || undefined}
         price={dbProduct.price}
         comparePrice={dbProduct.comparePrice}
         images={images}

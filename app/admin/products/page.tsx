@@ -158,7 +158,7 @@ export default async function ProductsPage({
                         )})()}
                         <div>
                           <p className="font-medium text-charcoal">{product.name}</p>
-                          <p className="text-sm text-charcoal-light">{product.slug}</p>
+                          <p className="text-sm text-charcoal-light">{product.sku ? <span className="font-mono text-charcoal">{product.sku}</span> : null}{product.sku ? ' · ' : ''}{product.slug}</p>
                         </div>
                       </div>
                     </td>

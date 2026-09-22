@@ -63,6 +63,11 @@ export default function ProductInfo({ product, seasonOptions = [] }: ProductInfo
         <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-charcoal mb-4 dark:text-ivory">
           {product.name}
         </h1>
+        {product.sku && (
+          <p className="text-xs tracking-widest uppercase text-charcoal-light mb-3 dark:text-ivory/60">
+            SKU: <span className="font-mono">{product.sku}</span>
+          </p>
+        )}
         <div className="flex items-center gap-3">
           <p className="text-2xl text-gold">{formatPrice(product.price)}</p>
           {product.rating && (

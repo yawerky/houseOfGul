@@ -24,7 +24,7 @@ export default function SeasonPicker({ options, currentSlug }: { options: Season
   return (
     <div>
       <h3 className="text-xs tracking-widest uppercase text-charcoal-light mb-3 dark:text-ivory/60">
-        Choose Your Season
+        Also Available In These Seasons
       </h3>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3" role="radiogroup" aria-label="Season">
         {options.map((option) => {

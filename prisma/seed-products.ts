@@ -11,6 +11,7 @@ import { readFileSync } from 'fs'
 import path from 'path'
 
 interface SeedProduct {
+  sku: string
   name: string
   slug: string
   price: number
@@ -35,6 +36,7 @@ async function main() {
 
   for (const p of products) {
     const data = {
+      sku: p.sku,
       name: p.name,
       price: p.price,
       description: p.description,
@@ -49,8 +51,18 @@ async function main() {
       deliveryInfo: p.deliveryInfo,
     }
     if (createOnly) {
-      const exists = await prisma.product.findUnique({ where: { slug: p.slug }, select: { id: true } })
-      if (exists) continue
+      const exists = await prisma.product.findUnique({ where: { slug: p.slug }, select: { id: true, sku: true } })
+      if (exists) {
+        // Only fill in a missing SKU; never change anything else.
+        if (!exists.sku) {
+          const taken = await prisma.product.findFirst({ where: { sku: p.sku }, select: { id: true } })
+          if (!taken) {
+            await prisma.product.update({ where: { id: exists.id }, data: { sku: p.sku } })
+            console.log(`✓ ${p.slug}  SKU set to ${p.sku}`)
+          }
+        }
+        continue
+      }
       await prisma.product.create({ data: { slug: p.slug, ...data } })
     } else {
       await prisma.product.upsert({
@@ -60,7 +72,7 @@ async function main() {
       })
     }
     created++
-    console.log(`✓ ${p.slug}  ₹${p.price}  (${p.images.length} images)`)
+    console.log(`✓ ${p.slug}  ${p.sku}  ₹${p.price}  (${p.images.length} images)`)
   }
   console.log(`\nDone: ${created} of ${products.length} products ${createOnly ? 'added (existing ones kept)' : 'added or updated'}.`)
 }

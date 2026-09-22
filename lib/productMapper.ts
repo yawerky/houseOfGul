@@ -14,6 +14,7 @@ const parseList = (value: string | null | undefined): string[] => {
 export function mapDbProduct(p: DbProduct, seasonCount?: number): Product {
   return {
     id: p.slug,
+    ...(p.sku ? { sku: p.sku } : {}),
     name: p.name,
     price: p.price,
     description: p.description || '',

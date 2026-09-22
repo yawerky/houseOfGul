@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { mapDbProduct } from '@/lib/productMapper'
-import { collapseSeasonVariants } from '@/lib/variants'
+import { groupSeasonVariants } from '@/lib/variants'
 import ProductCard from '@/components/shop/ProductCard'
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import SectionWrapper from '@/components/ui/SectionWrapper'
@@ -32,9 +32,9 @@ async function getCategoryProducts(categoryName: string) {
       where: { category: categoryName, inStock: true },
       orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }],
     })
-    return collapseSeasonVariants(products)
+    return groupSeasonVariants(products)
   } catch {
-    return { items: [], seasonCounts: new Map<string, number>() }
+    return []
   }
 }
 
@@ -83,10 +83,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound()
   }
 
-  const { items: products, seasonCounts } = await getCategoryProducts(category.name)
+  const products = await getCategoryProducts(category.name)
   const relatedCategories = await getRelatedCategories(slug)
 
-  const mappedProducts = products.map((p) => mapDbProduct(p, seasonCounts.get(p.slug)))
+  const mappedProducts = products.map((p) => mapDbProduct(p))
 
   return (
     <>

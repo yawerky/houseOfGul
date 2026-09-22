@@ -1,5 +1,6 @@
 [
   {
+    "sku": "HOG-BL-SUM",
     "name": "The Bloom Letter — Summer Sunshine",
     "slug": "the-bloom-letter-summer",
     "price": 699,
@@ -27,6 +28,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-BL-SPR",
     "name": "The Bloom Letter — Spring Blush",
     "slug": "the-bloom-letter-spring",
     "price": 699,
@@ -54,6 +56,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-BL-AUT",
     "name": "The Bloom Letter — Festive Glow",
     "slug": "the-bloom-letter-autumn",
     "price": 699,
@@ -81,6 +84,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-BL-WIN",
     "name": "The Bloom Letter — Winter Crimson",
     "slug": "the-bloom-letter-winter",
     "price": 699,
@@ -108,6 +112,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-PT-SUM",
     "name": "The Petal Tote — Summer Garden",
     "slug": "the-petal-tote-summer",
     "price": 999,
@@ -135,6 +140,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-PT-SPR",
     "name": "The Petal Tote — Spring Whisper",
     "slug": "the-petal-tote-spring",
     "price": 999,
@@ -162,6 +168,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-PT-AUT",
     "name": "The Petal Tote — Golden Harvest",
     "slug": "the-petal-tote-autumn",
     "price": 999,
@@ -189,6 +196,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-PT-WIN",
     "name": "The Petal Tote — Winter Rose",
     "slug": "the-petal-tote-winter",
     "price": 999,
@@ -216,6 +224,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-KH-SUM",
     "name": "The Keepsake Hatbox — Summer Peach",
     "slug": "the-keepsake-hatbox-summer",
     "price": 1199,
@@ -242,6 +251,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-KH-SPR",
     "name": "The Keepsake Hatbox — Spring Blush",
     "slug": "the-keepsake-hatbox-spring",
     "price": 1199,
@@ -268,6 +278,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-KH-AUT",
     "name": "The Keepsake Hatbox — Festive Gold",
     "slug": "the-keepsake-hatbox-autumn",
     "price": 1199,
@@ -294,6 +305,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-KH-WIN",
     "name": "The Keepsake Hatbox — Winter Romance",
     "slug": "the-keepsake-hatbox-winter",
     "price": 1199,
@@ -320,6 +332,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-GD-SUM",
     "name": "The Garden Drawer — Summer Sunflower",
     "slug": "the-garden-drawer-summer",
     "price": 899,
@@ -344,6 +357,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-GD-SPR",
     "name": "The Garden Drawer — Spring Bloom",
     "slug": "the-garden-drawer-spring",
     "price": 899,
@@ -368,6 +382,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-GD-AUT",
     "name": "The Garden Drawer — Autumn Amber",
     "slug": "the-garden-drawer-autumn",
     "price": 899,
@@ -392,6 +407,7 @@
     "featured": true
   },
   {
+    "sku": "HOG-GD-WIN",
     "name": "The Garden Drawer — Winter Scarlet",
     "slug": "the-garden-drawer-winter",
     "price": 899,

@@ -17,7 +17,7 @@ export async function GET() {
       updated: new Date().toISOString(),
       products: products.map((product) => {
         const images = JSON.parse(product.images || '[]')
-        const sku = `HOG-${product.slug.toUpperCase()}`
+        const sku = product.sku || `HOG-${product.slug.toUpperCase()}`
 
         return {
           id: sku,

@@ -52,7 +52,10 @@ ${body}
 }
 
 async function loadOrder(orderId: string) {
-  return prisma.order.findUnique({ where: { id: orderId }, include: { items: true } })
+  return prisma.order.findUnique({
+    where: { id: orderId },
+    include: { items: { include: { product: { select: { sku: true } } } } },
+  })
 }
 
 type LoadedOrder = NonNullable<Awaited<ReturnType<typeof loadOrder>>>
@@ -61,7 +64,7 @@ function summary(order: LoadedOrder) {
   const rows = order.items
     .map(
       (i) =>
-        `<tr><td style="padding:6px 0">${esc(i.name)} × ${i.quantity}</td><td style="text-align:right">${rupees(i.price * i.quantity)}</td></tr>`
+        `<tr><td style="padding:6px 0">${esc(i.name)}${i.product?.sku ? ` <span style="color:#888">(${esc(i.product.sku)})</span>` : ''} × ${i.quantity}</td><td style="text-align:right">${rupees(i.price * i.quantity)}</td></tr>`
     )
     .join('')
   const date = order.deliveryDate
