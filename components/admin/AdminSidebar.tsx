@@ -71,6 +71,15 @@ const menuItems = [
     ),
   },
   {
+    label: 'Flower Guide',
+    href: '/admin/flower-guide',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 21V11m0 0c-2.5 0-4.5-2-4.5-4.5S9.5 2 12 2s4.5 2 4.5 4.5S14.5 11 12 11zm0 10c-3 0-6-1.5-7-4 2.5-.5 5 0 7 2m0 2c3 0 6-1.5 7-4-2.5-.5-5 0-7 2" />
+      </svg>
+    ),
+  },
+  {
     label: 'Testimonials',
     href: '/admin/testimonials',
     icon: (

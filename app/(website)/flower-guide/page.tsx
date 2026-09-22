@@ -1,20 +1,25 @@
 import Image from 'next/image'
-import { flowerMeanings } from '@/lib/products'
+import { getFlowerGuide } from '@/lib/flowerGuide'
+import { getActiveBanner } from '@/lib/banners'
 import SectionWrapper from '@/components/ui/SectionWrapper'
+
+// Flowers and banner come from Admin → Flower Guide and Admin → Banners.
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Flower Guide | House of Gul',
-  description: 'Discover the meanings, symbolism, and care tips for the world\'s most beloved flowers.',
+  description: 'The meanings, symbolism and care of the flowers in every House of Gul box — roses, sunflowers, gerberas, chrysanthemums and more.',
 }
 
-export default function FlowerGuidePage() {
+export default async function FlowerGuidePage() {
+  const [flowers, pageBanner] = await Promise.all([getFlowerGuide(), getActiveBanner('flower-guide')])
   return (
     <>
       {/* Hero */}
       <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1920&q=80"
+            src={pageBanner?.image || "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1920&q=80"}
             alt="Flower encyclopedia"
             fill
             priority
@@ -46,8 +51,11 @@ export default function FlowerGuidePage() {
           <div className="luxury-divider" />
         </div>
 
+        {flowers.length === 0 && (
+          <p className="text-center text-charcoal-light">Our flower guide is being updated. Please check back soon.</p>
+        )}
         <div className="space-y-16">
-          {flowerMeanings.map((flower, index) => (
+          {flowers.map((flower, index) => (
             <div
               key={flower.id}
               className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center ${
@@ -55,13 +63,16 @@ export default function FlowerGuidePage() {
               }`}
             >
               <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
-                <div className="relative aspect-[4/3] rounded-sm overflow-hidden">
-                  <Image
-                    src={flower.image}
-                    alt={flower.name}
-                    fill
-                    className="object-cover"
-                  />
+                <div className="relative aspect-[4/3] rounded-sm overflow-hidden bg-champagne">
+                  {flower.image && (
+                    <Image
+                      src={flower.image}
+                      alt={flower.name}
+                      fill
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      className="object-cover"
+                    />
+                  )}
                 </div>
               </div>
 
@@ -135,12 +146,12 @@ export default function FlowerGuidePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { occasion: 'Romance', flowers: ['Red Roses', 'Peonies', 'Tulips'] },
-            { occasion: 'Sympathy', flowers: ['White Lilies', 'White Roses', 'Orchids'] },
-            { occasion: 'Celebration', flowers: ['Mixed Bouquets', 'Sunflowers', 'Gerberas'] },
-            { occasion: 'Gratitude', flowers: ['Pink Roses', 'Hydrangeas', 'Sweet Peas'] },
-            { occasion: 'New Beginnings', flowers: ['White Tulips', 'Daffodils', 'Freesias'] },
+            { occasion: 'Romance', flowers: ['Red Roses', 'Pink Roses', 'Gypsophila'] },
+            { occasion: 'Celebration', flowers: ['Sunflowers', 'Gerberas', 'Yellow Roses'] },
+            { occasion: 'Gratitude', flowers: ['Peach Roses', 'Lisianthus', 'Pink Roses'] },
+            { occasion: 'New Beginnings', flowers: ['White Daisies', 'White Roses', 'Gypsophila'] },
             { occasion: 'Friendship', flowers: ['Yellow Roses', 'Daisies', 'Chrysanthemums'] },
+            { occasion: 'Festive Blessings', flowers: ['Peach Roses', 'Golden Chrysanthemums', 'Solidago'] },
           ].map((item) => (
             <div key={item.occasion} className="bg-white p-6 rounded-sm">
               <h3 className="font-serif text-xl text-charcoal mb-3">{item.occasion}</h3>

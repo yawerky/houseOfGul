@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import BlogCard from '@/components/blog/BlogCard'
 import SectionWrapper from '@/components/ui/SectionWrapper'
 import Image from 'next/image'
+import { getActiveBanner } from '@/lib/banners'
 
 // Always read the latest products, banners and posts from the database.
 export const dynamic = 'force-dynamic'
@@ -71,6 +72,7 @@ async function getBlogPosts() {
 }
 
 export default async function BlogPage() {
+  const pageBanner = await getActiveBanner('blog')
   const blogPosts = await getBlogPosts()
   const featuredPost = blogPosts[0]
   const otherPosts = blogPosts.slice(1)
@@ -81,7 +83,7 @@ export default async function BlogPage() {
       <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1494972308805-463bc619d34e?w=1920&q=80"
+            src={pageBanner?.image || "https://images.unsplash.com/photo-1494972308805-463bc619d34e?w=1920&q=80"}
             alt="House of Gul journal"
             fill
             priority

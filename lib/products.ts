@@ -263,69 +263,6 @@ export const reviews: Review[] = [
   },
 ]
 
-export const flowerMeanings: FlowerMeaning[] = [
-  {
-    id: 'rose',
-    name: 'Rose',
-    meaning: 'Love, passion, and beauty',
-    symbolism: ['Romance', 'Devotion', 'Admiration', 'Gratitude'],
-    colors: ['Red - Deep love', 'Pink - Grace', 'White - Purity', 'Yellow - Friendship'],
-    season: 'Summer',
-    careLevel: 'Moderate',
-    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80',
-  },
-  {
-    id: 'peony',
-    name: 'Peony',
-    meaning: 'Prosperity, romance, and good fortune',
-    symbolism: ['Happy Marriage', 'Compassion', 'Beauty', 'Honor'],
-    colors: ['Pink - Romance', 'White - Shame/Bashfulness', 'Red - Passion'],
-    season: 'Late Spring',
-    careLevel: 'Easy',
-    image: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=800&q=80',
-  },
-  {
-    id: 'orchid',
-    name: 'Orchid',
-    meaning: 'Luxury, beauty, and strength',
-    symbolism: ['Refinement', 'Thoughtfulness', 'Mature Charm', 'Exotic Beauty'],
-    colors: ['White - Innocence', 'Purple - Royalty', 'Pink - Femininity'],
-    season: 'Year-round',
-    careLevel: 'Advanced',
-    image: 'https://images.unsplash.com/photo-1518882605630-8eb936a8c281?w=800&q=80',
-  },
-  {
-    id: 'lily',
-    name: 'Lily',
-    meaning: 'Purity, commitment, and rebirth',
-    symbolism: ['Motherhood', 'Fertility', 'Devotion', 'Transience'],
-    colors: ['White - Virtue', 'Orange - Passion', 'Pink - Prosperity'],
-    season: 'Summer',
-    careLevel: 'Easy',
-    image: 'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?w=800&q=80',
-  },
-  {
-    id: 'tulip',
-    name: 'Tulip',
-    meaning: 'Perfect love and elegance',
-    symbolism: ['Declaration of Love', 'Cheerfulness', 'Spring', 'Rebirth'],
-    colors: ['Red - True Love', 'Yellow - Sunshine', 'Purple - Royalty', 'White - Forgiveness'],
-    season: 'Spring',
-    careLevel: 'Easy',
-    image: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800&q=80',
-  },
-  {
-    id: 'hydrangea',
-    name: 'Hydrangea',
-    meaning: 'Gratitude, grace, and abundance',
-    symbolism: ['Heartfelt Emotions', 'Understanding', 'Vanity', 'Abundance'],
-    colors: ['Blue - Apology', 'Pink - Romance', 'White - Purity', 'Purple - Abundance'],
-    season: 'Summer',
-    careLevel: 'Moderate',
-    image: 'https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?w=800&q=80',
-  },
-]
-
 export const testimonials = [
   {
     id: '1',

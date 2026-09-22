@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { Product } from '@/lib/products'
 import { mapDbProduct } from '@/lib/productMapper'
 import { groupSeasonVariants } from '@/lib/variants'
+import { getActiveBanner } from '@/lib/banners'
 
 // Always read the latest products, banners and posts from the database.
 export const dynamic = 'force-dynamic'
@@ -64,6 +65,7 @@ async function getProducts(): Promise<Product[]> {
 }
 
 export default async function ShopPage() {
+  const pageBanner = await getActiveBanner('shop')
   const products = await getProducts()
 
   return (
@@ -72,7 +74,7 @@ export default async function ShopPage() {
       <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?w=1920&q=80"
+            src={pageBanner?.image || "https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?w=1920&q=80"}
             alt="Luxury floral collection"
             fill
             priority

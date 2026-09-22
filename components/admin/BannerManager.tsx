@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import ImageUploader from '@/components/admin/ImageUploader'
+import { bannerPositions, bannerPositionLabel } from '@/lib/bannerPositions'
 
 interface Banner {
   id: string
@@ -165,11 +166,11 @@ export default function BannerManager({ initialBanners }: { initialBanners: Bann
                 placeholder="…or paste an image link"
               />
               <p className="text-xs text-charcoal-light mt-1">
-                Hero: wide 16:9 image (2560×1440). Secondary: wide strip (2560×1100). Popup: 4:3.
+                Best size: {bannerPositions.find((p) => p.value === formData.position)?.size}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-charcoal mb-1">Button Text</label>
                 <input
@@ -197,9 +198,11 @@ export default function BannerManager({ initialBanners }: { initialBanners: Bann
                   onChange={(e) => setFormData({ ...formData, position: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold/50"
                 >
-                  <option value="hero">Hero (Main)</option>
-                  <option value="secondary">Secondary</option>
-                  <option value="popup">Popup</option>
+                  {bannerPositions.map((p) => (
+                    <option key={p.value} value={p.value}>
+                      {p.label}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -256,9 +259,10 @@ export default function BannerManager({ initialBanners }: { initialBanners: Bann
                 <img src={banner.image} alt={banner.title} className="w-full h-full object-cover" />
                 <span className={`absolute top-2 right-2 px-2 py-1 text-xs rounded-full ${
                   banner.position === 'hero' ? 'bg-gold text-white' :
-                  banner.position === 'secondary' ? 'bg-blue-500 text-white' : 'bg-purple-500 text-white'
+                  banner.position === 'secondary' ? 'bg-blue-500 text-white' :
+                  banner.position === 'popup' ? 'bg-purple-500 text-white' : 'bg-charcoal text-white'
                 }`}>
-                  {banner.position}
+                  {bannerPositionLabel(banner.position)}
                 </span>
               </div>
               <div className="p-4">

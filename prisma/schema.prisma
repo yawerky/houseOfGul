@@ -326,3 +326,19 @@ model Occasion {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+// Flower Guide (Flower Encyclopedia on /flower-guide)
+model FlowerGuide {
+  id        String   @id @default(cuid())
+  name      String
+  meaning   String
+  symbolism String   // JSON string array, e.g. ["Romance","Devotion"]
+  colors    String   // JSON string array, e.g. ["Red – Deep love"]
+  season    String
+  careLevel String
+  image     String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

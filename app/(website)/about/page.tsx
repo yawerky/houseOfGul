@@ -2,6 +2,10 @@ import { Metadata } from 'next'
 import Image from 'next/image'
 import SectionWrapper from '@/components/ui/SectionWrapper'
 import Newsletter from '@/components/home/Newsletter'
+import { getActiveBanner } from '@/lib/banners'
+
+// Banner images come from Admin → Banners.
+export const dynamic = 'force-dynamic'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.com'
 
@@ -41,14 +45,15 @@ export const metadata: Metadata = {
   },
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const pageBanner = await getActiveBanner('about')
   return (
     <>
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1920&q=80"
+            src={pageBanner?.image || "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1920&q=80"}
             alt="House of Gul atelier"
             fill
             priority

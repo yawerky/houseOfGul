@@ -11,6 +11,7 @@ import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { execFileSync } from 'child_process'
 import path from 'path'
+import { defaultFlowerGuide } from '../lib/flowerGuideDefaults'
 
 const prisma = new PrismaClient()
 
@@ -64,6 +65,19 @@ async function main() {
     await prisma.occasion.upsert({ where: { slug: o.slug }, update: {}, create: o })
   }
   console.log(`✓ ${categories.length} categories and ${occasions.length} occasions ready`)
+
+  // Flower Guide: add the starting flowers only when the guide is empty,
+  // so flowers deleted in admin never come back.
+  if ((await prisma.flowerGuide.count()) === 0) {
+    for (const f of defaultFlowerGuide) {
+      await prisma.flowerGuide.create({
+        data: { ...f, symbolism: JSON.stringify(f.symbolism), colors: JSON.stringify(f.colors) },
+      })
+    }
+    console.log(`✓ Flower Guide: ${defaultFlowerGuide.length} flowers added`)
+  } else {
+    console.log('✓ Flower Guide already set up')
+  }
 
   await prisma.$disconnect()
 

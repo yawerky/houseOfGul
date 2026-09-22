@@ -3,20 +3,26 @@ import { subscriptionPlans } from '@/lib/products'
 import SectionWrapper from '@/components/ui/SectionWrapper'
 import LuxuryButton from '@/components/ui/LuxuryButton'
 import { cn } from '@/lib/utils'
+import { getActiveBanner } from '@/lib/banners'
+
+// Banner images come from Admin → Banners.
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Gul Club | House of Gul',
   description: 'Join our exclusive flower subscription for regular deliveries of luxury blooms.',
 }
 
-export default function GulClubPage() {
+export default async function GulClubPage() {
+  const pageBanner = await getActiveBanner('gul-club')
+  const benefitsPhoto = await getActiveBanner('gul-club-benefits')
   return (
     <>
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=1920&q=80"
+            src={pageBanner?.image || "https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=1920&q=80"}
             alt="Gul Club subscription"
             fill
             priority
@@ -161,7 +167,7 @@ export default function GulClubPage() {
           </div>
           <div className="relative aspect-[4/5] rounded-sm overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=800&q=80"
+              src={benefitsPhoto?.image || "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=800&q=80"}
               alt="Gul Club benefits"
               fill
               className="object-cover"
