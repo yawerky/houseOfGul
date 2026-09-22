@@ -1,9 +1,11 @@
-// One-time setup for a new (live) database: admin login, categories,
-// occasions and the P1–P4 products. Safe to run again — it updates instead
-// of duplicating.
+// Prepares a database for the live site: admin login, categories, occasions
+// and the P1–P4 products. Runs automatically on every Vercel build (see the
+// "build" script in package.json) and only ADDS what is missing — it never
+// changes or deletes anything already in the database.
 //
-//   ADMIN_EMAIL="you@example.com" ADMIN_PASSWORD="a-strong-password" \
-//   DATABASE_URL="<live database URL>" npx tsx prisma/setup-live.ts
+// Admin login is created from the ADMIN_EMAIL and ADMIN_PASSWORD settings
+// (set them in Vercel → Environment Variables). If an admin with that email
+// already exists, its password is not changed — use Admin → Settings for that.
 
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
@@ -32,33 +34,43 @@ const occasions = [
 ]
 
 async function main() {
-  const email = process.env.ADMIN_EMAIL
-  const password = process.env.ADMIN_PASSWORD
-  if (!email || !password || password.length < 10) {
-    throw new Error('Set ADMIN_EMAIL and ADMIN_PASSWORD (at least 10 characters).')
+  if (!process.env.DATABASE_URL) {
+    console.log('setup-live: no DATABASE_URL, skipping.')
+    return
   }
 
-  await prisma.admin.upsert({
-    where: { email },
-    update: { password: await bcrypt.hash(password, 12) },
-    create: { email, password: await bcrypt.hash(password, 12), name: 'Admin', role: 'admin' },
-  })
-  console.log(`✓ Admin login: ${email}`)
+  const email = process.env.ADMIN_EMAIL?.trim()
+  const password = process.env.ADMIN_PASSWORD
+  if (email && password && password.length >= 10) {
+    const existing = await prisma.admin.findUnique({ where: { email } })
+    if (!existing) {
+      await prisma.admin.create({
+        data: { email, password: await bcrypt.hash(password, 12), name: 'Admin', role: 'admin' },
+      })
+      console.log(`✓ Admin login created: ${email}`)
+    } else {
+      console.log(`✓ Admin login exists: ${email}`)
+    }
+  } else if (email || password) {
+    console.log('! ADMIN_PASSWORD must be at least 10 characters — admin login not created.')
+  } else {
+    console.log('! ADMIN_EMAIL / ADMIN_PASSWORD not set — admin login not created.')
+  }
 
   for (const c of categories) {
     await prisma.category.upsert({ where: { slug: c.slug }, update: {}, create: c })
   }
-  console.log(`✓ ${categories.length} categories`)
-
   for (const o of occasions) {
     await prisma.occasion.upsert({ where: { slug: o.slug }, update: {}, create: o })
   }
-  console.log(`✓ ${occasions.length} occasions\n`)
+  console.log(`✓ ${categories.length} categories and ${occasions.length} occasions ready`)
 
   await prisma.$disconnect()
 
-  // Products (same script used locally)
-  execFileSync('npx', ['tsx', path.join(__dirname, 'seed-products.ts')], { stdio: 'inherit', env: process.env })
+  execFileSync(process.execPath, [require.resolve('tsx/cli'), path.join(__dirname, 'seed-products.ts'), '--create-only'], {
+    stdio: 'inherit',
+    env: process.env,
+  })
 }
 
 main().catch(async (error) => {
