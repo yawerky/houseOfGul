@@ -24,6 +24,7 @@ export const defaultBanners = [
   { position: 'flower-guide', title: 'Flower Guide', image: '/images/banners/flower-guide.jpg' },
   { position: 'about', title: 'The House of Gul', image: '/images/banners/about.jpg' },
   { position: 'about-beginning', title: 'Born from a Love of Beauty', image: '/images/banners/about-beginning.jpg' },
+  { position: 'blog', title: 'The Journal', image: '/images/banners/journal.jpg' },
   { position: 'about-craft', title: 'Masterful Artistry', image: '/images/products/the-keepsake-hatbox-autumn-4.jpg' },
 ]
 

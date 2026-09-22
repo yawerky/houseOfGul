@@ -187,14 +187,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
           {/* Content */}
           <article className="prose prose-lg max-w-none">
-            {post.content.split('\n\n').map((paragraph, index) => (
-              <p
-                key={index}
-                className="text-charcoal-light leading-relaxed mb-6"
-              >
-                {paragraph}
-              </p>
-            ))}
+            {post.content.split('\n\n').map((paragraph, index) =>
+              paragraph.startsWith('## ') ? (
+                <h2 key={index} className="font-serif text-2xl text-charcoal mt-10 mb-4">
+                  {paragraph.slice(3)}
+                </h2>
+              ) : (
+                <p key={index} className="text-charcoal-light leading-relaxed mb-6 whitespace-pre-line">
+                  {paragraph}
+                </p>
+              )
+            )}
           </article>
 
           {/* Share */}

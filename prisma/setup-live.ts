@@ -13,6 +13,7 @@ import { execFileSync } from 'child_process'
 import path from 'path'
 import { defaultFlowerGuide, previousFlowerImages } from '../lib/flowerGuideDefaults'
 import { defaultBanners, replacedBannerImages } from '../lib/bannerDefaults'
+import { defaultJournalPosts } from '../lib/journalDefaults'
 
 const prisma = new PrismaClient()
 
@@ -100,6 +101,22 @@ async function main() {
     addedBanners++
   }
   console.log(`✓ Banners: ${addedBanners} added (${defaultBanners.length - addedBanners} positions already had one)`)
+
+  // Journal: publish the first articles once (matched by slug, never overwritten).
+  let addedPosts = 0
+  for (const [i, post] of defaultJournalPosts.entries()) {
+    if (await prisma.blogPost.findUnique({ where: { slug: post.slug } })) continue
+    await prisma.blogPost.create({
+      data: {
+        ...post,
+        author: 'House of Gul',
+        published: true,
+        publishedAt: new Date(Date.now() - i * 60 * 1000),
+      },
+    })
+    addedPosts++
+  }
+  console.log(`✓ Journal: ${addedPosts} articles published (${defaultJournalPosts.length - addedPosts} already there)`)
 
   await prisma.$disconnect()
 
