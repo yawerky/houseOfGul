@@ -4,30 +4,12 @@ import Image from 'next/image'
 import SectionWrapper from '@/components/ui/SectionWrapper'
 
 const galleryImages = [
-  {
-    src: 'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=600&q=80',
-    alt: 'Elegant white roses',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600&q=80',
-    alt: 'Pink peony arrangement',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&q=80',
-    alt: 'Garden roses',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&q=80',
-    alt: 'Spring bouquet',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1494972308805-463bc619d34e?w=600&q=80',
-    alt: 'Blush florals',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?w=600&q=80',
-    alt: 'Garden arrangement',
-  },
+  { src: '/images/products/the-petal-tote-autumn-5.jpg', alt: 'The Petal Tote held close, autumn roses' },
+  { src: '/images/products/the-keepsake-hatbox-autumn-4.jpg', alt: 'Keepsake Hatbox with peach roses and gypsophila' },
+  { src: '/images/products/the-garden-drawer-spring-1.jpg', alt: 'Garden Drawer with a pink gerbera' },
+  { src: '/images/products/the-bloom-letter-winter-1.jpg', alt: 'Bloom Letter with red roses' },
+  { src: '/images/flowers/limonium.jpg', alt: 'Lilac limonium in a glass vase' },
+  { src: '/images/products/the-keepsake-hatbox-spring-6.jpg', alt: 'Keepsake Hatbox in blush pink, held close' },
 ]
 
 export default function InstagramGallery() {
