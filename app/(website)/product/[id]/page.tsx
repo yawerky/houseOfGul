@@ -131,7 +131,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     const productImage = images[0] || `${siteUrl}/og-image.jpg`
 
     return {
-      title: `${dbProduct.name} - Buy Online | Flower Delivery Jaipur`,
+      title: `${dbProduct.name} | Flower Delivery Jaipur`,
       description: `Buy ${dbProduct.name} online in Jaipur. ${dbProduct.description || 'Premium quality floral arrangement.'} Same-day flower delivery across Jaipur. Order now!`,
       keywords: [
         `${dbProduct.name.toLowerCase()} jaipur`,

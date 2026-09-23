@@ -9,7 +9,7 @@ import { getActiveBanner } from '@/lib/banners'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Gul Club | House of Gul',
+  title: 'Gul Club',
   description: 'Join our exclusive flower subscription for regular deliveries of luxury blooms.',
 }
 

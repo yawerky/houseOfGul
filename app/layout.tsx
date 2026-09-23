@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: 'House of Gul | Flower Delivery in Jaipur | Luxury Florist',
-    template: '%s | House of Gul Jaipur',
+    template: '%s | House of Gul',
   },
   description:
     'Best flower delivery in Jaipur. Order premium bouquets, wedding flowers, birthday flowers & romantic arrangements online. Same-day flower delivery across Jaipur, Rajasthan. Fresh flowers guaranteed.',

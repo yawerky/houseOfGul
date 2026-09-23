@@ -80,7 +80,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const postImage = dbPost.image || `${siteUrl}/og-image.jpg`
 
   return {
-    title: `${dbPost.title} | House of Gul Journal`,
+    title: dbPost.title,
     description: dbPost.excerpt || dbPost.title,
     openGraph: {
       title: dbPost.title,

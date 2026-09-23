@@ -7,7 +7,7 @@ import SectionWrapper from '@/components/ui/SectionWrapper'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Flower Guide | House of Gul',
+  title: 'Flower Meanings and Care Guide',
   description: 'The meanings, symbolism and care of the flowers in every House of Gul box — roses, sunflowers, gerberas, chrysanthemums and more.',
 }
 

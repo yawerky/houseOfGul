@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Admin | House of Gul',
+  title: 'Admin',
   description: 'House of Gul Admin Panel',
 }
 

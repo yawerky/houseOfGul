@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
 
 export const metadata: Metadata = {
-  title: 'Wedding & Event Flowers Jaipur | Corporate Events',
+  title: 'Wedding and Event Flowers in Jaipur',
   description:
     'Book wedding flower decoration in Jaipur. House of Gul offers bridal bouquets, mandap decoration, venue decoration, corporate event flowers & party floral arrangements in Jaipur.',
   keywords: [

@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: StoryPageProps): Promise<Meta
   const images = JSON.parse(product.images || '[]')
 
   return {
-    title: `${product.name} | House of Gul Story`,
+    title: `${product.name} | Story`,
     description: product.description || `Discover ${product.name}`,
     openGraph: {
       title: product.name,
