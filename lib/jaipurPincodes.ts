@@ -39,6 +39,13 @@ export const jaipurPincodes: { code: string; area: string; zone?: 'same-day' | '
   { code: '302024', area: 'Heerapura' },
   { code: '302032', area: 'Harmada' },
 
+  { code: '302030', area: 'Jaipur' },
+  { code: '302035', area: 'Jaipur' },
+  { code: '302040', area: 'Jaipur' },
+  { code: '302041', area: 'Dhankya, Bindayaka, Mundia Rampura' },
+  { code: '302042', area: 'Bad Ke Balaji' },
+  { code: '302043', area: 'Jaipur' },
+  { code: '302044', area: 'Govindpura' },
   // Jaipur district — next-day, still free.
   { code: '303001', area: 'Andhi, Raipur, Tholai', zone: 'next-day' as const },
   { code: '303002', area: 'Achrol, Jaitpura Khinchi', zone: 'next-day' as const },

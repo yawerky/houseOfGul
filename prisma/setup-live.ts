@@ -213,9 +213,10 @@ async function main() {
     }
     console.log(`✓ Delivery areas: ${jaipurPincodes.length} Jaipur pincodes added`)
   } else {
-    // Pincodes added to the list after the first launch. Runs once and is then
-    // marked done, so an area switched off in admin never comes back.
-    const areaBatchKey = 'setup:pincodes:jaipur-district'
+    // Pincodes added to the list after the first launch. Each batch runs once
+    // and is then marked done, so an area switched off in admin never comes
+    // back. Bump the key when more pincodes are added to the list.
+    const areaBatchKey = 'setup:pincodes:2026-09-city-and-district'
     if (!(await prisma.setting.findUnique({ where: { key: areaBatchKey } }))) {
       let added = 0
       for (const p of jaipurPincodes) {
