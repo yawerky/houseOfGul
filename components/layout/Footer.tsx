@@ -19,7 +19,7 @@ export default function Footer() {
     ],
     help: [
       { label: 'Contact Us', href: '/contact' },
-      { label: 'Delivery Information', href: '/contact' },
+      { label: 'Delivery Information', href: '/delivery' },
       { label: 'Caring for Your Flowers', href: '/blog/how-to-keep-your-flowers-fresh-longer' },
       { label: 'Track Your Order', href: '/track-order' },
     ],

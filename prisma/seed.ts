@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
+import { jaipurPincodes, JAIPUR_DELIVERY_CHARGE } from '../lib/jaipurPincodes'
 
 const prisma = new PrismaClient()
 
@@ -39,15 +40,18 @@ async function main() {
 
   console.log('Categories created')
 
-  // Create sample pincodes
-  const pincodes = [
-    { code: '110001', area: 'Connaught Place', city: 'New Delhi', state: 'Delhi', deliveryZone: 'same-day', deliveryCharge: 0, minOrderFree: 200 },
-    { code: '110002', area: 'Darya Ganj', city: 'New Delhi', state: 'Delhi', deliveryZone: 'same-day', deliveryCharge: 0, minOrderFree: 200 },
-    { code: '110003', area: 'Civil Lines', city: 'New Delhi', state: 'Delhi', deliveryZone: 'same-day', deliveryCharge: 0, minOrderFree: 200 },
-    { code: '400001', area: 'Fort', city: 'Mumbai', state: 'Maharashtra', deliveryZone: 'next-day', deliveryCharge: 50, minOrderFree: 300 },
-    { code: '400002', area: 'Kalbadevi', city: 'Mumbai', state: 'Maharashtra', deliveryZone: 'next-day', deliveryCharge: 50, minOrderFree: 300 },
-    { code: '560001', area: 'MG Road', city: 'Bangalore', state: 'Karnataka', deliveryZone: 'next-day', deliveryCharge: 50, minOrderFree: 300 },
-  ]
+  // Delivery areas. Jaipur only — the 30 pincodes in lib/jaipurPincodes.ts,
+  // the same list setup-live uses. Never seed cities we do not deliver to:
+  // a serviceable pincode is a promise to turn up.
+  const pincodes = jaipurPincodes.map((p) => ({
+    code: p.code,
+    area: p.area,
+    city: 'Jaipur',
+    state: 'Rajasthan',
+    deliveryZone: 'same-day',
+    deliveryCharge: JAIPUR_DELIVERY_CHARGE,
+    minOrderFree: null as number | null,
+  }))
 
   for (const pincode of pincodes) {
     await prisma.pincode.upsert({

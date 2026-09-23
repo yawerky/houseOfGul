@@ -89,7 +89,7 @@ export default function TrackOrderPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative pt-32 pb-16 bg-ivory">
+      <section className="relative pt-32 lg:pt-44 pb-16 bg-ivory">
         <div className="luxury-container">
           <div className="text-center mb-12">
             <p className="luxury-subheading mb-4">Order Status</p>

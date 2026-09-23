@@ -202,7 +202,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       />
 
       {/* Product Section */}
-      <section className="pt-28 md:pt-32 pb-8 bg-ivory">
+      <section className="pt-28 md:pt-32 lg:pt-44 pb-8 bg-ivory">
         <div className="luxury-container">
           {/* Breadcrumbs */}
           <Breadcrumbs

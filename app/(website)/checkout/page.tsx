@@ -313,7 +313,7 @@ export default function CheckoutPage() {
 
   if (state.items.length === 0 && !orderComplete) {
     return (
-      <div className="min-h-screen pt-32 pb-16 bg-ivory">
+      <div className="min-h-screen pt-32 lg:pt-44 pb-16 bg-ivory">
         <div className="luxury-container">
           <div className="max-w-md mx-auto text-center">
             <h1 className="font-serif text-3xl text-charcoal mb-4">
@@ -333,7 +333,7 @@ export default function CheckoutPage() {
 
   if (orderComplete) {
     return (
-      <div className="min-h-screen pt-32 pb-16 bg-ivory">
+      <div className="min-h-screen pt-32 lg:pt-44 pb-16 bg-ivory">
         <div className="luxury-container">
           <div className="max-w-lg mx-auto text-center">
             <div className="w-20 h-20 mx-auto mb-8 rounded-full bg-gold/10 flex items-center justify-center">

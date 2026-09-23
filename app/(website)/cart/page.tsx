@@ -12,7 +12,7 @@ export default function CartPage() {
 
   if (state.items.length === 0) {
     return (
-      <div className="min-h-screen pt-32 pb-16 bg-ivory">
+      <div className="min-h-screen pt-32 lg:pt-44 pb-16 bg-ivory">
         <div className="luxury-container">
           <div className="max-w-md mx-auto text-center">
             <svg
