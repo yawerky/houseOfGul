@@ -179,3 +179,39 @@ ${row('Guests', inquiry.guests)}
 
   await sendEmail(to, `New enquiry from ${inquiry.name}`, layout('A new message', body), inquiry.email)
 }
+
+// Someone applied through the Careers page. The application is already saved
+// and shows in Admin → Applications; this puts a note in the store inbox so
+// the owner sees it. The CV itself is never attached or linked — it is
+// personal data and only opens from admin, behind the login.
+export async function sendJobApplicationEmail(applicationId: string) {
+  const application = await prisma.jobApplication.findUnique({ where: { id: applicationId } })
+  if (!application) return
+
+  const settings = await getSettings()
+  const to = process.env.ORDER_ALERT_EMAIL || settings.storeEmail
+  if (!to) return
+
+  const row = (label: string, value: unknown) =>
+    value
+      ? `<tr><td style="padding:4px 12px 4px 0;color:#888;font-size:13px">${esc(label)}</td><td style="padding:4px 0;font-size:14px">${esc(value)}</td></tr>`
+      : ''
+
+  const body = `
+<table style="width:100%;border-collapse:collapse;margin-bottom:20px">
+${row('Name', application.name)}
+${row('Applying for', application.jobTitle)}
+${row('Email', application.email)}
+${row('Phone', application.phone)}
+${row('CV', `${application.cvName} · ${Math.max(1, Math.round(application.cvSize / 1024))} KB`)}
+</table>
+${
+  application.note
+    ? `<p style="font-size:15px;line-height:1.6;white-space:pre-line;border-left:2px solid #A68B4B;padding-left:16px;margin:0">${esc(application.note)}</p>`
+    : ''
+}
+<p style="text-align:center;margin-top:24px"><a href="${siteUrl()}/admin/applications" style="background:#C4A35A;color:#fff;padding:12px 24px;text-decoration:none;font-family:Arial,sans-serif;font-size:14px">Open the application</a></p>
+<p style="font-family:Arial,sans-serif;font-size:13px;color:#888;margin-top:20px">The CV opens from Admin → Applications. Reply to this email to write to ${esc(application.name)} directly.</p>`
+
+  await sendEmail(to, `Job application from ${application.name}`, layout('A new application', body), application.email)
+}

@@ -44,4 +44,8 @@ Thumbs.db
 
 # local image uploads (production uses Vercel Blob)
 /public/uploads
+
+# CVs from the careers form. Never served by the web server and never
+# committed — production keeps them in a private Vercel Blob store.
+/private-uploads
 /.local-dev

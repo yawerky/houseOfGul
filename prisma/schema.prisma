@@ -342,3 +342,39 @@ model FlowerGuide {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// Job Openings (Careers page)
+model Job {
+  id          String   @id @default(cuid())
+  title       String
+  location    String   @default("Jhotwara, Jaipur")
+  type        String   // full-time, part-time, contract, internship, apprenticeship
+  summary     String?  // one line shown under the title
+  description String   // the full posting, one paragraph per line
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  applications JobApplication[]
+}
+
+// Job Applications (from the Careers page)
+model JobApplication {
+  id        String   @id @default(cuid())
+  jobId     String?
+  job       Job?     @relation(fields: [jobId], references: [id], onDelete: SetNull)
+  jobTitle  String   // the role as it read the day they applied; kept if the job is deleted
+  name      String
+  email     String
+  phone     String
+  cvPath    String   // private storage key, never a public URL — see lib/cvStorage.ts
+  cvName    String   // the applicant's own file name, cleaned, for display only
+  cvType    String   // application/pdf, application/msword, ...
+  cvSize    Int      @default(0)
+  note      String?
+  status    String   @default("new") // new, reviewing, shortlisted, hired, not-suitable, archived
+  adminNote String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

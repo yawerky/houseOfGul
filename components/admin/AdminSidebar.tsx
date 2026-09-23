@@ -135,6 +135,24 @@ const menuItems = [
     ),
   },
   {
+    label: 'Jobs',
+    href: '/admin/jobs',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v1m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Applications',
+    href: '/admin/applications',
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+    ),
+  },
+  {
     label: 'Settings',
     href: '/admin/settings',
     icon: (
@@ -150,15 +168,20 @@ export default function AdminSidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const [pendingOrders, setPendingOrders] = useState(0)
+  const [newApplications, setNewApplications] = useState(0)
 
-  // Check for new orders every minute
+  // Check for new orders and new job applications every minute
   useEffect(() => {
     let cancelled = false
-    const load = () =>
-      fetch('/api/admin/orders/pending-count')
+    const count = (url: string, set: (n: number) => void) =>
+      fetch(url)
         .then((res) => (res.ok ? res.json() : { count: 0 }))
-        .then((data) => !cancelled && setPendingOrders(data.count || 0))
+        .then((data) => !cancelled && set(data.count || 0))
         .catch(() => {})
+    const load = () => {
+      count('/api/admin/orders/pending-count', setPendingOrders)
+      count('/api/admin/job-applications/new-count', setNewApplications)
+    }
     load()
     const timer = setInterval(load, 60000)
     return () => {
@@ -193,7 +216,9 @@ export default function AdminSidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="p-4 space-y-1">
+      {/* Two more entries than before, so the list scrolls on a short screen
+          rather than hiding behind the buttons at the bottom. */}
+      <nav className="p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-14rem)]">
         {menuItems.map((item) => {
           const isActive = pathname === item.href ||
             (item.href !== '/admin' && pathname.startsWith(item.href))
@@ -217,6 +242,14 @@ export default function AdminSidebar() {
                   aria-label={`${pendingOrders} new orders`}
                 >
                   {pendingOrders}
+                </span>
+              )}
+              {item.href === '/admin/applications' && newApplications > 0 && (
+                <span
+                  className="ml-auto min-w-[1.5rem] px-1.5 py-0.5 text-xs text-center rounded-full bg-red-500 text-white"
+                  aria-label={`${newApplications} new applications`}
+                >
+                  {newApplications}
                 </span>
               )}
             </Link>

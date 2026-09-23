@@ -15,6 +15,7 @@ export default function Footer() {
       { label: 'Our Story', href: '/about' },
       { label: 'Journal', href: '/blog' },
       { label: 'Flower Guide', href: '/flower-guide' },
+      { label: 'Careers', href: '/careers' },
     ],
     help: [
       { label: 'Contact Us', href: '/contact' },
