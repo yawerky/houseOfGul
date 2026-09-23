@@ -13,7 +13,7 @@ import { execFileSync } from 'child_process'
 import path from 'path'
 import { defaultFlowerGuide, previousFlowerImages } from '../lib/flowerGuideDefaults'
 import { defaultBanners, replacedBannerImages } from '../lib/bannerDefaults'
-import { defaultJournalPosts, journalTextFixes } from '../lib/journalDefaults'
+import { defaultJournalPosts, journalTextFixes, journalRewrites } from '../lib/journalDefaults'
 import { jaipurPincodes, JAIPUR_DELIVERY_CHARGE } from '../lib/jaipurPincodes'
 
 const prisma = new PrismaClient()
@@ -87,6 +87,24 @@ async function main() {
       updated += res.count
     }
     console.log(`✓ Flower Guide already set up${updated ? ` (${updated} photos updated)` : ''}`)
+
+    // Flowers added to the guide after the first launch. Each batch runs once
+    // and is then marked done, so a flower deleted in admin never comes back.
+    const addedBatchKey = 'setup:flowerGuide:lily-carnation'
+    if (!(await prisma.setting.findUnique({ where: { key: addedBatchKey } }))) {
+      let added = 0
+      for (const name of ['Lily', 'Carnation']) {
+        if (await prisma.flowerGuide.findFirst({ where: { name } })) continue
+        const f = defaultFlowerGuide.find((d) => d.name === name)
+        if (!f) continue
+        await prisma.flowerGuide.create({
+          data: { ...f, symbolism: JSON.stringify(f.symbolism), colors: JSON.stringify(f.colors) },
+        })
+        added++
+      }
+      await prisma.setting.create({ data: { key: addedBatchKey, value: new Date().toISOString() } })
+      console.log(`✓ Flower Guide: ${added} later flower(s) added`)
+    }
   }
 
   for (const [oldImage, newImage] of Object.entries(replacedBannerImages)) {
@@ -125,6 +143,19 @@ async function main() {
   if (oldInfoProducts.length || fixedPosts) {
     console.log(`✓ Delivery wording updated: ${oldInfoProducts.length} products, ${fixedPosts} articles`)
   }
+
+  // Articles rewritten for search. Applied only where the article still carries
+  // its original photo — a changed photo means it was edited in admin, so it is
+  // left alone.
+  let rewritten = 0
+  for (const r of journalRewrites) {
+    const res = await prisma.blogPost.updateMany({
+      where: { slug: r.slug, image: r.onlyIfImage },
+      data: { title: r.title, excerpt: r.excerpt, content: r.content, image: r.image },
+    })
+    rewritten += res.count
+  }
+  if (rewritten) console.log(`✓ Journal: ${rewritten} article(s) rewritten`)
 
   // houseofgul.com belongs to someone else — never send order alerts there.
   await prisma.setting.updateMany({ where: { key: 'storeEmail', value: 'contact@houseofgul.com' }, data: { value: '' } })

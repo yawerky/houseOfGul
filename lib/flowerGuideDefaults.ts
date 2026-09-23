@@ -28,10 +28,10 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     name: 'Sunflower',
     meaning: 'Adoration, warmth and loyalty',
     symbolism: ['Happiness', 'Loyalty', 'Optimism', 'Warmth'],
-    colors: ['Golden yellow – Joy and positivity'],
+    colors: ['Golden yellow – Joy, warmth and a loyalty that turns to face you'],
     season: 'All year · best Feb – May',
     careLevel: 'Easy',
-    image: '/images/products/the-garden-drawer-summer-3.jpg',
+    image: '/images/flowers/sunflower.jpg',
     order: 2,
   },
   {
@@ -62,7 +62,7 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     season: 'All year',
     careLevel: 'Easy',
     image: '/images/flowers/daisy.jpg',
-    order: 5,
+    order: 7,
   },
   {
     name: 'Lisianthus',
@@ -72,7 +72,7 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     season: 'All year',
     careLevel: 'Moderate',
     image: '/images/flowers/lisianthus.jpg',
-    order: 6,
+    order: 8,
   },
   {
     name: 'Limonium (Statice)',
@@ -82,7 +82,7 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     season: 'All year · dries beautifully',
     careLevel: 'Easy',
     image: '/images/flowers/limonium.jpg',
-    order: 7,
+    order: 9,
   },
   {
     name: "Gypsophila (Baby's Breath)",
@@ -92,7 +92,7 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     season: 'All year',
     careLevel: 'Easy',
     image: '/images/flowers/gypsophila.jpg',
-    order: 8,
+    order: 10,
   },
   {
     name: 'Solidago (Goldenrod)',
@@ -102,13 +102,44 @@ export const defaultFlowerGuide: Omit<FlowerGuideEntry, 'id' | 'isActive'>[] = [
     season: 'All year',
     careLevel: 'Easy',
     image: '/images/flowers/solidago.jpg',
-    order: 9,
+    order: 11,
+  },
+  {
+    name: 'Lily',
+    meaning: 'Purity, renewal and quiet devotion',
+    symbolism: ['Purity', 'Renewal', 'Devotion', 'Majesty'],
+    colors: [
+      'White – Purity and peace',
+      'Blush pink – Admiration and gentle affection',
+      'Yellow – Gratitude and good cheer',
+      'Orange – Confidence and warmth',
+    ],
+    season: 'All year · best Oct – Mar',
+    careLevel: 'Moderate',
+    image: '/images/flowers/lily.jpg',
+    order: 5,
+  },
+  {
+    name: 'Carnation',
+    meaning: 'Affection, admiration and steady love',
+    symbolism: ['Affection', 'Admiration', 'Devotion', 'Distinction'],
+    colors: [
+      'Red – Deep affection',
+      "Pink – A mother's love and gratitude",
+      'White – Pure love and good fortune',
+      'Lilac and mauve – Grace and quiet charm',
+    ],
+    season: 'All year',
+    careLevel: 'Easy',
+    image: '/images/flowers/carnation.jpg',
+    order: 6,
   },
 ]
 
 // Earlier temporary photos, replaced automatically on live if still in use.
 export const previousFlowerImages: Record<string, string> = {
   '/images/products/the-keepsake-hatbox-winter-4.jpg': '/images/flowers/rose.jpg',
+  '/images/products/the-garden-drawer-summer-3.jpg': '/images/flowers/sunflower.jpg',
   '/images/products/the-garden-drawer-spring-4.jpg': '/images/flowers/gerbera.jpg',
   '/images/products/the-garden-drawer-autumn-3.jpg': '/images/flowers/chrysanthemum.jpg',
   '/images/products/the-bloom-letter-summer-1.jpg': '/images/flowers/daisy.jpg',
