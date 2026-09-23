@@ -1,7 +1,10 @@
-// Jaipur city delivery pincodes (302xxx). Added once on live when no Jaipur
-// pincodes exist yet; manage them afterwards in Admin → Pincodes.
+// Jaipur delivery pincodes. 302xxx is Jaipur city, reachable the same day.
+// 303xxx is the wider Jaipur district — Chomu, Bassi, Chaksu, Kotputli and the
+// villages around them, some of it 30 to 110 km out — so those are next-day.
+// Delivery is free in both. Zones and areas are editable in Admin → Pincodes,
+// which is where to change this once the round is actually being driven.
 // Area names are given only where well known — otherwise "Jaipur".
-export const jaipurPincodes: { code: string; area: string }[] = [
+export const jaipurPincodes: { code: string; area: string; zone?: 'same-day' | 'next-day' }[] = [
   { code: '302001', area: 'Jaipur City (MI Road, C-Scheme)' },
   { code: '302002', area: 'Jaipur City (Johari Bazar, Ramganj)' },
   { code: '302003', area: 'Jaipur City (Chandpole, Kishanpole)' },
@@ -32,6 +35,62 @@ export const jaipurPincodes: { code: string; area: string }[] = [
   { code: '302037', area: 'Jaipur' },
   { code: '302038', area: 'Jaipur' },
   { code: '302039', area: 'Vidhyadhar Nagar' },
+  { code: '302011', area: 'Airport, Sanganer' },
+  { code: '302024', area: 'Heerapura' },
+  { code: '302032', area: 'Harmada' },
+
+  // Jaipur district — next-day, still free.
+  { code: '303001', area: 'Andhi, Raipur, Tholai', zone: 'next-day' as const },
+  { code: '303002', area: 'Achrol, Jaitpura Khinchi', zone: 'next-day' as const },
+  { code: '303003', area: 'Med, Paldi, Jodhula', zone: 'next-day' as const },
+  { code: '303005', area: 'Phagi, Kudli, Mandi', zone: 'next-day' as const },
+  { code: '303006', area: 'Madhorajpura, Dabach', zone: 'next-day' as const },
+  { code: '303007', area: 'Bagru, Dehmi Kalan, Mahlan', zone: 'next-day' as const },
+  { code: '303008', area: 'Dudu, Sakhoon, Ladera', zone: 'next-day' as const },
+  { code: '303009', area: 'Mozmabad, Jhag, Mandore', zone: 'next-day' as const },
+  { code: '303010', area: 'Bichoon', zone: 'next-day' as const },
+  { code: '303012', area: 'Kanota, Nayla, Sumel', zone: 'next-day' as const },
+  { code: '303102', area: 'Virat Nagar, Sothana', zone: 'next-day' as const },
+  { code: '303103', area: 'Shahpura, Khori, Devipura', zone: 'next-day' as const },
+  { code: '303104', area: 'Manoharpur, Chandwaji, Sirohi', zone: 'next-day' as const },
+  { code: '303105', area: 'Chimanpura, Deota, Beri', zone: 'next-day' as const },
+  { code: '303106', area: 'Paota, Barnagar, Khelana', zone: 'next-day' as const },
+  { code: '303107', area: 'Pragpura, Jodhpura, Dantil', zone: 'next-day' as const },
+  { code: '303108', area: 'Kotputli, Paniyala, Mordha', zone: 'next-day' as const },
+  { code: '303109', area: 'Jamwa Ramgarh, Raisar, Booj', zone: 'next-day' as const },
+  { code: '303110', area: 'Mandha, Karoli, Bhalloji', zone: 'next-day' as const },
+  { code: '303119', area: 'Bhabroo, Antela, Amloda', zone: 'next-day' as const },
+  { code: '303120', area: 'Tala, Surana, Dhola', zone: 'next-day' as const },
+  { code: '303301', area: 'Bassi, Benada, Deogaon', zone: 'next-day' as const },
+  { code: '303302', area: 'Toonga, Garh, Badwa', zone: 'next-day' as const },
+  { code: '303305', area: 'Newar, Jatwara, Rajpura', zone: 'next-day' as const },
+  { code: '303328', area: 'Jobner, Kalakh, Mundoti', zone: 'next-day' as const },
+  { code: '303329', area: 'A C Jobner', zone: 'next-day' as const },
+  { code: '303331', area: 'Asalpur', zone: 'next-day' as const },
+  { code: '303338', area: 'Phulera, Akoda, Boraj', zone: 'next-day' as const },
+  { code: '303339', area: 'Manda Bhim Singh', zone: 'next-day' as const },
+  { code: '303348', area: 'Naraina, Mamana, Marwa', zone: 'next-day' as const },
+  { code: '303601', area: 'Amarsar, Nayan, Markhi', zone: 'next-day' as const },
+  { code: '303602', area: 'Itawa, Badhal, Luniawas', zone: 'next-day' as const },
+  { code: '303603', area: 'Kishangarh Renwal, Harsoli', zone: 'next-day' as const },
+  { code: '303604', area: 'Sambhar Lake, Khandel, Tyod', zone: 'next-day' as const },
+  { code: '303701', area: 'Jahota, Jalsu, Punana', zone: 'next-day' as const },
+  { code: '303702', area: 'Chomu, Hadota, Sirsali', zone: 'next-day' as const },
+  { code: '303704', area: 'Jaitpura, Chetawala, Khore Shyamdas', zone: 'next-day' as const },
+  { code: '303706', area: 'Kalwad, Hathod, Machwa', zone: 'next-day' as const },
+  { code: '303712', area: 'Govindgarh, Dhodsar, Hasteda', zone: 'next-day' as const },
+  { code: '303801', area: 'Kaladera, Alisar, Chinoi', zone: 'next-day' as const },
+  { code: '303802', area: 'Tripolia Chomu', zone: 'next-day' as const },
+  { code: '303803', area: 'Khejroli, Kariri, Singot Kalan', zone: 'next-day' as const },
+  { code: '303804', area: 'Amarpura, Dhanota, Niwana', zone: 'next-day' as const },
+  { code: '303805', area: 'Morija, Sewapura, Chonp', zone: 'next-day' as const },
+  { code: '303806', area: 'Samod, Bansa, Dholi', zone: 'next-day' as const },
+  { code: '303807', area: 'Hathnoda, Udaipuria, Loharwada', zone: 'next-day' as const },
+  { code: '303901', area: 'Chaksu, Kothoon, Thali', zone: 'next-day' as const },
+  { code: '303903', area: 'Shivdaspura, Chandlai, Beelwa', zone: 'next-day' as const },
+  { code: '303904', area: 'Chittora Renwal, Gohandi, Peepla', zone: 'next-day' as const },
+  { code: '303905', area: 'Goner, Watika, Vidhani', zone: 'next-day' as const },
+  { code: '303908', area: 'Kotkhawada, Radoli, Ramnagar', zone: 'next-day' as const },
 ]
 
 // Delivery is free in all areas.

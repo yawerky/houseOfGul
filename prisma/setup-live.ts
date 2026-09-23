@@ -205,7 +205,7 @@ async function main() {
           area: p.area,
           city: 'Jaipur',
           state: 'Rajasthan',
-          deliveryZone: 'same-day',
+          deliveryZone: p.zone || 'same-day',
           deliveryCharge: JAIPUR_DELIVERY_CHARGE,
           isActive: true,
         },
@@ -213,6 +213,30 @@ async function main() {
     }
     console.log(`✓ Delivery areas: ${jaipurPincodes.length} Jaipur pincodes added`)
   } else {
+    // Pincodes added to the list after the first launch. Runs once and is then
+    // marked done, so an area switched off in admin never comes back.
+    const areaBatchKey = 'setup:pincodes:jaipur-district'
+    if (!(await prisma.setting.findUnique({ where: { key: areaBatchKey } }))) {
+      let added = 0
+      for (const p of jaipurPincodes) {
+        if (await prisma.pincode.findUnique({ where: { code: p.code } })) continue
+        await prisma.pincode.create({
+          data: {
+            code: p.code,
+            area: p.area,
+            city: 'Jaipur',
+            state: 'Rajasthan',
+            deliveryZone: p.zone || 'same-day',
+            deliveryCharge: JAIPUR_DELIVERY_CHARGE,
+            isActive: true,
+          },
+        })
+        added++
+      }
+      await prisma.setting.create({ data: { key: areaBatchKey, value: new Date().toISOString() } })
+      if (added) console.log(`✓ Delivery areas: ${added} later pincode(s) added`)
+    }
+
     console.log('✓ Delivery areas already set up')
   }
 
