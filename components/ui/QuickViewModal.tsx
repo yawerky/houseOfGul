@@ -94,7 +94,8 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
               {product.name}
             </h2>
 
-            {/* Rating */}
+            {/* Rating — only once real reviews exist */}
+            {product.reviewCount > 0 && (
             <div className="flex items-center gap-2 mb-4">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
@@ -110,6 +111,7 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
               </div>
               <span className="text-sm text-charcoal-light">({product.reviewCount} reviews)</span>
             </div>
+            )}
 
             <p className="text-2xl text-gold mb-4">{formatPrice(product.price)}</p>
             <p className="text-charcoal-light leading-relaxed mb-6">{product.description}</p>

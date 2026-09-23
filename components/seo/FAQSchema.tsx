@@ -34,7 +34,7 @@ export default function FAQSchema() {
         name: 'Can I order flowers online for same-day delivery in Jaipur?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Yes, you can order flowers online at houseofgul.in for same-day delivery in Jaipur. Place your order before 4 PM for same-day delivery. We accept all major payment methods including UPI, credit cards, debit cards, and net banking.',
+          text: 'Yes, you can order flowers online at houseofgul.in for same-day delivery in Jaipur. Order between 6 AM and 2 PM and your flowers arrive by 6 PM the same day. Order later and they arrive by 12 noon the next day. We accept all major payment methods including UPI, credit cards, debit cards, and net banking.',
         },
       },
       {
@@ -42,7 +42,7 @@ export default function FAQSchema() {
         name: 'Do you provide wedding flower decoration in Jaipur?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Yes, House of Gul specializes in wedding flower decoration in Jaipur. We offer bridal bouquets, venue decoration, mandap decoration, car decoration, and complete wedding floral services. Contact us for custom wedding packages.',
+          text: 'Yes, House of Gul specializes in wedding flower decoration in Jaipur. Write to us with the date and the size of the order and we will tell you what we can do.',
         },
       },
       {
@@ -58,7 +58,7 @@ export default function FAQSchema() {
         name: 'Are your flowers fresh?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Absolutely! We source fresh flowers daily and our bouquets are handcrafted on the day of delivery to ensure maximum freshness. We guarantee that your flowers will stay fresh for at least 5-7 days with proper care.',
+          text: 'Absolutely! We source fresh flowers daily and our bouquets are handcrafted on the day of delivery to ensure maximum freshness. With fresh water, a clean cut and a spot out of direct sun, they last well.',
         },
       },
       {

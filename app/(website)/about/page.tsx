@@ -167,21 +167,21 @@ export default async function AboutPage() {
             </p>
             <div className="grid grid-cols-3 gap-6 pt-4">
               <div className="text-center">
-                <p className="font-serif text-3xl text-gold mb-1">15+</p>
+                <p className="font-serif text-3xl text-gold mb-1">7</p>
                 <p className="text-xs tracking-widest uppercase text-charcoal-light">
-                  Years of Excellence
+                  Box designs, made by us
                 </p>
               </div>
               <div className="text-center">
-                <p className="font-serif text-3xl text-gold mb-1">50K+</p>
+                <p className="font-serif text-3xl text-gold mb-1">30</p>
                 <p className="text-xs tracking-widest uppercase text-charcoal-light">
-                  Bouquets Crafted
+                  Jaipur pincodes, free
                 </p>
               </div>
               <div className="text-center">
-                <p className="font-serif text-3xl text-gold mb-1">100%</p>
+                <p className="font-serif text-3xl text-gold mb-1">6 PM</p>
                 <p className="text-xs tracking-widest uppercase text-charcoal-light">
-                  Fresh Blooms
+                  Same-day cut-off 2 PM
                 </p>
               </div>
             </div>

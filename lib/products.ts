@@ -76,7 +76,7 @@ export const products: Product[] = [
     occasions: ['wedding', 'anniversary', 'sympathy'],
     season: 'all',
     rating: 4.9,
-    reviewCount: 127,
+    reviewCount: 0,
   },
   {
     id: 'blushing-romance',
@@ -96,7 +96,7 @@ export const products: Product[] = [
     occasions: ['romance', 'anniversary', 'birthday'],
     season: 'spring',
     rating: 4.8,
-    reviewCount: 94,
+    reviewCount: 0,
   },
   {
     id: 'midnight-velvet',
@@ -116,7 +116,7 @@ export const products: Product[] = [
     occasions: ['anniversary', 'congratulations'],
     season: 'autumn',
     rating: 5.0,
-    reviewCount: 56,
+    reviewCount: 0,
   },
   {
     id: 'garden-poetry',
@@ -136,7 +136,7 @@ export const products: Product[] = [
     occasions: ['birthday', 'thank-you', 'congratulations'],
     season: 'summer',
     rating: 4.7,
-    reviewCount: 83,
+    reviewCount: 0,
   },
   {
     id: 'golden-hour',
@@ -156,7 +156,7 @@ export const products: Product[] = [
     occasions: ['thank-you', 'congratulations', 'birthday'],
     season: 'autumn',
     rating: 4.9,
-    reviewCount: 71,
+    reviewCount: 0,
   },
   {
     id: 'pure-serenity',
@@ -176,7 +176,7 @@ export const products: Product[] = [
     occasions: ['sympathy', 'wedding', 'new-baby'],
     season: 'winter',
     rating: 4.8,
-    reviewCount: 92,
+    reviewCount: 0,
   },
   {
     id: 'enchanted-garden',
@@ -196,7 +196,7 @@ export const products: Product[] = [
     occasions: ['wedding', 'anniversary', 'romance'],
     season: 'spring',
     rating: 4.9,
-    reviewCount: 68,
+    reviewCount: 0,
   },
   {
     id: 'royal-orchid',
@@ -216,7 +216,7 @@ export const products: Product[] = [
     occasions: ['congratulations', 'anniversary', 'thank-you'],
     season: 'all',
     rating: 5.0,
-    reviewCount: 43,
+    reviewCount: 0,
   },
 ]
 
@@ -288,14 +288,6 @@ export const testimonials = [
     rating: 5,
     image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80',
   },
-]
-
-export const pressFeatures = [
-  { name: 'Vogue', logo: 'VOGUE' },
-  { name: 'Elle', logo: 'ELLE' },
-  { name: 'Harper\'s Bazaar', logo: 'HARPER\'S BAZAAR' },
-  { name: 'Architectural Digest', logo: 'AD' },
-  { name: 'Town & Country', logo: 'TOWN & COUNTRY' },
 ]
 
 export const subscriptionPlans = [

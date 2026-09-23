@@ -82,13 +82,6 @@ export default function OrganizationSchema() {
         },
       ],
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '150',
-      bestRating: '5',
-      worstRating: '1',
-    },
   }
 
   // Service Schema for Online Flower Delivery
@@ -119,7 +112,7 @@ export default function OrganizationSchema() {
           itemOffered: {
             '@type': 'Service',
             name: 'Same Day Flower Delivery',
-            description: 'Order before 4 PM for same-day delivery in Jaipur',
+            description: 'Order before 2 PM for delivery by 6 PM the same day in Jaipur',
           },
         },
         {

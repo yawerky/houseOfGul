@@ -3,7 +3,6 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { Product } from '@/lib/products'
-import { generateReviews, calculateRatingSummary, generateFAQs } from '@/lib/reviews'
 import ProductPageClient from '@/components/product/ProductPageClient'
 import ProductCard from '@/components/shop/ProductCard'
 import SectionWrapper from '@/components/ui/SectionWrapper'
@@ -11,8 +10,6 @@ import ProductSchema from '@/components/seo/ProductSchema'
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import QuickSummary from '@/components/product/QuickSummary'
 import ProductSpecifications from '@/components/product/ProductSpecifications'
-import ProductReviews from '@/components/product/ProductReviews'
-import ProductFAQ from '@/components/product/ProductFAQ'
 import type { SeasonOption } from '@/components/product/SeasonPicker'
 import { mapDbProduct } from '@/lib/productMapper'
 import { collapseSeasonVariants, currentSeason, parseSeasonSlug, seasonInfo, sortBySeason } from '@/lib/variants'
@@ -190,11 +187,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const images = JSON.parse(dbProduct.images || '[]')
   const flowers = JSON.parse(dbProduct.flowers || '[]')
 
-  // Generate reviews and FAQs
-  const reviews = generateReviews(id, 50)
-  const ratingSummary = calculateRatingSummary(reviews)
-  const faqs = generateFAQs(id)
-
   return (
     <>
       <ProductSchema
@@ -207,8 +199,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
         images={images}
         inStock={dbProduct.inStock}
         category={dbProduct.category || 'Flowers'}
-        ratingValue={ratingSummary.average}
-        reviewCount={ratingSummary.total}
       />
 
       {/* Product Section */}
@@ -249,19 +239,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
         occasion={dbProduct.occasion || undefined}
         deliveryInfo={dbProduct.deliveryInfo || 'Same-day delivery available in Jaipur'}
         season={dbProduct.season || 'all'}
-      />
-
-      {/* Customer Reviews */}
-      <ProductReviews
-        reviews={reviews}
-        summary={ratingSummary}
-        productName={dbProduct.name}
-      />
-
-      {/* FAQs */}
-      <ProductFAQ
-        faqs={faqs}
-        productName={dbProduct.name}
       />
 
       {/* Interlinking - Category & Occasion */}

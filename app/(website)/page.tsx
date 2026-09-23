@@ -4,7 +4,6 @@ import OccasionGrid from '@/components/home/OccasionGrid'
 import BrandStatement from '@/components/home/BrandStatement'
 import SignatureBanner from '@/components/home/SignatureBanner'
 import Testimonials from '@/components/home/Testimonials'
-import PressSection from '@/components/home/PressSection'
 import WhyHouseOfGul from '@/components/home/WhyHouseOfGul'
 import InstagramGallery from '@/components/home/InstagramGallery'
 import Newsletter from '@/components/home/Newsletter'
@@ -33,7 +32,6 @@ export default async function HomePage() {
       <BrandStatement />
       <Testimonials />
       <SignatureBanner banner={secondaryBanner} />
-      <PressSection />
       <WhyHouseOfGul />
       <InstagramGallery />
       <RecentlyViewed />
