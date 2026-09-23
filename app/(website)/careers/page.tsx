@@ -20,7 +20,7 @@ export default async function CareersPage() {
 
   return (
     <>
-      <section className="pt-32 pb-12">
+      <section className="pt-32 lg:pt-44 pb-12">
         <div className="luxury-container text-center">
           <p className="luxury-subheading mb-4">Work with us</p>
           <h1 className="font-serif text-4xl md:text-5xl text-charcoal mb-4">Careers</h1>
