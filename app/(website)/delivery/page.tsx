@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { prisma } from '@/lib/prisma'
 import SectionWrapper from '@/components/ui/SectionWrapper'
+import DeliveryDateChecker from '@/components/ui/DeliveryDateChecker'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://houseofgul.in'
 
@@ -11,18 +12,15 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Delivery in Jaipur — Areas, Timings and Charges',
   description:
-    'Free flower delivery across 30 Jaipur pincodes, 302001 to 302039. Order by 2 PM for delivery by 6 PM the same day. Later orders arrive by 12 noon the next day.',
+    'Free flower delivery across Jaipur city and district. Order by 2 PM for delivery by 6 PM the same day in the city. District areas arrive the next day. No delivery charge anywhere.',
   alternates: { canonical: `${siteUrl}/delivery` },
 }
 
 export default async function DeliveryPage() {
-  const areas = await prisma.pincode
-    .findMany({
-      where: { isActive: true, city: 'Jaipur' },
-      orderBy: { code: 'asc' },
-      select: { code: true, area: true },
-    })
-    .catch(() => [])
+  const [sameDay, nextDay] = await Promise.all([
+    prisma.pincode.count({ where: { isActive: true, city: 'Jaipur', deliveryZone: 'same-day' } }).catch(() => 0),
+    prisma.pincode.count({ where: { isActive: true, city: 'Jaipur', deliveryZone: 'next-day' } }).catch(() => 0),
+  ])
 
   return (
     <>
@@ -84,21 +82,12 @@ export default async function DeliveryPage() {
         <div className="max-w-4xl mx-auto">
           <h2 className="font-serif text-2xl text-charcoal mb-2">Where we deliver</h2>
           <p className="text-charcoal-light mb-8 leading-relaxed">
-            {areas.length > 0
-              ? `${areas.length} pincodes across Jaipur, ${areas[0].code} to ${areas[areas.length - 1].code}. If yours is on this list, we come to you.`
-              : 'Across Jaipur city. Enter your pincode at checkout to confirm.'}
+            {sameDay + nextDay > 0
+              ? `${sameDay + nextDay} pincodes. The ${sameDay} across Jaipur city are same-day; the ${nextDay} around the district — Chomu, Bassi, Chaksu, Phulera, Kotputli and the villages near them — arrive the next day. Free either way.`
+              : 'Across Jaipur city and the district around it. Check your pincode below.'}
           </p>
 
-          {areas.length > 0 && (
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-3">
-              {areas.map((a) => (
-                <li key={a.code} className="flex gap-3 text-sm border-b border-blush-dark/15 pb-3">
-                  <span className="text-charcoal tabular-nums">{a.code}</span>
-                  <span className="text-charcoal-light">{a.area}</span>
-                </li>
-              ))}
-            </ul>
-          )}
+          <DeliveryDateChecker />
 
           <p className="text-charcoal-light mt-10 leading-relaxed">
             Not on the list? Write to{' '}
