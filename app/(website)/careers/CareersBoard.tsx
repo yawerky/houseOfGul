@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SectionWrapper from '@/components/ui/SectionWrapper'
 import { jobTypeLabel, type JobEntry } from '@/lib/jobs'
 
@@ -23,6 +23,13 @@ export default function CareersBoard({ jobs }: { jobs: JobEntry[] }) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [error, setError] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+
+  // The thank-you note is shorter than the form, so the page gets shorter under
+  // the reader and leaves them at the footer. Bring the note back into view.
+  useEffect(() => {
+    if (status === 'sent') panelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, [status])
 
   const applyTo = (job: JobEntry) => {
     setJobId(job.id)
@@ -170,7 +177,7 @@ export default function CareersBoard({ jobs }: { jobs: JobEntry[] }) {
 
       {/* The form */}
       <SectionWrapper background="ivory" padding="md">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto" ref={panelRef}>
           <h2 className="font-serif text-2xl md:text-3xl text-charcoal mb-4">
             {jobs.length === 0 ? 'Leave your CV with us' : 'Apply'}
           </h2>

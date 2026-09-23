@@ -16,17 +16,23 @@ export const runtime = 'nodejs'
 // A rough brake on someone holding down the submit button. It lives in memory,
 // so on Vercel each instance counts separately and a determined flood would
 // still get through. It is here to stop accidents, not attacks.
-const recent = new Map<string, number[]>()
+//
+// Two counters, because someone whose first file was the wrong kind should not
+// be shut out for an hour: tries are counted generously, and only a CV that
+// actually reached storage counts against the smaller limit.
+const tries = new Map<string, number[]>()
+const saved = new Map<string, number[]>()
 const WINDOW_MS = 60 * 60 * 1000
-const MAX_PER_WINDOW = 5
+const MAX_TRIES = 25
+const MAX_SAVED = 5
 
-function tooMany(key: string): boolean {
+function record(store: Map<string, number[]>, key: string, limit: number): boolean {
   const now = Date.now()
-  const hits = (recent.get(key) || []).filter((t) => now - t < WINDOW_MS)
+  const hits = (store.get(key) || []).filter((t) => now - t < WINDOW_MS)
   hits.push(now)
-  recent.set(key, hits)
-  if (recent.size > 5000) recent.clear()
-  return hits.length > MAX_PER_WINDOW
+  store.set(key, hits)
+  if (store.size > 5000) store.clear()
+  return hits.length > limit
 }
 
 const text = (value: FormDataEntryValue | null, max: number) =>
@@ -34,9 +40,9 @@ const text = (value: FormDataEntryValue | null, max: number) =>
 
 export async function POST(request: NextRequest) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'local'
-  if (tooMany(ip)) {
+  if (record(tries, ip, MAX_TRIES) || (saved.get(ip)?.length || 0) >= MAX_SAVED) {
     return NextResponse.json(
-      { error: 'We already have your application. Please write to us instead if something went wrong.' },
+      { error: 'We already have your application. Please write to contact@houseofgul.in if something went wrong.' },
       { status: 429 }
     )
   }
@@ -79,6 +85,7 @@ export async function POST(request: NextRequest) {
 
     const cv = await saveCv(file)
     savedPath = cv.path
+    record(saved, ip, MAX_SAVED)
 
     const application = await prisma.jobApplication.create({
       data: {
