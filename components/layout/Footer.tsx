@@ -18,7 +18,7 @@ export default function Footer() {
       { label: 'Careers', href: '/about' },
     ],
     help: [
-      { label: 'Contact Us', href: '/about' },
+      { label: 'Contact Us', href: '/contact' },
       { label: 'Delivery Information', href: '/about' },
       { label: 'Care Instructions', href: '/blog' },
       { label: 'FAQ', href: '/about' },
@@ -76,6 +76,31 @@ export default function Footer() {
               arrangement tells a story of elegance, passion, and timeless
               sophistication.
             </p>
+
+            {/* Contact details — also the NAP Google reads for local search */}
+            <address className="not-italic mt-8 space-y-2 text-sm text-ivory/70">
+              <p className="leading-relaxed">
+                WTL Manzil, Jagannath Puri, Hamza Street
+                <br />
+                Jhotwara, Jaipur 302012, Rajasthan
+              </p>
+              <p>
+                <a
+                  href="tel:+919461900344"
+                  className="hover:text-gold transition-colors duration-300"
+                >
+                  +91 94619 00344
+                </a>
+              </p>
+              <p>
+                <a
+                  href="mailto:contact@houseofgul.in"
+                  className="hover:text-gold transition-colors duration-300"
+                >
+                  contact@houseofgul.in
+                </a>
+              </p>
+            </address>
             {/* Social Links */}
             <div className="flex gap-4 mt-8">
               {socialLinks.map((social) => (
