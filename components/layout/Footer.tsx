@@ -6,22 +6,21 @@ export default function Footer() {
 
   const footerLinks = {
     shop: [
-      { label: 'All Bouquets', href: '/shop' },
-      { label: 'Signature Collection', href: '/shop' },
-      { label: 'Seasonal Favorites', href: '/shop' },
-      { label: 'Gift Cards', href: '/shop' },
+      { label: 'All Boxes', href: '/shop' },
+      { label: 'Signature Collection', href: '/category/signature-collection' },
+      { label: 'Seasonal', href: '/category/seasonal' },
+      { label: 'Gul Club', href: '/gul-club' },
     ],
     about: [
       { label: 'Our Story', href: '/about' },
       { label: 'Journal', href: '/blog' },
-      { label: 'Sustainability', href: '/about' },
-      { label: 'Careers', href: '/about' },
+      { label: 'Flower Guide', href: '/flower-guide' },
     ],
     help: [
       { label: 'Contact Us', href: '/contact' },
-      { label: 'Delivery Information', href: '/about' },
-      { label: 'Care Instructions', href: '/blog' },
-      { label: 'FAQ', href: '/about' },
+      { label: 'Delivery Information', href: '/contact' },
+      { label: 'Caring for Your Flowers', href: '/blog/how-to-keep-your-flowers-fresh-longer' },
+      { label: 'Track Your Order', href: '/track-order' },
     ],
   }
 
