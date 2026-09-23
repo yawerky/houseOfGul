@@ -146,3 +146,36 @@ export async function sendStatusEmail(orderId: string, status: string, note?: st
 <p style="font-family:Arial,sans-serif;font-size:13px;color:#666;text-align:center">Questions? Call or WhatsApp us at ${esc(settings.storePhone)}.</p>`
   await sendEmail(order.email, `Your order ${order.orderNumber} ${text.subject}`, layout('Order update', body), settings.storeEmail)
 }
+
+// A message from the contact form. The enquiry is already saved to the
+// database and shows in Admin → Inquiries; this puts a copy in the store
+// inbox so it is not missed. Reply-to is the sender, so replying from the
+// inbox writes straight back to them.
+export async function sendInquiryEmail(inquiryId: string) {
+  const inquiry = await prisma.inquiry.findUnique({ where: { id: inquiryId } })
+  if (!inquiry) return
+
+  const settings = await getSettings()
+  const to = process.env.ORDER_ALERT_EMAIL || settings.storeEmail
+  if (!to) return
+
+  const row = (label: string, value: unknown) =>
+    value
+      ? `<tr><td style="padding:4px 12px 4px 0;color:#888;font-size:13px">${esc(label)}</td><td style="padding:4px 0;font-size:14px">${esc(value)}</td></tr>`
+      : ''
+
+  const body = `
+<table style="width:100%;border-collapse:collapse;margin-bottom:20px">
+${row('Name', inquiry.name)}
+${row('Email', inquiry.email)}
+${row('Phone', inquiry.phone)}
+${row('About', inquiry.type)}
+${row('Event date', inquiry.eventDate ? inquiry.eventDate.toDateString() : null)}
+${row('Budget', inquiry.budget)}
+${row('Guests', inquiry.guests)}
+</table>
+<p style="font-size:15px;line-height:1.6;white-space:pre-line;border-left:2px solid #A68B4B;padding-left:16px;margin:0">${esc(inquiry.message)}</p>
+<p style="font-family:Arial,sans-serif;font-size:13px;color:#888;margin-top:28px">Reply to this email to answer ${esc(inquiry.name)} directly, or open it in <a href="${siteUrl()}/admin/inquiries" style="color:#A68B4B">Admin → Inquiries</a>.</p>`
+
+  await sendEmail(to, `New enquiry from ${inquiry.name}`, layout('A new message', body), inquiry.email)
+}

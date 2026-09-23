@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { sendInquiryEmail } from '@/lib/notify'
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,6 +25,12 @@ export async function POST(request: NextRequest) {
         message: data.message,
       },
     })
+
+    // A copy goes to the store inbox. The enquiry is already saved, so a mail
+    // failure must never fail the form — log it and move on.
+    await sendInquiryEmail(inquiry.id).catch((e) =>
+      console.error('Inquiry email failed:', e)
+    )
 
     return NextResponse.json(
       { message: 'Inquiry submitted successfully', id: inquiry.id },
