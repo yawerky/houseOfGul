@@ -5,7 +5,7 @@ import SectionWrapper from '@/components/ui/SectionWrapper'
 import Image from 'next/image'
 import { Product } from '@/lib/products'
 import { mapDbProduct } from '@/lib/productMapper'
-import { groupSeasonVariants } from '@/lib/variants'
+import { alternateDesigns } from '@/lib/variants'
 import { getActiveBanner } from '@/lib/banners'
 
 // Always read the latest products, banners and posts from the database.
@@ -57,7 +57,7 @@ async function getProducts(): Promise<Product[]> {
       orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }],
     })
 
-    return groupSeasonVariants(dbProducts).map((p) => mapDbProduct(p))
+    return alternateDesigns(dbProducts).map((p) => mapDbProduct(p))
   } catch (error) {
     console.error('Error fetching products:', error)
     return []

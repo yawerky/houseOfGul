@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { mapDbProduct } from '@/lib/productMapper'
-import { groupSeasonVariants } from '@/lib/variants'
+import { alternateDesigns } from '@/lib/variants'
 
 export async function GET(request: NextRequest) {
   try {
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
 
     // Each season is its own product; keep a box's seasons together
     const max = limit ? parseInt(limit) : undefined
-    const formattedProducts = groupSeasonVariants(products)
+    const formattedProducts = alternateDesigns(products)
       .slice(0, max && max > 0 ? max : undefined)
       .map((p) => mapDbProduct(p))
 

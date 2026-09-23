@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { mapDbProduct } from '@/lib/productMapper'
-import { groupSeasonVariants } from '@/lib/variants'
+import { alternateDesigns } from '@/lib/variants'
 import ProductCard from '@/components/shop/ProductCard'
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import SectionWrapper from '@/components/ui/SectionWrapper'
@@ -32,7 +32,7 @@ async function getCategoryProducts(categoryName: string) {
       where: { category: categoryName, inStock: true },
       orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }],
     })
-    return groupSeasonVariants(products)
+    return alternateDesigns(products)
   } catch {
     return []
   }

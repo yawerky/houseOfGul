@@ -69,6 +69,41 @@ export function collapseSeasonVariants<T extends { slug: string }>(
 
 // Every seasonal version is its own product (SKU). For listings, keep all of
 // them but show each box's seasons together, in season order.
+// Each box comes in four seasonal versions, so listing them grouped puts four
+// of the same design in a row and a page of 28 reads as seven repeated blocks.
+// This deals the designs out instead — one of each, then the next of each — so
+// no two neighbours are the same box. Seasons stay in order within a design,
+// and the order designs first appear is kept, so whatever the caller sorted by
+// still decides what leads.
+export function alternateDesigns<T extends { slug: string }>(rows: T[]): T[] {
+  if (rows.length < 3) return rows
+
+  const groups = new Map<string, T[]>()
+  for (const row of rows) {
+    const parsed = parseSeasonSlug(row.slug)
+    const key = parsed ? `group:${parsed.base}` : `single:${row.slug}`
+    if (!groups.has(key)) groups.set(key, [])
+    groups.get(key)!.push(row)
+  }
+  if (groups.size < 2) return rows
+
+  const lists = Array.from(groups.values()).map((members) => sortBySeason(members))
+  const out: T[] = []
+  for (let round = 0; out.length < rows.length; round++) {
+    let placed = false
+    for (const list of lists) {
+      if (round < list.length) {
+        out.push(list[round])
+        placed = true
+      }
+    }
+    if (!placed) break
+  }
+  return out
+}
+
+// Keeps every season of a design together. Used where that is wanted — the
+// season switcher on a product page — rather than for a grid of many designs.
 export function groupSeasonVariants<T extends { slug: string }>(rows: T[]): T[] {
   const groups = new Map<string, T[]>()
   for (const row of rows) {
