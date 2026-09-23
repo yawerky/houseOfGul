@@ -151,40 +151,20 @@ export default async function AboutPage() {
           <div className="order-1 lg:order-2 space-y-6">
             <p className="luxury-subheading">The Craft</p>
             <h2 className="font-serif text-3xl md:text-4xl text-charcoal">
-              Masterful Artistry
+              Made by Hand, in Our Own Workshop
             </h2>
             <div className="w-12 h-px bg-gold" />
             <p className="text-charcoal-light leading-relaxed">
-              Our master florists bring decades of expertise to every
-              arrangement. Trained in the traditions of European floristry and
-              inspired by contemporary design, they possess an innate
-              understanding of how to bring out the unique beauty of each bloom.
+              The box is the costliest part of a flower box, and most florists
+              buy theirs in. We make ours. The paper is white cotton rag with
+              small blue cornflower petals pressed into the sheet, cut and
+              folded by hand in Jhotwara.
             </p>
             <p className="text-charcoal-light leading-relaxed">
-              From the selection of the freshest stems to the final placement of
-              each petal, every step is executed with precision and care. The
-              result is not merely a bouquet, but a piece of floral couture.
+              The flowers are bought the same morning and arranged the same day.
+              What goes in depends on what is good in the market that week
+              rather than on a picture we decided on months ago.
             </p>
-            <div className="grid grid-cols-3 gap-6 pt-4">
-              <div className="text-center">
-                <p className="font-serif text-3xl text-gold mb-1">7</p>
-                <p className="text-xs tracking-widest uppercase text-charcoal-light">
-                  Box designs, made by us
-                </p>
-              </div>
-              <div className="text-center">
-                <p className="font-serif text-3xl text-gold mb-1">30</p>
-                <p className="text-xs tracking-widest uppercase text-charcoal-light">
-                  Jaipur pincodes, free
-                </p>
-              </div>
-              <div className="text-center">
-                <p className="font-serif text-3xl text-gold mb-1">6 PM</p>
-                <p className="text-xs tracking-widest uppercase text-charcoal-light">
-                  Same-day cut-off 2 PM
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </SectionWrapper>

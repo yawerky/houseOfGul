@@ -49,8 +49,8 @@ export default function Newsletter() {
           </h2>
           <div className="luxury-divider mb-6" />
           <p className="text-charcoal-light mb-8">
-            Be the first to discover new collections, exclusive offers, and the
-            art of floral living.
+            A note when a new box or a new season arrives, and the occasional
+            offer. Not often, and never more than once a week.
           </p>
 
           {isSubmitted ? (
