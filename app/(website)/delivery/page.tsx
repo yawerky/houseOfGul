@@ -83,7 +83,7 @@ export default async function DeliveryPage() {
           <h2 className="font-serif text-2xl text-charcoal mb-2">Where we deliver</h2>
           <p className="text-charcoal-light mb-8 leading-relaxed">
             {sameDay + nextDay > 0
-              ? `${sameDay + nextDay} pincodes. The ${sameDay} across Jaipur city are same-day; the ${nextDay} around the district — Chomu, Bassi, Chaksu, Phulera, Kotputli and the villages near them — arrive the next day. Free either way.`
+              ? `${sameDay + nextDay} pincodes. The ${sameDay} across Jaipur city arrive the same day; the ${nextDay} just outside it — Chomu, Bassi, Bagru, Kanota, Achrol, Goner and the villages around them — arrive the next day. Free either way.`
               : 'Across Jaipur city and the district around it. Check your pincode below.'}
           </p>
 

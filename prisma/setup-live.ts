@@ -207,7 +207,7 @@ async function main() {
           state: 'Rajasthan',
           deliveryZone: p.zone || 'same-day',
           deliveryCharge: JAIPUR_DELIVERY_CHARGE,
-          isActive: true,
+          isActive: p.active !== false,
         },
       })
     }
@@ -229,13 +229,27 @@ async function main() {
             state: 'Rajasthan',
             deliveryZone: p.zone || 'same-day',
             deliveryCharge: JAIPUR_DELIVERY_CHARGE,
-            isActive: true,
+            isActive: p.active !== false,
           },
         })
         added++
       }
       await prisma.setting.create({ data: { key: areaBatchKey, value: new Date().toISOString() } })
       if (added) console.log(`✓ Delivery areas: ${added} later pincode(s) added`)
+    }
+
+    // The far district areas were switched on before the cost of reaching them
+    // was known. Switch them off once — anything turned back on in admin stays
+    // on, because this runs a single time.
+    const farOffKey = 'setup:pincodes:far-district-off'
+    if (!(await prisma.setting.findUnique({ where: { key: farOffKey } }))) {
+      const far = jaipurPincodes.filter((p) => p.active === false).map((p) => p.code)
+      const res = await prisma.pincode.updateMany({
+        where: { code: { in: far }, isActive: true },
+        data: { isActive: false },
+      })
+      await prisma.setting.create({ data: { key: farOffKey, value: new Date().toISOString() } })
+      if (res.count) console.log(`✓ Delivery areas: ${res.count} far district pincode(s) switched off`)
     }
 
     console.log('✓ Delivery areas already set up')
