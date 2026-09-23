@@ -92,11 +92,24 @@ async function main() {
     // and is then marked done, so a flower deleted in admin never comes back.
     const addedBatchKey = 'setup:flowerGuide:lily-carnation'
     if (!(await prisma.setting.findUnique({ where: { key: addedBatchKey } }))) {
+      const laterFlowers = ['Lily', 'Carnation']
       let added = 0
-      for (const name of ['Lily', 'Carnation']) {
+      const toAdd: typeof defaultFlowerGuide = []
+      for (const name of laterFlowers) {
         if (await prisma.flowerGuide.findFirst({ where: { name } })) continue
         const f = defaultFlowerGuide.find((d) => d.name === name)
-        if (!f) continue
+        if (f) toAdd.push(f)
+      }
+      // They belong at 5 and 6, so make room by pushing everything from 5
+      // down two places. Relative order of the existing flowers is kept.
+      if (toAdd.length) {
+        const lowest = Math.min(...toAdd.map((f) => f.order))
+        await prisma.flowerGuide.updateMany({
+          where: { order: { gte: lowest } },
+          data: { order: { increment: toAdd.length } },
+        })
+      }
+      for (const f of toAdd) {
         await prisma.flowerGuide.create({
           data: { ...f, symbolism: JSON.stringify(f.symbolism), colors: JSON.stringify(f.colors) },
         })
@@ -149,9 +162,11 @@ async function main() {
   // left alone.
   let rewritten = 0
   for (const r of journalRewrites) {
+    const post = defaultJournalPosts.find((d) => d.slug === r.slug)
+    if (!post) continue
     const res = await prisma.blogPost.updateMany({
       where: { slug: r.slug, image: r.onlyIfImage },
-      data: { title: r.title, excerpt: r.excerpt, content: r.content, image: r.image },
+      data: { title: post.title, excerpt: post.excerpt, content: post.content, image: post.image },
     })
     rewritten += res.count
   }
