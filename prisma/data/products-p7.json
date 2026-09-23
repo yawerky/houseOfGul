@@ -1,0 +1,106 @@
+[
+  {
+    "sku": "HOG-TC-SPR",
+    "name": "The Treasure Chest — Spring Blush",
+    "slug": "the-treasure-chest-spring",
+    "price": 2299,
+    "category": "Signature Collection",
+    "occasion": "romance",
+    "season": "spring",
+    "flowers": [
+      "Blush Pink Roses",
+      "White Spray Chrysanthemums",
+      "Gypsophila"
+    ],
+    "story": "Closed, it is a keepsake. Opened, it is a spring garden.",
+    "description": "A small chest of textured handmade paper with a curved trunk lid that lifts to reveal the flowers inside — closed it looks like a keepsake box, open it is a garden. Small enough to hold in two hands, and the lid closes again afterwards, so the box stays on a dressing table long after the flowers have gone. Filled with blush-pink roses, white spray chrysanthemums and clouds of gypsophila. Our most giftable piece, and the one people keep. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur: order by 2 PM for delivery by 6 PM; later orders arrive by 12 PM. Free delivery across Jaipur. Arrives ready to display — no vase needed.",
+    "images": [
+      "/images/products/the-treasure-chest-spring-1.jpg",
+      "/images/products/the-treasure-chest-spring-2.jpg",
+      "/images/products/the-treasure-chest-spring-3.jpg",
+      "/images/products/the-treasure-chest-spring-4.jpg",
+      "/images/products/the-treasure-chest-spring-5.jpg",
+      "/images/products/the-treasure-chest-spring-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "sku": "HOG-TC-SUM",
+    "name": "The Treasure Chest — Summer Cream",
+    "slug": "the-treasure-chest-summer",
+    "price": 2299,
+    "category": "Signature Collection",
+    "occasion": "thank-you",
+    "season": "summer",
+    "flowers": [
+      "Ivory Roses",
+      "Butter-Yellow Chrysanthemums",
+      "Gypsophila"
+    ],
+    "story": "A small box that opens onto a summer morning.",
+    "description": "A small chest of textured handmade paper with a curved trunk lid that lifts to reveal the flowers inside — closed it looks like a keepsake box, open it is a garden. Small enough to hold in two hands, and the lid closes again afterwards, so the box stays on a dressing table long after the flowers have gone. Filled with ivory-white roses, butter-yellow chrysanthemums and clouds of gypsophila. Our most giftable piece, and the one people keep. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur: order by 2 PM for delivery by 6 PM; later orders arrive by 12 PM. Free delivery across Jaipur. Arrives ready to display — no vase needed.",
+    "images": [
+      "/images/products/the-treasure-chest-summer-1.jpg",
+      "/images/products/the-treasure-chest-summer-2.jpg",
+      "/images/products/the-treasure-chest-summer-3.jpg",
+      "/images/products/the-treasure-chest-summer-4.jpg",
+      "/images/products/the-treasure-chest-summer-5.jpg",
+      "/images/products/the-treasure-chest-summer-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "sku": "HOG-TC-AUT",
+    "name": "The Treasure Chest — Autumn Gold",
+    "slug": "the-treasure-chest-autumn",
+    "price": 2299,
+    "category": "Signature Collection",
+    "occasion": "birthday",
+    "season": "autumn",
+    "flowers": [
+      "Peach Roses",
+      "Golden Chrysanthemums",
+      "Gypsophila"
+    ],
+    "story": "Lift the lid and the season is already inside.",
+    "description": "A small chest of textured handmade paper with a curved trunk lid that lifts to reveal the flowers inside — closed it looks like a keepsake box, open it is a garden. Small enough to hold in two hands, and the lid closes again afterwards, so the box stays on a dressing table long after the flowers have gone. Filled with warm peach roses, golden shevanti chrysanthemums and clouds of gypsophila. Our most giftable piece, and the one people keep. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur: order by 2 PM for delivery by 6 PM; later orders arrive by 12 PM. Free delivery across Jaipur. Arrives ready to display — no vase needed.",
+    "images": [
+      "/images/products/the-treasure-chest-autumn-1.jpg",
+      "/images/products/the-treasure-chest-autumn-2.jpg",
+      "/images/products/the-treasure-chest-autumn-3.jpg",
+      "/images/products/the-treasure-chest-autumn-4.jpg",
+      "/images/products/the-treasure-chest-autumn-5.jpg",
+      "/images/products/the-treasure-chest-autumn-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "sku": "HOG-TC-WIN",
+    "name": "The Treasure Chest — Winter Crimson",
+    "slug": "the-treasure-chest-winter",
+    "price": 2299,
+    "category": "Signature Collection",
+    "occasion": "anniversary",
+    "season": "winter",
+    "flowers": [
+      "Red Roses",
+      "Lilac Chrysanthemums",
+      "Gypsophila"
+    ],
+    "story": "Deep red roses, kept in a box worth keeping.",
+    "description": "A small chest of textured handmade paper with a curved trunk lid that lifts to reveal the flowers inside — closed it looks like a keepsake box, open it is a garden. Small enough to hold in two hands, and the lid closes again afterwards, so the box stays on a dressing table long after the flowers have gone. Filled with deep crimson roses, lilac chrysanthemums and clouds of gypsophila. Our most giftable piece, and the one people keep. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur: order by 2 PM for delivery by 6 PM; later orders arrive by 12 PM. Free delivery across Jaipur. Arrives ready to display — no vase needed.",
+    "images": [
+      "/images/products/the-treasure-chest-winter-1.jpg",
+      "/images/products/the-treasure-chest-winter-2.jpg",
+      "/images/products/the-treasure-chest-winter-3.jpg",
+      "/images/products/the-treasure-chest-winter-4.jpg",
+      "/images/products/the-treasure-chest-winter-5.jpg",
+      "/images/products/the-treasure-chest-winter-6.jpg"
+    ],
+    "featured": true
+  }
+]

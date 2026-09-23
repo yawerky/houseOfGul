@@ -1,4 +1,4 @@
-// Adds or updates the P1–P6 products (all 4 seasons each).
+// Adds or updates the P1–P7 products (all 4 seasons each).
 // Safe to run more than once: products are matched by URL slug.
 // With --create-only, existing products are left untouched (used on every
 // Vercel deploy so edits made in admin are never overwritten).
@@ -29,7 +29,7 @@ interface SeedProduct {
 const prisma = new PrismaClient()
 
 async function main() {
-  const files = ['products-p1-p4.json', 'products-p5-p6.json']
+  const files = ['products-p1-p4.json', 'products-p5-p6.json', 'products-p7.json']
   const products: SeedProduct[] = files.flatMap((name) =>
     JSON.parse(readFileSync(path.join(__dirname, 'data', name), 'utf8'))
   )
