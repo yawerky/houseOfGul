@@ -1,0 +1,233 @@
+[
+  {
+    "sku": "HOG-MB-SPR",
+    "name": "The Moon Basket — Spring Blush",
+    "slug": "the-moon-basket-spring",
+    "price": 1499,
+    "category": "Signature Collection",
+    "occasion": "birthday",
+    "season": "spring",
+    "flowers": [
+      "Blush Pink Roses",
+      "Pink Gerbera Daisies",
+      "Lilac Spray Chrysanthemums",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "A full moon of handmade paper, carried by its arch, holding a spring garden inside.",
+    "description": "A circle of textured handmade paper, cut open at the top into a smooth arch you can carry it by, cradling blush-pink roses and soft pink gerbera daisies among lilac chrysanthemums, clouds of gypsophila and sprigs of golden solidago. Finished with a lilac ribbon at the base. It stands on its own on a table, and the arch means it can be carried by hand or hung on a door handle. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur: order by 2 PM for delivery by 6 PM; later orders arrive by 12 PM. Free delivery across Jaipur. Arrives ready to display — no vase needed.",
+    "images": [
+      "/images/products/the-moon-basket-spring-1.jpg",
+      "/images/products/the-moon-basket-spring-2.jpg",
+      "/images/products/the-moon-basket-spring-3.jpg",
+      "/images/products/the-moon-basket-spring-4.jpg",
+      "/images/products/the-moon-basket-spring-5.jpg",
+      "/images/products/the-moon-basket-spring-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "sku": "HOG-MB-SUM",
+    "name": "The Moon Basket — Summer Sunshine",
+    "slug": "the-moon-basket-summer",
+    "price": 1499,
+    "category": "Signature Collection",
+    "occasion": "thank-you",
+    "season": "summer",
+    "flowers": [
+      "Ivory Roses",
+      "Yellow Gerbera Daisies",
+      "White Spray Chrysanthemums",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "Cut like a full moon, filled with a summer morning.",
+    "description": "A circle of textured handmade paper, cut open at the top into a smooth arch you can carry it by, cradling ivory-white roses and butter-yellow gerbera daisies among white chrysanthemums, clouds of gypsophila and sprigs of golden solidago. Finished with a lilac ribbon at the base. Bright and open, it is our easiest way to say thank you. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur: order by 2 PM for delivery by 6 PM; later orders arrive by 12 PM. Free delivery across Jaipur. Arrives ready to display — no vase needed.",
+    "images": [
+      "/images/products/the-moon-basket-summer-1.jpg",
+      "/images/products/the-moon-basket-summer-2.jpg",
+      "/images/products/the-moon-basket-summer-3.jpg",
+      "/images/products/the-moon-basket-summer-4.jpg",
+      "/images/products/the-moon-basket-summer-5.jpg",
+      "/images/products/the-moon-basket-summer-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "sku": "HOG-MB-AUT",
+    "name": "The Moon Basket — Autumn Amber",
+    "slug": "the-moon-basket-autumn",
+    "price": 1499,
+    "category": "Signature Collection",
+    "occasion": "congratulations",
+    "season": "autumn",
+    "flowers": [
+      "Peach Roses",
+      "Amber Gerbera Daisies",
+      "Bronze Chrysanthemums",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "The moon turns amber when the season does.",
+    "description": "A circle of textured handmade paper, cut open at the top into a smooth arch you can carry it by, cradling warm peach roses and amber gerbera daisies among bronze chrysanthemums, clouds of gypsophila and sprigs of golden solidago. Finished with a lilac ribbon at the base. Made for the festive weeks, when a gift should feel warm in the hand. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur: order by 2 PM for delivery by 6 PM; later orders arrive by 12 PM. Free delivery across Jaipur. Arrives ready to display — no vase needed.",
+    "images": [
+      "/images/products/the-moon-basket-autumn-1.jpg",
+      "/images/products/the-moon-basket-autumn-2.jpg",
+      "/images/products/the-moon-basket-autumn-3.jpg",
+      "/images/products/the-moon-basket-autumn-4.jpg",
+      "/images/products/the-moon-basket-autumn-5.jpg",
+      "/images/products/the-moon-basket-autumn-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "sku": "HOG-MB-WIN",
+    "name": "The Moon Basket — Winter Crimson",
+    "slug": "the-moon-basket-winter",
+    "price": 1499,
+    "category": "Signature Collection",
+    "occasion": "anniversary",
+    "season": "winter",
+    "flowers": [
+      "Red Roses",
+      "Cream Gerbera Daisies",
+      "White Chrysanthemums",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "Deep red against pale paper — the quietest way to say a loud thing.",
+    "description": "A circle of textured handmade paper, cut open at the top into a smooth arch you can carry it by, cradling deep crimson roses and cream gerbera daisies among white chrysanthemums, clouds of gypsophila and sprigs of golden solidago. Finished with a lilac ribbon at the base. Our winter answer to the red rose bouquet — same feeling, kept for longer. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur: order by 2 PM for delivery by 6 PM; later orders arrive by 12 PM. Free delivery across Jaipur. Arrives ready to display — no vase needed.",
+    "images": [
+      "/images/products/the-moon-basket-winter-1.jpg",
+      "/images/products/the-moon-basket-winter-2.jpg",
+      "/images/products/the-moon-basket-winter-3.jpg",
+      "/images/products/the-moon-basket-winter-4.jpg",
+      "/images/products/the-moon-basket-winter-5.jpg",
+      "/images/products/the-moon-basket-winter-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "sku": "HOG-MW-SPR",
+    "name": "The Meadow Box — Spring Garden",
+    "slug": "the-meadow-box-spring",
+    "price": 1899,
+    "category": "Signature Collection",
+    "occasion": "anniversary",
+    "season": "spring",
+    "flowers": [
+      "Pink Oriental Lily",
+      "Blush Roses",
+      "Red Roses",
+      "Cream Lisianthus",
+      "Purple Statice",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "A whole spring garden, gathered and set down in a paper box.",
+    "description": "Our largest arrangement. A deep box of handmade paper, its front cut in one soft hand-drawn curve, filled with an open pink oriental lily, blush and deep red roses, cream lisianthus, purple statice, gypsophila and golden solidago spreading wide over the rim. Generous, loose and garden-gathered rather than neat — the arrangement to send when the occasion is a large one. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur: order by 2 PM for delivery by 6 PM; later orders arrive by 12 PM. Free delivery across Jaipur. Arrives ready to display — no vase needed.",
+    "images": [
+      "/images/products/the-meadow-box-spring-1.jpg",
+      "/images/products/the-meadow-box-spring-2.jpg",
+      "/images/products/the-meadow-box-spring-3.jpg",
+      "/images/products/the-meadow-box-spring-4.jpg",
+      "/images/products/the-meadow-box-spring-5.jpg",
+      "/images/products/the-meadow-box-spring-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "sku": "HOG-MW-SUM",
+    "name": "The Meadow Box — Summer Meadow",
+    "slug": "the-meadow-box-summer",
+    "price": 1899,
+    "category": "Signature Collection",
+    "occasion": "birthday",
+    "season": "summer",
+    "flowers": [
+      "Yellow Asiatic Lily",
+      "Ivory Roses",
+      "Yellow Roses",
+      "Cream Lisianthus",
+      "Lilac Statice",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "A summer meadow at the height of the morning.",
+    "description": "Our largest arrangement. A deep box of handmade paper, its front cut in one soft hand-drawn curve, filled with an open butter-yellow lily, ivory and yellow roses, cream lisianthus, lilac statice, gypsophila and golden solidago spreading wide over the rim. Bright, loose and garden-gathered — a birthday arrangement that fills a whole table. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur: order by 2 PM for delivery by 6 PM; later orders arrive by 12 PM. Free delivery across Jaipur. Arrives ready to display — no vase needed.",
+    "images": [
+      "/images/products/the-meadow-box-summer-1.jpg",
+      "/images/products/the-meadow-box-summer-2.jpg",
+      "/images/products/the-meadow-box-summer-3.jpg",
+      "/images/products/the-meadow-box-summer-4.jpg",
+      "/images/products/the-meadow-box-summer-5.jpg",
+      "/images/products/the-meadow-box-summer-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "sku": "HOG-MW-AUT",
+    "name": "The Meadow Box — Autumn Harvest",
+    "slug": "the-meadow-box-autumn",
+    "price": 1899,
+    "category": "Signature Collection",
+    "occasion": "congratulations",
+    "season": "autumn",
+    "flowers": [
+      "Apricot Asiatic Lily",
+      "Peach Roses",
+      "Orange Gerbera Daisies",
+      "Golden Chrysanthemums",
+      "Mauve Statice",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "Everything the season turns gold, gathered into one box.",
+    "description": "Our largest arrangement. A deep box of handmade paper, its front cut in one soft hand-drawn curve, filled with an open apricot lily, peach roses, orange gerbera daisies, golden shevanti chrysanthemums, mauve statice, gypsophila and solidago spreading wide over the rim. Warm and abundant — made for Diwali, weddings and the festive season. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur: order by 2 PM for delivery by 6 PM; later orders arrive by 12 PM. Free delivery across Jaipur. Arrives ready to display — no vase needed.",
+    "images": [
+      "/images/products/the-meadow-box-autumn-1.jpg",
+      "/images/products/the-meadow-box-autumn-2.jpg",
+      "/images/products/the-meadow-box-autumn-3.jpg",
+      "/images/products/the-meadow-box-autumn-4.jpg",
+      "/images/products/the-meadow-box-autumn-5.jpg",
+      "/images/products/the-meadow-box-autumn-6.jpg"
+    ],
+    "featured": true
+  },
+  {
+    "sku": "HOG-MW-WIN",
+    "name": "The Meadow Box — Winter Romance",
+    "slug": "the-meadow-box-winter",
+    "price": 1899,
+    "category": "Signature Collection",
+    "occasion": "romance",
+    "season": "winter",
+    "flowers": [
+      "White Oriental Lily",
+      "Crimson Roses",
+      "White Chrysanthemums",
+      "Purple Statice",
+      "Gypsophila",
+      "Solidago"
+    ],
+    "story": "White lilies and deep red roses — the oldest pairing there is.",
+    "description": "Our largest arrangement. A deep box of handmade paper, its front cut in one soft hand-drawn curve, filled with an open white oriental lily, deep crimson roses, white chrysanthemums, purple statice, gypsophila and golden solidago spreading wide over the rim. Loose, generous and garden-gathered — our most romantic arrangement of the year. Hand-arranged fresh in Jaipur. Flowers may vary slightly with market availability; we always keep to the same colours and style.",
+    "deliveryInfo": "Same-day delivery across Jaipur: order by 2 PM for delivery by 6 PM; later orders arrive by 12 PM. Free delivery across Jaipur. Arrives ready to display — no vase needed.",
+    "images": [
+      "/images/products/the-meadow-box-winter-1.jpg",
+      "/images/products/the-meadow-box-winter-2.jpg",
+      "/images/products/the-meadow-box-winter-3.jpg",
+      "/images/products/the-meadow-box-winter-4.jpg",
+      "/images/products/the-meadow-box-winter-5.jpg",
+      "/images/products/the-meadow-box-winter-6.jpg"
+    ],
+    "featured": true
+  }
+]

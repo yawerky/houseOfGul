@@ -1,5 +1,5 @@
 // Prepares a database for the live site: admin login, categories, occasions
-// and the P1–P4 products. Runs automatically on every Vercel build (see the
+// and the P1–P6 products. Runs automatically on every Vercel build (see the
 // "build" script in package.json) and only ADDS what is missing — it never
 // changes or deletes anything already in the database.
 //
