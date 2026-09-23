@@ -290,31 +290,51 @@ export const testimonials = [
   },
 ]
 
+// The Gul Club. Prices are in rupees and each tier is built from boxes we
+// actually make, at roughly a tenth off the one-off price. Delivery is free
+// across Jaipur either way, so the saving is on the boxes, not the delivery.
 export const subscriptionPlans = [
   {
-    id: 'petite',
-    name: 'Petite Bloom',
-    price: 89,
+    id: 'monthly',
+    name: 'One Box a Month',
+    price: 799,
     interval: 'month',
-    description: 'A delicate arrangement perfect for desks and small spaces',
-    features: ['Seasonal blooms', 'Bi-weekly delivery', 'Care guide included'],
+    description: 'A box on the same day each month. The easiest place to start.',
+    features: [
+      'The Bloom Letter or The Garden Drawer',
+      'Flowers chosen from what is best that week',
+      'Free delivery across Jaipur',
+      'Pause or cancel whenever you like',
+    ],
   },
   {
-    id: 'signature',
-    name: 'Signature Gul',
-    price: 159,
+    id: 'fortnightly',
+    name: 'Every Fortnight',
+    price: 1799,
     interval: 'month',
-    description: 'Our most popular subscription for flower enthusiasts',
-    features: ['Premium seasonal blooms', 'Weekly delivery', 'Luxury vase included', 'Priority support'],
+    description: 'Two boxes a month, so there are always fresh flowers in the house.',
+    features: [
+      'The Petal Tote or The Keepsake Hatbox',
+      'Flowers chosen from what is best that week',
+      'Change the design whenever you want',
+      'Free delivery across Jaipur',
+      'Pause or cancel whenever you like',
+    ],
     popular: true,
   },
   {
-    id: 'luxe',
-    name: 'Luxe Collection',
-    price: 289,
+    id: 'weekly',
+    name: 'Every Week',
+    price: 4299,
     interval: 'month',
-    description: 'The ultimate floral experience for true connoisseurs',
-    features: ['Rare & exotic blooms', 'Weekly delivery', 'Crystal vase collection', 'Personal florist', 'Event priority'],
+    description: 'Four boxes a month. For a shop counter, a table, a front desk.',
+    features: [
+      'Any box up to The Moon Basket',
+      'Flowers chosen from what is best that week',
+      'Tell us the day that suits you',
+      'Free delivery across Jaipur',
+      'Pause or cancel whenever you like',
+    ],
   },
 ]
 
