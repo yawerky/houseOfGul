@@ -38,18 +38,6 @@ async function getCategoryProducts(categoryName: string) {
   }
 }
 
-async function getRelatedCategories(currentSlug: string) {
-  try {
-    const categories = await prisma.category.findMany({
-      where: { isActive: true, slug: { not: currentSlug } },
-      take: 4,
-    })
-    return categories
-  } catch {
-    return []
-  }
-}
-
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { slug } = await params
   const category = await getCategory(slug)
@@ -84,7 +72,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   const products = await getCategoryProducts(category.name)
-  const relatedCategories = await getRelatedCategories(slug)
 
   const mappedProducts = products.map((p) => mapDbProduct(p))
 
@@ -145,40 +132,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </div>
         )}
       </SectionWrapper>
-
-      {/* Related Categories - Interlinking */}
-      {relatedCategories.length > 0 && (
-        <SectionWrapper background="champagne">
-          <div className="text-center mb-12">
-            <p className="luxury-subheading mb-4">Explore More</p>
-            <h2 className="font-serif text-3xl text-charcoal mb-4">
-              Related Categories
-            </h2>
-            <div className="luxury-divider" />
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {relatedCategories.map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/category/${cat.slug}`}
-                className="group relative aspect-square rounded-sm overflow-hidden"
-              >
-                <Image
-                  src={cat.image || 'https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?w=400&q=80'}
-                  alt={cat.name}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-charcoal/40 group-hover:bg-charcoal/60 transition-colors" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="font-serif text-xl text-ivory">{cat.name}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </SectionWrapper>
-      )}
 
       {/* SEO Content Block */}
       <SectionWrapper background="white">

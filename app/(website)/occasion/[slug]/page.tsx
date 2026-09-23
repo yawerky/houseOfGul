@@ -39,18 +39,6 @@ async function getOccasionProducts(occasionName: string, occasionSlug: string) {
   }
 }
 
-async function getRelatedOccasions(currentSlug: string) {
-  try {
-    const occasions = await prisma.occasion.findMany({
-      where: { isActive: true, slug: { not: currentSlug } },
-      take: 4,
-    })
-    return occasions
-  } catch {
-    return []
-  }
-}
-
 export async function generateMetadata({ params }: OccasionPageProps): Promise<Metadata> {
   const { slug } = await params
   const occasion = await getOccasion(slug)
@@ -85,7 +73,6 @@ export default async function OccasionPage({ params }: OccasionPageProps) {
   }
 
   const products = await getOccasionProducts(occasion.name, occasion.slug)
-  const relatedOccasions = await getRelatedOccasions(slug)
 
   const mappedProducts = products.map((p) => mapDbProduct(p))
 
@@ -146,40 +133,6 @@ export default async function OccasionPage({ params }: OccasionPageProps) {
           </div>
         )}
       </SectionWrapper>
-
-      {/* Related Occasions - Interlinking */}
-      {relatedOccasions.length > 0 && (
-        <SectionWrapper background="champagne">
-          <div className="text-center mb-12">
-            <p className="luxury-subheading mb-4">More Occasions</p>
-            <h2 className="font-serif text-3xl text-charcoal mb-4">
-              Shop by Occasion
-            </h2>
-            <div className="luxury-divider" />
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {relatedOccasions.map((occ) => (
-              <Link
-                key={occ.id}
-                href={`/occasion/${occ.slug}`}
-                className="group relative aspect-square rounded-sm overflow-hidden"
-              >
-                <Image
-                  src={occ.image || 'https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?w=400&q=80'}
-                  alt={occ.name}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-charcoal/40 group-hover:bg-charcoal/60 transition-colors" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="font-serif text-xl text-ivory">{occ.name}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </SectionWrapper>
-      )}
 
       {/* SEO Content Block */}
       <SectionWrapper background="white">
