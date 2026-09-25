@@ -172,6 +172,34 @@ async function main() {
   }
   if (rewritten) console.log(`✓ Journal: ${rewritten} article(s) rewritten`)
 
+  // Repricing of 25 September 2026, from Content/Business/Financial-Assessment.md.
+  // At the old list every advertised customer was bought at a loss: contribution
+  // was ₹621 a box against an acquisition cost of ₹900-2,000. Applied once, and
+  // only where the product still carries its old price — a price changed in
+  // admin means it was set deliberately and is left alone.
+  const repriceKey = 'setup:products:reprice-2026-09'
+  if (!(await prisma.setting.findUnique({ where: { key: repriceKey } }))) {
+    const newPrices: [string, number, number][] = [
+      ['the-bloom-letter', 699, 1299],
+      ['the-garden-drawer', 899, 1499],
+      ['the-petal-tote', 999, 1699],
+      ['the-keepsake-hatbox', 1199, 1899],
+      ['the-moon-basket', 1499, 2099],
+      ['the-meadow-box', 1899, 2499],
+      ['the-treasure-chest', 2299, 2999],
+    ]
+    let repriced = 0
+    for (const [base, oldPrice, newPrice] of newPrices) {
+      const res = await prisma.product.updateMany({
+        where: { slug: { startsWith: base }, price: oldPrice },
+        data: { price: newPrice },
+      })
+      repriced += res.count
+    }
+    await prisma.setting.create({ data: { key: repriceKey, value: new Date().toISOString() } })
+    if (repriced) console.log(`✓ Products: ${repriced} repriced`)
+  }
+
   // houseofgul.com belongs to someone else — never send order alerts there.
   await prisma.setting.updateMany({ where: { key: 'storeEmail', value: 'contact@houseofgul.com' }, data: { value: '' } })
 
